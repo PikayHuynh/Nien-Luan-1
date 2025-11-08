@@ -1,0 +1,10 @@
+.hero {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(14, 165, 233, 0.08));
+    border-radius: 1rem;
+    padding: 3.5rem 1.5rem;
+}
+
+.product-card img {
+    object-fit: cover;
+    height: 160px;
+}
