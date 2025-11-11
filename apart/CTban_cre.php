@@ -1,122 +1,141 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 $servername = "localhost";
 $username   = "root";
 $password   = "";
 $database   = "quanly_banhang";
 
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$database;charset=utf8mb4", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
+$opt = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+];
+
+$conn = new PDO("mysql:host=$servername;dbname=$database;charset=utf8mb4",
+                $username, $password, $opt);
+
+// ==============================================
+// Hằng số và Tỷ lệ Thuế Cố định
+// ==============================================
+const NUM_ORDERS_TO_GENERATE = 1000; // Số lượng chứng từ bán
+const THUE_VAT_PERCENT = 10.00; // Đã cố định 10%
+
+// ==============================================
+// 1. LẤY DANH SÁCH ID VÀ GIÁ BÁN HIỆN TẠI
+// ==============================================
+
+// Lấy ID Khách Hàng 
+$customer_ids_result = $conn->query("SELECT ID_KHACH_HANG FROM KHACH_HANG");
+$customer_ids = $customer_ids_result->fetchAll(PDO::FETCH_COLUMN);
+
+// Lấy ID Hàng Hóa và Giá bán đang áp dụng (APDUNG=1)
+$prices_result = $conn->query("
+    SELECT hh.ID_HANGHOA, dgb.GIATRI AS GIABAN
+    FROM HANG_HOA hh
+    JOIN DON_GIA_BAN dgb ON hh.ID_HANGHOA = dgb.ID_HANGHOA
+    WHERE dgb.APDUNG = 1
+");
+
+// Lưu trữ giá bán dưới dạng mảng key-value (ID_HANGHOA => GIABAN)
+$product_prices = [];
+foreach ($prices_result->fetchAll() as $row) {
+    $product_prices[$row['ID_HANGHOA']] = $row['GIABAN'];
+}
+$product_ids = array_keys($product_prices);
+
+if (empty($customer_ids) || empty($product_ids)) {
+    die("Lỗi: Cần dữ liệu trong KHACH_HANG, HANG_HOA và DON_GIA_BAN (với APDUNG=1).");
+}
+
+// ==============================================
+// 2. CHUẨN BỊ CÂU LỆNH INSERT
+// ==============================================
+
+// *** ĐÃ SỬA LỖI MASOCT TRONG CÂU LỆNH SQL ***
+$sql_insert_ban = "INSERT INTO CHUNG_TU_BAN 
+    (MASOCT, NGAYDATHANG, ID_KHACHHANG, TONGTIENHANG, THUE, TRANGTHAI, GHICHU)
+    VALUES (:masoct, :ngaydathang, :idkh, :tth, :thue, :trangthai, :ghichu)";
+$stmt_ban = $conn->prepare($sql_insert_ban);
+
+$sql_insert_ctban = "INSERT INTO CHUNG_TU_BAN_CT 
+    (ID_HANGHOA, GIABAN, SOLUONG, ID_CTBAN)
+    VALUES (:idhh, :giaban, :sl, :idctban)";
+$stmt_ctban = $conn->prepare($sql_insert_ctban);
+
+// ==============================================
+// 3. TẠO VÀ CHÈN CHỨNG TỪ BÁN (1000 CHỨNG TỪ)
+// ==============================================
+
+$conn->beginTransaction();
+$total_ban_inserted = 0;
+$total_ct_ban_inserted = 0;
+
+$trang_thai_options = ['Hoàn thành', 'Đã giao hàng', 'Đang xử lý', 'Đã hủy'];
+
+for ($i = 1; $i <= NUM_ORDERS_TO_GENERATE; $i++) {
+    
+    // 3.1. Dữ liệu chung cho Chứng từ Bán
+    $id_khachhang = $customer_ids[array_rand($customer_ids)];
+    $ngay_dat_hang = date('Y-m-d', strtotime('-' . rand(1, 365) . ' days'));
+    
+    // MASOCT: MB + yy + STT (3 chữ số)
+    $masoct = "MB" . date('y', strtotime($ngay_dat_hang)) . str_pad($i, 3, '0', STR_PAD_LEFT);
+    
+    // Trạng thái ngẫu nhiên
+    $trang_thai = $trang_thai_options[array_rand($trang_thai_options)];
+
+    // Tạo 2 đến 5 dòng Chi tiết Bán ngẫu nhiên
+    $num_details = rand(2, 5);
+    $current_tong_tien_hang = 0;
+    $details = [];
+
+    $selected_product_ids = array_rand(array_flip($product_ids), $num_details);
+    if (!is_array($selected_product_ids)) { $selected_product_ids = [$selected_product_ids]; }
+
+    // 3.2. Tạo Chi tiết Bán và tính TONGTIENHANG
+    foreach ($selected_product_ids as $id_hh) {
+        $so_luong = rand(1, 10); 
+        $gia_ban = $product_prices[$id_hh]; 
+        $thanh_tien = $gia_ban * $so_luong; 
+        
+        $details[] = [
+            'id_hanghoa' => $id_hh,
+            'giaban' => $gia_ban,
+            'soluong' => $so_luong,
+        ];
+        $current_tong_tien_hang += $thanh_tien;
+    }
+
+    // 3.3. Chèn vào CHUNG_TU_BAN
+    // *** ĐÃ SỬA LỖI MASOCT TRONG MẢNG THAM SỐ (Nếu có) ***
+    $stmt_ban->execute([
+        ":masoct" => $masoct, 
+        ":ngaydathang" => $ngay_dat_hang,
+        ":idkh" => $id_khachhang,
+        ":tth" => $current_tong_tien_hang,
+        ":thue" => THUE_VAT_PERCENT, // Cố định 10.00
+        ":trangthai" => $trang_thai,
+        ":ghichu" => "Chứng từ bán mẫu số $i"
     ]);
 
-    // Tắt khóa ngoại
-    $conn->exec("SET FOREIGN_KEY_CHECKS = 0");
-    $conn->exec("TRUNCATE TABLE CHUNG_TU_BAN_CT");
-    $conn->exec("TRUNCATE TABLE CHUNG_TU_BAN");
-    $conn->exec("SET FOREIGN_KEY_CHECKS = 1");
+    $id_ctban_moi = $conn->lastInsertId();
+    $total_ban_inserted++;
 
-    // Tạo bảng nếu chưa có
-    if ($conn->query("SHOW TABLES LIKE 'CHUNG_TU_BAN'")->rowCount() == 0) {
-        $conn->exec("CREATE TABLE CHUNG_TU_BAN (
-            ID_CTBAN INT AUTO_INCREMENT PRIMARY KEY,
-            MASCOT VARCHAR(50) UNIQUE,
-            NGAYDATHANG DATE NOT NULL,
-            ID_KHACHHANG INT,
-            TONGTIENHANG DECIMAL(18,2),
-            THUE DECIMAL(5,2) DEFAULT 10.00,
-            TIENTHUE DECIMAL(18,2),
-            TONGCONG DECIMAL(18,2),
-            TRANGTHAI VARCHAR(50),
-            GHICHU TEXT
-        )");
-    }
-
-    if ($conn->query("SHOW TABLES LIKE 'CHUNG_TU_BAN_CT'")->rowCount() == 0) {
-        $conn->exec("CREATE TABLE CHUNG_TU_BAN_CT (
-            ID_CT INT AUTO_INCREMENT PRIMARY KEY,
-            ID_CTBAN INT,
-            ID_HANGHOA INT,
-            GIABAN DECIMAL(18,2),
-            SOLUONG INT,
-            THANHTIEN DECIMAL(18,2)
-        )");
-    }
-
-    // Lấy dữ liệu
-    $kh = $conn->query("SELECT ID_KHACH_HANG FROM KHACH_HANG")->fetchAll();
-    $hh = $conn->query("SELECT ID_HANGHOA FROM HANG_HOA")->fetchAll(PDO::FETCH_COLUMN);
-
-    if (empty($kh)) die("LỖI: Không có khách hàng!");
-    if (empty($hh)) die("LỖI: Không có hàng hóa!");
-
-    $stmt_hd = $conn->prepare("INSERT INTO CHUNG_TU_BAN 
-        (MASCOT, NGAYDATHANG, ID_KHACHHANG, TONGTIENHANG, THUE, TIENTHUE, TONGCONG, TRANGTHAI, GHICHU)
-        VALUES (?,?,?,?,?,?,?,?,?)");
-
-    $stmt_ct = $conn->prepare("INSERT INTO CHUNG_TU_BAN_CT 
-        (ID_CTBAN, ID_HANGHOA, GIABAN, SOLUONG, THANHTIEN) VALUES (?,?,?,?,?)");
-
-    $dem_hd = 0;
-    $dem_ct = 0;
-
-    for ($i = 1; $i <= 120; $i++) {
-        $mascot = "HD" . str_pad($i, 4, "0", STR_PAD_LEFT);
-        $ngay   = date('Y-m-d', strtotime("-" . rand(0, 180) . " days"));
-        $idkh   = $kh[array_rand($kh)]->ID_KHACH_HANG;
-        $tong   = 0;
-        $items  = [];
-
-        // Chọn 1-5 sản phẩm
-        $n = rand(1, 5);
-        $chon = [];
-        while (count($chon) < $n) {
-            $idhh = $hh[array_rand($hh)];
-            if (!in_array($idhh, $chon)) $chon[] = $idhh;
-        }
-
-        foreach ($chon as $idhh) {
-            $gia = $conn->query("SELECT GIATRI FROM DON_GIA_BAN WHERE ID_HANGHOA = $idhh ORDER BY NGAYBATDAU DESC LIMIT 1")->fetchColumn();
-            $giaban = $gia ? round($gia * 1.3) : rand(300000, 2000000);
-            $sl = rand(1, 10);
-            $tt = $giaban * $sl;
-            $tong += $tt;
-            $items[] = [$idhh, $giaban, $sl, $tt];
-        }
-
-        $tienthue = round($tong * 0.1);
-        $tongcong = $tong + $tienthue;
-
-        $stmt_hd->execute([
-            $mascot, $ngay, $idkh, $tong, 10.00, $tienthue, $tongcong,
-            ['Chưa thanh toán','Đã thanh toán','Hủy'][array_rand([0,1,2])],
-            ['VIP','Giao nhanh','Giảm 10%','COD',''][array_rand([0,1,2,3,4])]
+    // 3.4. Chèn vào CHUNG_TU_BAN_CT
+    foreach ($details as $detail) {
+        $stmt_ctban->execute([
+            ":idhh" => $detail['id_hanghoa'],
+            ":giaban" => $detail['giaban'],
+            ":sl" => $detail['soluong'],
+            ":idctban" => $id_ctban_moi
         ]);
-        $id = $conn->lastInsertId();
-        $dem_hd++;
-
-        foreach ($items as $it) {
-            $stmt_ct->execute([$id, $it[0], $it[1], $it[2], $it[3]]);
-            $dem_ct++;
-        }
+        $total_ct_ban_inserted++;
     }
-
-    // HIỂN THỊ KẾT QUẢ RÕ RÀNG
-    echo "<pre style='background:#000;color:#0f0;font-family:Courier New;padding:20px;'>";
-    echo "HOÀN TẤT! ĐÃ TẠO THÀNH CÔNG!\n";
-    echo "─────────────────────────────\n";
-    echo "Hóa đơn (CHUNG_TU_BAN): $dem_hd dòng\n";
-    echo "Chi tiết (CHUNG_TU_BAN_CT): $dem_ct dòng\n";
-    echo "Mở phpMyAdmin → Xem ngay!\n";
-    echo "</pre>";
-
-} catch (Exception $e) {
-    echo "<pre style='background:#000;color:red;padding:20px;'>";
-    echo "LỖI: " . $e->getMessage() . "\n";
-    echo "Dòng: " . $e->getLine() . "\n";
-    echo "</pre>";
 }
+
+$conn->commit();
+
+echo "<h3>🎉 Hoàn tất chèn dữ liệu BÁN!</h3>";
+echo "<ul>";
+echo "<li>Đã chèn **$total_ban_inserted** Chứng từ Bán.</li>";
+echo "<li>Đã chèn **$total_ct_ban_inserted** Chi tiết Bán.</li>";
+echo "</ul>";
 ?>
