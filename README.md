@@ -71,17 +71,7 @@ quanly_banhang/
 │   │   ├── edit.php
 │   │   └── detail.php
 │   │
-│   ├── chungtumua_ct/
-│   │   ├── list.php
-│   │   ├── edit.php
-│   │   └── detail.php
-│   │
 │   ├── chungtuban/
-│   │   ├── list.php
-│   │   ├── edit.php
-│   │   └── detail.php
-│   │
-│   ├── chungtuban_ct/
 │   │   ├── list.php
 │   │   ├── edit.php
 │   │   └── detail.php
