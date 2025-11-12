@@ -10,6 +10,7 @@ quanly_banhang/
 │   └── web.php
 │
 ├── controllers/
+│   ├── DashboardController.php       
 │   ├── KhachHangController.php
 │   ├── PhanLoaiController.php
 │   ├── HangHoaController.php
@@ -32,6 +33,9 @@ quanly_banhang/
 │   └── ChungTuBanCT.php
 │
 ├── views/
+│   ├── dashboard/                  
+│   │   └── index.php
+│   │
 │   ├── khachhang/
 │   │   ├── list.php
 │   │   ├── create.php
