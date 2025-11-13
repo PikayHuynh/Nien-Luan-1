@@ -37,12 +37,35 @@ quanly_banhang/
 │   │   ├── dashboard/
 │   │   │   └── index.php
 │   │   ├── khachhang/
-│   │   ├── phanloai/
+│   │   │    ├── list.php
+│   │   │    ├── create.php
+│   │   │    ├── edit.php
+│   │   │    └── detail.php
 │   │   ├── hanghoa/
+│   │   │    ├── list.php
+│   │   │    ├── create.php
+│   │   │    ├── edit.php
+│   │   │    └── detail.php
 │   │   ├── thuoctinh/
+│   │   │    ├── list.php
+│   │   │    ├── create.php
+│   │   │    ├── edit.php
+│   │   │    └── detail.php
 │   │   ├── dongiaban/
+│   │   │    ├── list.php
+│   │   │    ├── create.php
+│   │   │    ├── edit.php
+│   │   │    └── detail.php
 │   │   ├── chungtumua/
+│   │   │    ├── list.php
+│   │   │    ├── create.php
+│   │   │    ├── edit.php
+│   │   │    └── detail.php
 │   │   ├── chungtuban/
+│   │   │    ├── list.php
+│   │   │    ├── create.php
+│   │   │    ├── edit.php
+│   │   │    └── detail.php
 │   │   └── layouts/
 │   │       ├── header.php
 │   │       ├── footer.php
