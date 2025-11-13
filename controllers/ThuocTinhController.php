@@ -13,7 +13,7 @@ class ThuocTinhController {
 
     public function index() {
         $data = $this->model->getAll();
-        include ROOT . '/views/thuoctinh/list.php';
+        include ROOT . '/views/admin/thuoctinh/list.php';
     }
 
     public function create() {
@@ -34,7 +34,7 @@ class ThuocTinhController {
             exit;
         }
 
-        include ROOT . '/views/thuoctinh/create.php';
+        include ROOT . '/views/admin/thuoctinh/create.php';
     }
 
     public function edit() {
@@ -56,13 +56,13 @@ class ThuocTinhController {
             exit;
         }
 
-        include ROOT . '/views/thuoctinh/edit.php';
+        include ROOT . '/views/admin/thuoctinh/edit.php';
     }
 
     public function detail() {
         $id = $_GET['id'] ?? 0;
         $thuoctinh = $this->model->getById($id);
-        include ROOT . '/views/thuoctinh/detail.php';
+        include ROOT . '/views/admin/thuoctinh/detail.php';
     }
 
     public function delete() {

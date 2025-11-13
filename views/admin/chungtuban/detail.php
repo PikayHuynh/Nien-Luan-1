@@ -1,5 +1,5 @@
-<?php include ROOT . '/views/layouts/header.php'; ?>
-<?php include ROOT . '/views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <div class="container mt-4">
     <h3>Chi Tiết Chứng Từ Bán</h3>
@@ -49,4 +49,4 @@
     <a href="index.php?controller=chungtuban&action=index" class="btn btn-secondary mt-3">Quay lại</a>
 </div>
 
-<?php include ROOT . '/views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>

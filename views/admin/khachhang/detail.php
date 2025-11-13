@@ -1,5 +1,5 @@
-<?php include ROOT . '../views/layouts/header.php'; ?>
-<?php include ROOT . '../views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <h1>Chi tiết Khách Hàng</h1>
 <table class="table table-bordered">
@@ -18,4 +18,4 @@
 </table>
 <a href="index.php?controller=khachhang&action=index" class="btn btn-primary">Quay lại</a>
 
-<?php include ROOT . '../views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>

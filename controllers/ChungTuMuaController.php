@@ -19,14 +19,14 @@ class ChungTuMuaController {
 
     public function index() {
         $data = $this->model->getAll();
-        include ROOT . '/views/chungtumua/list.php';
+        include ROOT . '/views/admin/chungtumua/list.php';
     }
 
     public function detail() {
         $id = $_GET['id'] ?? 0;
         $ctm = $this->model->getById($id);
         $ctmct = $this->ctctModel->getByCTMua($id);
-        include ROOT . '/views/chungtumua/detail.php';
+        include ROOT . '/views/admin/chungtumua/detail.php';
     }
 
     public function delete() {

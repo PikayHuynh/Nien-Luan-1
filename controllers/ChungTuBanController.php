@@ -17,7 +17,7 @@ class ChungTuBanController {
 
     public function index() {
         $data = $this->model->getAll();
-        include ROOT . '/views/chungtuban/list.php';
+        include ROOT . '/views/admin/chungtuban/list.php';
     }
 
     public function detail() {
@@ -33,7 +33,7 @@ class ChungTuBanController {
             $hangHoaData[$ctItem['ID_HANGHOA']] = $this->hangHoaModel->getById($ctItem['ID_HANGHOA']);
         }
 
-        include ROOT . '/views/chungtuban/detail.php';
+        include ROOT . '/views/admin/chungtuban/detail.php';
     }
 
     public function create() {
@@ -58,7 +58,7 @@ class ChungTuBanController {
 
         $khachHangList = $this->khModel->getAll();
         $hangHoaList = $this->hangHoaModel->getAll();
-        include ROOT . '/views/chungtuban/create.php';
+        include ROOT . '/views/admin/chungtuban/create.php';
     }
 
     public function edit() {
@@ -89,7 +89,7 @@ class ChungTuBanController {
 
         $khachHangList = $this->khModel->getAll();
         $hangHoaList = $this->hangHoaModel->getAll();
-        include ROOT . '/views/chungtuban/edit.php';
+        include ROOT . '/views/admin/chungtuban/edit.php';
     }
 
     public function delete() {

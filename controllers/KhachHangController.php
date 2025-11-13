@@ -18,7 +18,7 @@ class KhachHangController {
         $data = $this->model->getAllPaging($offset, $limit);
         $totalRecords = $this->model->countAll();
         $totalPages = ceil($totalRecords / $limit);
-        include ROOT . '/views/khachhang/list.php';
+        include ROOT . '/views/admin/khachhang/list.php';
     }
 
     public function create() {
@@ -35,7 +35,7 @@ class KhachHangController {
             header('Location: index.php?controller=khachhang&action=index');
             exit;
         }
-        include ROOT . '/views/khachhang/create.php';
+        include ROOT . '/views/admin/khachhang/create.php';
     }
 
     public function edit() {
@@ -55,13 +55,13 @@ class KhachHangController {
             exit;
         }
 
-        include ROOT . '/views/khachhang/edit.php';
+        include ROOT . '/views/admin/khachhang/edit.php';
     }
 
     public function detail() {
         $id = $_GET['id'] ?? 0;
         $khachHang = $this->model->getById($id);
-        include ROOT . '/views/khachhang/detail.php';
+        include ROOT . '/views/admin/khachhang/detail.php';
     }
 
     public function delete() {

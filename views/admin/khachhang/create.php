@@ -1,5 +1,5 @@
-<?php include ROOT . '../views/layouts/header.php'; ?>
-<?php include ROOT . '../views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <h2>Thêm mới Khách Hàng</h2>
 <form method="post" enctype="multipart/form-data">
@@ -26,4 +26,4 @@
     <button class="btn btn-success">Lưu</button>
 </form>
 
-<?php include ROOT . '../views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>

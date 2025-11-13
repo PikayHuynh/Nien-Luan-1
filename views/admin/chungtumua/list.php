@@ -1,5 +1,5 @@
-<?php include ROOT . '/views/layouts/header.php'; ?>
-<?php include ROOT . '/views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <h3>Danh sách Chứng Từ Mua</h3>
 <table class="table table-bordered">
@@ -30,4 +30,4 @@
     </tbody>
 </table>
 
-<?php include ROOT . '/views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>

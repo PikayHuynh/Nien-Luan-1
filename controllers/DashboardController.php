@@ -41,6 +41,6 @@ class DashboardController {
             'chungtuban_ct' => count($ctbctModel->getAll())
         ];
 
-        include ROOT . '/views/dashboard/index.php';
+        include ROOT . '/views/admin/dashboard/index.php';
     }
 }

@@ -1,5 +1,5 @@
-<?php include ROOT . '/views/layouts/header.php'; ?>
-<?php include ROOT . '/views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <h2 class="mb-4">Danh Sách Khách Hàng</h2>
 
@@ -82,4 +82,4 @@
 
 
 
-<?php include ROOT . '/views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>

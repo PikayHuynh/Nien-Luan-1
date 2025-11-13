@@ -1,24 +1,4 @@
 <?php
-// $controller = $_GET['controller'] ?? 'dashboard';
-// $action = $_GET['action'] ?? 'index';
-
-// $controllerFile = "controllers/" . ucfirst($controller) . "Controller.php";
-
-// if (file_exists($controllerFile)) {
-//     require_once $controllerFile;
-//     $controllerClass = ucfirst($controller) . "Controller";
-//     $obj = new $controllerClass($conn);
-
-//     if (method_exists($obj, $action)) {
-//         $obj->$action();
-//     } else {
-//         echo "Không tìm thấy action: $action";
-//     }
-// } else {
-//     echo "Không tìm thấy controller: $controller";
-// } 
-
-
 require_once 'config/database.php';
 
 // Lấy thông tin controller và action từ URL, mặc định dashboard

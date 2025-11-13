@@ -10,7 +10,7 @@ class PhanLoaiController {
 
     public function index() {
         $data = $this->model->getAll();
-        include ROOT . '/views/phanloai/list.php';
+        include ROOT . '/views/admin/phanloai/list.php';
     }
 
     public function create() {
@@ -27,7 +27,7 @@ class PhanLoaiController {
             header('Location: index.php?controller=phanloai&action=index');
             exit;
         }
-        include ROOT . '/views/phanloai/create.php';
+        include ROOT . '/views/admin/phanloai/create.php';
     }
 
     public function edit() {
@@ -48,13 +48,13 @@ class PhanLoaiController {
             exit;
         }
 
-        include ROOT . '/views/phanloai/edit.php';
+        include ROOT . '/views/admin/phanloai/edit.php';
     }
 
     public function detail() {
         $id = $_GET['id'] ?? 0;
         $phanloai = $this->model->getById($id);
-        include ROOT . '/views/phanloai/detail.php';
+        include ROOT . '/views/admin/phanloai/detail.php';
     }
 
     public function delete() {

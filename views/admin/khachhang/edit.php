@@ -1,5 +1,5 @@
-<?php include ROOT . '../views/layouts/header.php'; ?>
-<?php include ROOT . '../views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <h1><?= isset($khachHang) ? "Sửa" : "Thêm mới" ?> Khách Hàng</h1>
 
@@ -31,4 +31,4 @@
   <a href="index.php?controller=khachhang&action=index" class="btn btn-secondary">Hủy</a>
 </form>
 
-<?php include ROOT . '../views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>

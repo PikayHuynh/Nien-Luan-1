@@ -13,7 +13,7 @@ class HangHoaController {
 
     public function index() {
         $data = $this->model->getAll();
-        include ROOT . '/views/hanghoa/list.php';
+        include ROOT . '/views/admin/hanghoa/list.php';
     }
 
     public function create() {
@@ -33,7 +33,7 @@ class HangHoaController {
             exit;
         }
 
-        include ROOT . '/views/hanghoa/create.php';
+        include ROOT . '/views/admin/hanghoa/create.php';
     }
 
     public function edit() {
@@ -55,13 +55,13 @@ class HangHoaController {
             exit;
         }
 
-        include ROOT . '/views/hanghoa/edit.php';
+        include ROOT . '/views/admin/hanghoa/edit.php';
     }
 
     public function detail() {
         $id = $_GET['id'] ?? 0;
         $hanghoa = $this->model->getById($id);
-        include ROOT . '/views/hanghoa/detail.php';
+        include ROOT . '/views/admin/hanghoa/detail.php';
     }
 
     public function delete() {

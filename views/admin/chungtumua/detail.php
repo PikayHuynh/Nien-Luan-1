@@ -1,5 +1,5 @@
-<?php include ROOT . '/views/layouts/header.php'; ?>
-<?php include ROOT . '/views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <h3>Chi tiết Chứng Từ Mua</h3>
 <p><strong>Mã số:</strong> <?= $ctm['MASOCT'] ?></p>
@@ -33,4 +33,4 @@
 
 <a href="index.php?controller=chungtumua&action=index" class="btn btn-secondary">Quay lại</a>
 
-<?php include ROOT . '/views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>
