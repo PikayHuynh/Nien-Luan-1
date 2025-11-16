@@ -1,5 +1,5 @@
-<?php include ROOT . '/views/layouts/header.php'; ?>
-<?php include ROOT . '/views/layouts/sidebar.php'; ?>
+<?php include ROOT . '/views/admin/layouts/header.php'; ?>
+<?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <div class="container mt-4">
     <h2>Danh sách Chứng Từ Bán</h2>
@@ -43,4 +43,4 @@
     </table>
 </div>
 
-<?php include ROOT . '/views/layouts/footer.php'; ?>
+<?php include ROOT . '/views/admin/layouts/footer.php'; ?>
