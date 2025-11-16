@@ -22,6 +22,36 @@
     <?php else: ?>
     <p>Không có sản phẩm nào.</p>
     <?php endif; ?>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <!-- Prev -->
+            <?php if ($currentPage > 1): ?>
+                <li class="page-item">
+                    <a class="page-link" href="?controller=product&action=list&page=<?= $currentPage - 1 ?>">« Prev</a>
+                </li>
+            <?php endif; ?>
+
+            <!-- Pages -->
+            <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
+                    <a class="page-link" href="?controller=product&action=list&page=<?= $i ?>">
+                        <?= $i ?>
+                    </a>
+                </li>
+            <?php endfor; ?>
+
+            <!-- Next -->
+            <?php if ($currentPage < $totalPages): ?>
+                <li class="page-item">
+                    <a class="page-link" href="?controller=product&action=list&page=<?= $currentPage + 1 ?>">Next »</a>
+                </li>
+            <?php endif; ?>
+
+        </ul>
+    </nav>
+
+
+
 </div>
 
 <?php include ROOT . '/views/client/layouts/footer.php'; ?>

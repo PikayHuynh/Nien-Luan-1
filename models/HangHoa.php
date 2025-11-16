@@ -13,19 +13,47 @@ class HangHoa {
     }
 
     public function getAllClient() {
+        // $stmt = $this->conn->prepare("
+        //     SELECT 
+        //         h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH,
+        //         h.ID_PHANLOAI, p.TENPHANLOAI,
+        //         d.GIATRI AS DONGIA
+        //     FROM $this->table h
+        //     LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
+        //     LEFT JOIN DON_GIA_BAN d 
+        //         ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
+        //     ORDER BY h.ID_HANGHOA DESC
+        // ");
+        // $stmt->execute();
+        // return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        
+    }
+
+    public function getPaging($limit, $offset) {
         $stmt = $this->conn->prepare("
             SELECT 
                 h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH,
-                h.ID_PHANLOAI, p.TENPHANLOAI,
+                p.TENPHANLOAI,
                 d.GIATRI AS DONGIA
             FROM $this->table h
             LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
             LEFT JOIN DON_GIA_BAN d 
                 ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
             ORDER BY h.ID_HANGHOA DESC
+            LIMIT :limit OFFSET :offset
         ");
+
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
         $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll() {
+        $stmt = $this->conn->query("SELECT COUNT(*) FROM $this->table");
+        return $stmt->fetchColumn();
     }
 
     // Lấy chi tiết 1 sản phẩm

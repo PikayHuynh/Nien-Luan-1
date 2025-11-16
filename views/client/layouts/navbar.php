@@ -12,9 +12,14 @@
                     <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=profile">
                         Xin chào, <?= $_SESSION['user_name'] ?>
                     </a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?controller=dashboard&action=index">Dashboard Admin</a>
-                    </li>
+                    <?php if($_SESSION['user_name'] == 'admin') {
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.php?controller=dashboard&action=index">Dashboard Admin</a>
+                        </li>
+                        <?php
+                    }
+                    ?>
                     <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=logout">Đăng xuất</a></li>
                 <?php else: ?>
                     <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=login">Đăng nhập</a></li>

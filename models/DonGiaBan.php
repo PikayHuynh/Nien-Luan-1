@@ -14,6 +14,24 @@ class DonGiaBan {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getPaging($limit, $offset) {
+        $sql = "SELECT d.*, h.TENHANGHOA
+            FROM $this->table d
+            LEFT JOIN HANG_HOA h ON d.ID_HANGHOA = h.ID_HANGHOA
+            ORDER BY d.NGAYBATDAU DESC
+            LIMIT :limit OFFSET :offset";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll() {
+        $stmt = $this->conn->query("SELECT COUNT(*) FROM $this->table");
+        return $stmt->fetchColumn();
+    }
+
     public function getById($id) {
         $stmt = $this->conn->prepare("SELECT * FROM $this->table WHERE ID_DONGIA = :id");
         $stmt->execute([':id' => $id]);

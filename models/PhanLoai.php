@@ -12,6 +12,36 @@ class PhanLoai {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getPaging($limit, $offset) {
+        $stmt = $this->conn->prepare("
+            SELECT * FROM $this->table
+            ORDER BY ID_PHANLOAI DESC
+            LIMIT :limit OFFSET :offset
+        ");
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll() {
+        $stmt = $this->conn->query("SELECT COUNT(*) FROM $this->table");
+        return $stmt->fetchColumn();
+    }
+
+    public function getAllWithCount() {
+        $stmt = $this->conn->query("
+            SELECT p.*, COUNT(h.ID_HANGHOA) AS total_products
+            FROM PHAN_LOAI p
+            LEFT JOIN HANG_HOA h ON p.ID_PHANLOAI = h.ID_PHANLOAI
+            GROUP BY p.ID_PHANLOAI
+            ORDER BY p.ID_PHANLOAI DESC
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
     public function getById($id) {
         $stmt = $this->conn->prepare("SELECT * FROM $this->table WHERE ID_PHANLOAI = :id");
         $stmt->execute([':id' => $id]);

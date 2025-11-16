@@ -27,7 +27,7 @@
                         <img src="uploads/<?= $item['HINHANH'] ?>" width="60">
                     <?php endif; ?>
                 </td>
-                <td><?= $item['ID_PHANLOAI'] ?></td>
+                <td><?= $item['TENPHANLOAI'] ?></td>
                 <td>
                     <a href="index.php?controller=hanghoa&action=edit&id=<?= $item['ID_HANGHOA'] ?>" class="btn btn-sm btn-warning">Edit</a>
                     <a href="index.php?controller=hanghoa&action=delete&id=<?= $item['ID_HANGHOA'] ?>" 
@@ -39,6 +39,33 @@
         <?php endforeach; ?>
         </tbody>
     </table>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <!-- Prev -->
+            <?php if ($currentPage > 1): ?>
+                <li class="page-item">
+                    <a class="page-link" href="?controller=hanghoa&action=index&page=<?= $currentPage - 1 ?>">« Prev</a>
+                </li>
+            <?php endif; ?>
+
+            <!-- Pages -->
+            <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
+                    <a class="page-link" href="?controller=hanghoa&action=index&page=<?= $i ?>">
+                        <?= $i ?>
+                    </a>
+                </li>
+            <?php endfor; ?>
+
+            <!-- Next -->
+            <?php if ($currentPage < $totalPages): ?>
+                <li class="page-item">
+                    <a class="page-link" href="?controller=hanghoa&action=index&page=<?= $currentPage + 1 ?>">Next »</a>
+                </li>
+            <?php endif; ?>
+
+        </ul>
+    </nav>
 </div>
 
 <?php include ROOT . '/views/admin/layouts/footer.php'; ?>

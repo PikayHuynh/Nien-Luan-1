@@ -19,6 +19,24 @@ class ChungTuBan {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    public function getPaging($limit, $offset) {
+        $sql = "SELECT * FROM $this->table 
+                ORDER BY NGAYDATHANG DESC
+                LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll() {
+        $stmt = $this->conn->query("SELECT COUNT(*) FROM $this->table");
+        return $stmt->fetchColumn();
+    }
+
     public function getById($id) {
         $stmt = $this->conn->prepare("SELECT * FROM $this->table WHERE ID_CTBAN=?");
         $stmt->execute([$id]);

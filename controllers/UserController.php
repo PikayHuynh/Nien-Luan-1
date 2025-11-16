@@ -20,24 +20,24 @@ class UserController {
 
             $user = $this->khModel->getByName($tenKH);
             if ($user) {
-            // Kiểm tra password
-            if ($user['PASSWORD'] === $matkhau) { // so sánh trực tiếp vì bạn không hash
-                $_SESSION['user_id'] = $user['ID_KHACH_HANG'];
-                $_SESSION['user_name'] = $user['TEN_KH'];
+                // Kiểm tra password
+                if ($user['PASSWORD'] === $matkhau) { // so sánh trực tiếp vì bạn không hash
+                    $_SESSION['user_id'] = $user['ID_KHACH_HANG'];
+                    $_SESSION['user_name'] = $user['TEN_KH'];
 
-                // Phân quyền
-                if ($this->khModel->isAdmin($user['ID_KHACH_HANG'])) {
-                    header("Location: index.php?controller=dashboard&action=index"); // admin
+                    // Phân quyền
+                    if ($this->khModel->isAdmin($user['ID_KHACH_HANG'])) {
+                        header("Location: index.php?controller=dashboard&action=index"); // admin
+                    } else {
+                        header("Location: index.php?controller=home&action=index"); // client
+                    }
+                    exit;
                 } else {
-                    header("Location: index.php?controller=home&action=index"); // client
+                    $error = "Sai mật khẩu!";
                 }
-                exit;
             } else {
-                $error = "Sai mật khẩu!";
+                $error = "User không tồn tại!";
             }
-        } else {
-            $error = "User không tồn tại!";
-        }
         }
 
         include ROOT . '/views/client/user/login.php';

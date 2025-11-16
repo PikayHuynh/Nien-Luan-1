@@ -40,18 +40,18 @@ class KhachHang {
     }
 
     public function create($data) {
-    $sql = "INSERT INTO $this->table (TEN_KH, PASSWORD, DIACHI, SODIENTHOAI, HINHANH, SOB)
-            VALUES (:TEN_KH, :PASSWORD, :DIACHI, :SODIENTHOAI, :HINHANH, :SOB)";
-    $stmt = $this->conn->prepare($sql);
-    return $stmt->execute([
-        'TEN_KH' => $data['TEN_KH'],
-        'PASSWORD' => $data['PASSWORD'],
-        'DIACHI' => $data['DIACHI'],
-        'SODIENTHOAI' => $data['SODIENTHOAI'],
-        'HINHANH' => $data['HINHANH'] ?? null,
-        'SOB' => $data['SOB']
-    ]);
-}
+        $sql = "INSERT INTO $this->table (TEN_KH, PASSWORD, DIACHI, SODIENTHOAI, HINHANH, SOB)
+                VALUES (:TEN_KH, :PASSWORD, :DIACHI, :SODIENTHOAI, :HINHANH, :SOB)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            'TEN_KH' => $data['TEN_KH'],
+            'PASSWORD' => $data['PASSWORD'],
+            'DIACHI' => $data['DIACHI'],
+            'SODIENTHOAI' => $data['SODIENTHOAI'],
+            'HINHANH' => $data['HINHANH'] ?? null,
+            'SOB' => $data['SOB']
+        ]);
+    }
 
     public function update($id, $data) {
         $sql = "UPDATE $this->table SET TEN_KH=:TEN_KH, DIACHI=:DIACHI, 
@@ -69,17 +69,17 @@ class KhachHang {
     }
 
     public function updateProfile($id, $data) {
-    $sql = "UPDATE $this->table 
-            SET TEN_KH = :TEN_KH, DIACHI = :DIACHI, SODIENTHOAI = :SODIENTHOAI
-            WHERE ID_KHACH_HANG = :id";
-    $stmt = $this->conn->prepare($sql);
-    return $stmt->execute([
-        'TEN_KH' => $data['TEN_KH'],
-        'DIACHI' => $data['DIACHI'],
-        'SODIENTHOAI' => $data['SODIENTHOAI'],
-        'id' => $id
-    ]);
-}
+        $sql = "UPDATE $this->table 
+                SET TEN_KH = :TEN_KH, DIACHI = :DIACHI, SODIENTHOAI = :SODIENTHOAI
+                WHERE ID_KHACH_HANG = :id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            'TEN_KH' => $data['TEN_KH'],
+            'DIACHI' => $data['DIACHI'],
+            'SODIENTHOAI' => $data['SODIENTHOAI'],
+            'id' => $id
+        ]);
+    }
 
     public function delete($id) {
         try {

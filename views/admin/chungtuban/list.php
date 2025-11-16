@@ -41,6 +41,33 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <!-- Prev -->
+            <?php if ($currentPage > 1): ?>
+                <li class="page-item">
+                    <a class="page-link" href="?controller=chungtuban&action=index&page=<?= $currentPage - 1 ?>">« Prev</a>
+                </li>
+            <?php endif; ?>
+
+            <!-- Pages -->
+            <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
+                    <a class="page-link" href="?controller=chungtuban&action=index&page=<?= $i ?>">
+                        <?= $i ?>
+                    </a>
+                </li>
+            <?php endfor; ?>
+
+            <!-- Next -->
+            <?php if ($currentPage < $totalPages): ?>
+                <li class="page-item">
+                    <a class="page-link" href="?controller=chungtuban&action=index&page=<?= $currentPage + 1 ?>">Next »</a>
+                </li>
+            <?php endif; ?>
+
+        </ul>
+    </nav>
 </div>
 
 <?php include ROOT . '/views/admin/layouts/footer.php'; ?>
