@@ -7,6 +7,9 @@
                 <a class="nav-link" href="index.php">Trang chủ</a>
             </li>
             <li class="nav-item mb-2">
+                <a class="nav-link" href="index.php?controller=dashboard&action=index">Dashboard</a>
+            </li>
+            <li class="nav-item mb-2">
                 <a class="nav-link" href="index.php?controller=khachhang&action=index">Khách Hàng</a>
             </li>
             <li class="nav-item mb-2">

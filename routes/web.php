@@ -2,7 +2,7 @@
 require_once 'config/database.php';
 
 // Lấy thông tin controller và action từ URL, mặc định dashboard
-$controllerName = $_GET['controller'] ?? 'dashboard';
+$controllerName = $_GET['controller'] ?? 'home';
 $action = $_GET['action'] ?? 'index';
 
 // Tạo kết nối DB
@@ -117,6 +117,48 @@ switch($controllerName) {
         }
         break;
 
+    case 'home':
+    require_once 'controllers/HomeController.php';
+    $controller = new HomeController($db);
+    switch($action) {
+        case 'index': $controller->index(); break;
+        default: echo "404 Page Not Found"; break;
+    }
+    break;
+
+    case 'user':
+        require_once 'controllers/UserController.php';
+        $controller = new UserController($db);
+        switch($action) {
+            case 'login': $controller->login(); break;
+            case 'register': $controller->register(); break;
+            case 'profile': $controller->profile(); break;
+            case 'orders': $controller->orders(); break;
+            case 'logout': $controller->logout(); break;
+            case 'editProfile': $controller->editProfile(); break;
+            default: echo "404 Page Not Found"; break;
+        }
+        break;
+
+    case 'product':
+        require_once 'controllers/ProductController.php';
+        $controller = new ProductController($db);
+        switch($action) {
+            case 'list': $controller->list(); break;
+            case 'detail': $controller->detail(); break;
+            default: echo "404 Page Not Found"; break;
+        }
+        break;
+
+    case 'cart':
+        require_once 'controllers/CartController.php';
+        $controller = new CartController($db);
+        switch($action) {
+            case 'index': $controller->index(); break;
+            case 'checkout': $controller->checkout(); break;
+            default: echo "404 Page Not Found"; break;
+        }
+        break;
 
     default:
         echo "404 Page Not Found";

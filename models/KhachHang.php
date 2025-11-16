@@ -40,17 +40,18 @@ class KhachHang {
     }
 
     public function create($data) {
-        $sql = "INSERT INTO $this->table (TEN_KH, DIACHI, SODIENTHOAI, HINHANH, SOB)
-                VALUES (:TEN_KH, :DIACHI, :SODIENTHOAI, :HINHANH, :SOB)";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            'TEN_KH' => $data['TEN_KH'],
-            'DIACHI' => $data['DIACHI'],
-            'SODIENTHOAI' => $data['SODIENTHOAI'],
-            'HINHANH' => $data['HINHANH'] ?? null,
-            'SOB' => $data['SOB']
-        ]);
-    }
+    $sql = "INSERT INTO $this->table (TEN_KH, PASSWORD, DIACHI, SODIENTHOAI, HINHANH, SOB)
+            VALUES (:TEN_KH, :PASSWORD, :DIACHI, :SODIENTHOAI, :HINHANH, :SOB)";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute([
+        'TEN_KH' => $data['TEN_KH'],
+        'PASSWORD' => $data['PASSWORD'],
+        'DIACHI' => $data['DIACHI'],
+        'SODIENTHOAI' => $data['SODIENTHOAI'],
+        'HINHANH' => $data['HINHANH'] ?? null,
+        'SOB' => $data['SOB']
+    ]);
+}
 
     public function update($id, $data) {
         $sql = "UPDATE $this->table SET TEN_KH=:TEN_KH, DIACHI=:DIACHI, 
@@ -66,6 +67,19 @@ class KhachHang {
             'id' => $id
         ]);
     }
+
+    public function updateProfile($id, $data) {
+    $sql = "UPDATE $this->table 
+            SET TEN_KH = :TEN_KH, DIACHI = :DIACHI, SODIENTHOAI = :SODIENTHOAI
+            WHERE ID_KHACH_HANG = :id";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute([
+        'TEN_KH' => $data['TEN_KH'],
+        'DIACHI' => $data['DIACHI'],
+        'SODIENTHOAI' => $data['SODIENTHOAI'],
+        'id' => $id
+    ]);
+}
 
     public function delete($id) {
         try {
@@ -100,4 +114,18 @@ class KhachHang {
             throw new Exception("Xóa khách hàng thất bại: " . $e->getMessage());
         }
     }
+
+    public function getByName($tenKH) {
+        $stmt = $this->conn->prepare("SELECT * FROM KHACH_HANG WHERE TEN_KH = :tenKH");
+        $stmt->execute(['tenKH' => $tenKH]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Kiểm tra admin
+    public function isAdmin($idKH) {
+        $stmt = $this->conn->prepare("SELECT * FROM KHACH_HANG WHERE ID_KHACH_HANG = :id AND TEN_KH = 'admin'");
+        $stmt->execute(['id' => $idKH]);
+        return $stmt->fetch() ? true : false;
+    }
+
 }
