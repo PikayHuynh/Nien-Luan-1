@@ -156,6 +156,7 @@ switch($controllerName) {
         switch($action) {
             case 'index': $controller->index(); break;
             case 'checkout': $controller->checkout(); break;
+            // case 'add': $controller->add(); break;
             default: echo "404 Page Not Found"; break;
         }
         break;
