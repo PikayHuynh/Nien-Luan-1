@@ -4,6 +4,9 @@
 <div class="container mt-5" style="max-width: 600px;">
     <h3 class="mb-4 text-center">Thông tin tài khoản</h3>
 
+    <div class="text-center mb-3">
+        <img src="upload/<?= htmlspecialchars($user['HINHANH']) ?>" alt="avatar" style="max-width:120px; border-radius:6px;">
+    </div>
     <table class="table table-bordered">
         <tr>
             <th>Username</th>

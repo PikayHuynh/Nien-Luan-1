@@ -110,13 +110,13 @@ class HangHoa {
     // Lấy chi tiết 1 sản phẩm
     public function getByIdClient($id) {
         $stmt = $this->conn->prepare("
-            SELECT 
+            SELECT
                 h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH,
                 h.ID_PHANLOAI, p.TENPHANLOAI,
                 d.GIATRI AS DONGIA
             FROM $this->table h
             LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
-            LEFT JOIN DON_GIA_BAN d 
+            LEFT JOIN DON_GIA_BAN d
                 ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
             WHERE h.ID_HANGHOA = ?
         ");
@@ -132,7 +132,7 @@ class HangHoa {
     }
 
     public function create($data) {
-        $stmt = $this->conn->prepare("INSERT INTO $this->table (TENHANGHOA, MOTA, DONVITINH, HINHANH, ID_PHANLOAI) 
+        $stmt = $this->conn->prepare("INSERT INTO $this->table (TENHANGHOA, MOTA, DONVITINH, HINHANH, ID_PHANLOAI)
                                       VALUES (:ten, :mota, :dvt, :hinhanh, :id_phanloai)");
         return $stmt->execute([
             ':ten' => $data['TENHANGHOA'],
@@ -144,7 +144,7 @@ class HangHoa {
     }
 
     public function update($id, $data) {
-        $stmt = $this->conn->prepare("UPDATE $this->table SET TENHANGHOA=:ten, MOTA=:mota, DONVITINH=:dvt, 
+        $stmt = $this->conn->prepare("UPDATE $this->table SET TENHANGHOA=:ten, MOTA=:mota, DONVITINH=:dvt,
                                       HINHANH=:hinhanh, ID_PHANLOAI=:id_phanloai WHERE ID_HANGHOA=:id");
         return $stmt->execute([
             ':ten' => $data['TENHANGHOA'],

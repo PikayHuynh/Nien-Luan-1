@@ -6,6 +6,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarClient">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.php?controller=home&action=index">Trang chủ</a></li>
                 <li class="nav-item"><a class="nav-link" href="index.php?controller=product&action=list">Sản phẩm</a></li>
                 <li class="nav-item"><a class="nav-link" href="index.php?controller=cart&action=index">Giỏ hàng</a></li>
                 <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=orders">Đơn hàng đã đặt</a></li>

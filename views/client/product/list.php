@@ -36,12 +36,12 @@ include ROOT . '/views/client/layouts/navbar.php';
                 <div class="col-lg-4 col-md-6 mb-4"> <div class="card h-100">
                         <img src="upload/<?= htmlspecialchars($product['HINHANH'] ?? 'default.png') ?>" class="card-img-top" alt="<?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>">
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"><?= $product['TENHANGHOA'] ?? 'Không tên' ?></h5>
+                            <a class="title-product" href="index.php?controller=product&action=detail&id=<?= $product['ID_HANGHOA'] ?>"><?= $product['TENHANGHOA'] ?? 'Không tên' ?></a>
                             <p class="card-text text-danger font-weight-bold">
                                 <?= isset($product['DONGIA']) ? number_format($product['DONGIA']) : 0 ?> VND
                             </p>
                             <p class="card-text text-muted small"><?= $product['TENPHANLOAI'] ?? '' ?></p>
-                            <a href="index.php?controller=product&action=detail&id=<?= $product['ID_HANGHOA'] ?>" class="btn btn-primary mt-auto">Xem chi tiết</a>
+                            <a href="index.php?controller=cart&action=add&id=<?= $product['ID_HANGHOA'] ?>" class="btn btn-primary mt-auto">Thêm giỏ hàng</a>
                         </div>
                     </div>
                 </div>
