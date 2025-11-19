@@ -134,6 +134,7 @@ switch($controllerName) {
             case 'register': $controller->register(); break;
             case 'profile': $controller->profile(); break;
             case 'orders': $controller->orders(); break;
+            case 'orderDetail': $controller->orderDetail(); break;
             case 'logout': $controller->logout(); break;
             case 'editProfile': $controller->editProfile(); break;
             default: echo "404 Page Not Found"; break;
@@ -156,7 +157,9 @@ switch($controllerName) {
         switch($action) {
             case 'index': $controller->index(); break;
             case 'checkout': $controller->checkout(); break;
-            // case 'add': $controller->add(); break;
+            case 'add': $controller->add(); break;
+            case 'remove': $controller->remove(); break;
+            case 'update': $controller->update(); break;
             default: echo "404 Page Not Found"; break;
         }
         break;

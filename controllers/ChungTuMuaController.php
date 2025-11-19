@@ -60,6 +60,55 @@ class ChungTuMuaController {
         include ROOT . '/views/admin/chungtumua/detail.php';
     }
 
+    public function create() {
+        $kh = $this->khModel->getAll();
+        $hh = $this->hhModel->getAll();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'MASOCT' => $_POST['MASOCT'] ?? 'CTM-' . time(),
+                'NGAYPHATSINH' => $_POST['NGAYPHATSINH'] ?? date('Y-m-d H:i:s'),
+                'ID_KHACHHANG' => $_POST['ID_KHACHHANG'] ?? null,
+                'TONGTIENHANG' => $_POST['TONGTIENHANG'] ?? 0,
+                'THUE' => $_POST['THUE'] ?? 0
+            ];
+
+            $id = $this->model->create($data);
+            header('Location: index.php?controller=chungtumua&action=index');
+            exit;
+        }
+
+        include ROOT . '/views/admin/chungtumua/create.php';
+    }
+
+    public function edit() {
+        $id = $_GET['id'] ?? 0;
+        $ctm = $this->model->getById($id);
+        if (!$ctm) {
+            header('Location: index.php?controller=chungtumua&action=index');
+            exit;
+        }
+
+        $kh = $this->khModel->getAll();
+        $hh = $this->hhModel->getAll();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'MASOCT' => $_POST['MASOCT'] ?? $ctm['MASOCT'],
+                'NGAYPHATSINH' => $_POST['NGAYPHATSINH'] ?? $ctm['NGAYPHATSINH'],
+                'ID_KHACHHANG' => $_POST['ID_KHACHHANG'] ?? $ctm['ID_KHACHHANG'],
+                'TONGTIENHANG' => $_POST['TONGTIENHANG'] ?? $ctm['TONGTIENHANG'],
+                'THUE' => $_POST['THUE'] ?? $ctm['THUE']
+            ];
+
+            $this->model->update($id, $data);
+            header('Location: index.php?controller=chungtumua&action=detail&id=' . $id);
+            exit;
+        }
+
+        include ROOT . '/views/admin/chungtumua/edit.php';
+    }
+
     public function delete() {
         $id = $_GET['id'] ?? 0;
         $this->model->delete($id);

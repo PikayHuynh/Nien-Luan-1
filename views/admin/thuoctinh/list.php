@@ -23,8 +23,8 @@
                 <td><?= $item['TEN'] ?></td>
                 <td><?= $item['GIATRI'] ?></td>
                 <td>
-                    <?php if($item['HINHANH']): ?>
-                        <img src="uploads/<?= $item['HINHANH'] ?>" alt="" width="60">
+                    <?php if(!empty($item['HINHANH'])): ?>
+                        <img src="upload/<?= htmlspecialchars($item['HINHANH']) ?>" alt="" width="60">
                     <?php endif; ?>
                 </td>
                 <td><?= $item['TENHANGHOA'] ?></td>

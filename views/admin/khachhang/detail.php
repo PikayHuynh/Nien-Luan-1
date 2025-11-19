@@ -10,8 +10,8 @@
   <tr><th>Số B</th><td><?= $khachHang['SOB'] ?></td></tr>
   <tr><th>Hình ảnh</th>
     <td>
-      <?php if($khachHang['HINHANH']): ?>
-        <img src="uploads/<?= $khachHang['HINHANH'] ?>" width="100">
+      <?php if(!empty($khachHang['HINHANH'])): ?>
+        <img src="upload/<?= htmlspecialchars($khachHang['HINHANH']) ?>" width="100">
       <?php endif; ?>
     </td>
   </tr>

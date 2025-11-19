@@ -30,13 +30,8 @@ class ChungTuBanController {
         $totalProducts = $this->model->countAll();
         $totalPages = ceil($totalProducts / $limit);
 
-
-        // =========================
-        //  PHÂN TRANG GIỚI HẠN 5 TRANG
-        // =========================
-
-        $maxPages = 5;              // số trang muốn hiển thị một lần
-        $currentPage = $page;       // đổi tên cho dễ hiểu
+        $maxPages = 5;
+        $currentPage = $page;
 
         // Trang bắt đầu
         $startPage = max(1, $currentPage - floor($maxPages / 2));

@@ -53,11 +53,13 @@ class ThuocTinhController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // upload hình nếu có
             $hinhanh = null;
-            if (!empty($_FILES['HINHANH']['name'])) {
-                $targetDir = "uploads/";
-                $hinhanh = time() . '_' . basename($_FILES['HINHANH']['name']);
-                move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
-            }
+                if (!empty($_FILES['HINHANH']['name'])) {
+                        $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                        if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
+                        $ts = (int) round(microtime(true) * 1000);
+                        $hinhanh = $ts . '_' . basename($_FILES['HINHANH']['name']);
+                        move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
+                }
             $_POST['HINHANH'] = $hinhanh;
 
             $this->model->create($_POST);
@@ -75,11 +77,13 @@ class ThuocTinhController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hinhanh = $thuoctinh['HINHANH'];
-            if (!empty($_FILES['HINHANH']['name'])) {
-                $targetDir = "uploads/";
-                $hinhanh = time() . '_' . basename($_FILES['HINHANH']['name']);
-                move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
-            }
+                if (!empty($_FILES['HINHANH']['name'])) {
+                    $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                    if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
+                    $ts = (int) round(microtime(true) * 1000);
+                    $hinhanh = $ts . '_' . basename($_FILES['HINHANH']['name']);
+                    move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
+                }
             $_POST['HINHANH'] = $hinhanh;
 
             $this->model->update($id, $_POST);

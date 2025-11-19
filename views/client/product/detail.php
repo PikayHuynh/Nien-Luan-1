@@ -5,7 +5,7 @@
     <?php if(!empty($product)): ?>
     <div class="row">
         <div class="col-md-5">
-            <img src="uploads/<?= $product['HINHANH'] ?? 'default.png' ?>" class="img-fluid" alt="<?= $product['TENHANGHOA'] ?>">
+            <img src="upload/<?= htmlspecialchars($product['HINHANH'] ?? 'default.png') ?>" class="img-fluid" alt="<?= htmlspecialchars($product['TENHANGHOA']) ?>">
         </div>
         <div class="col-md-7">
             <h2><?= $product['TENHANGHOA'] ?></h2>

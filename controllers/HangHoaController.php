@@ -27,11 +27,6 @@ class HangHoaController {
         $totalProducts = $this->model->countAll();
         $totalPages = ceil($totalProducts / $limit);
 
-
-        // =========================
-        //  PHÂN TRANG GIỚI HẠN 5 TRANG
-        // =========================
-
         $maxPages = 5;              // số trang muốn hiển thị một lần
         $currentPage = $page;       // đổi tên cho dễ hiểu
 
@@ -53,9 +48,14 @@ class HangHoaController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hinhanh = null;
-            if(!empty($_FILES['HINHANH']['name'])){
-                $targetDir = "uploads/";
-                $hinhanh = time() . '_' . basename($_FILES['HINHANH']['name']);
+            if (!empty($_FILES['HINHANH']['name'])) {
+                $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0777, true);
+                }
+                $ts = (int) round(microtime(true) * 1000);
+                $original = basename($_FILES['HINHANH']['name']);
+                $hinhanh = $ts . '_' . $original;
                 move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
             }
             $_POST['HINHANH'] = $hinhanh;
@@ -75,9 +75,14 @@ class HangHoaController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hinhanh = $hanghoa['HINHANH'];
-            if(!empty($_FILES['HINHANH']['name'])){
-                $targetDir = "uploads/";
-                $hinhanh = time() . '_' . basename($_FILES['HINHANH']['name']);
+            if (!empty($_FILES['HINHANH']['name'])) {
+                $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0777, true);
+                }
+                $ts = (int) round(microtime(true) * 1000);
+                $original = basename($_FILES['HINHANH']['name']);
+                $hinhanh = $ts . '_' . $original;
                 move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
             }
             $_POST['HINHANH'] = $hinhanh;

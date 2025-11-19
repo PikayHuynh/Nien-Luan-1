@@ -43,6 +43,12 @@ class ChungTuBan {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getByUserId($userId) {
+        $stmt = $this->conn->prepare("SELECT * FROM $this->table WHERE ID_KHACHHANG = ? ORDER BY NGAYDATHANG DESC");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function create($data) {
         $stmt = $this->conn->prepare("INSERT INTO $this->table (MASOCT, NGAYDATHANG, ID_KHACHHANG, TONGTIENHANG, THUE, TRANGTHAI, GHICHU)
             VALUES (?, ?, ?, ?, ?, ?, ?)");

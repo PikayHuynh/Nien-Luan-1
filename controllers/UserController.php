@@ -109,11 +109,27 @@ class UserController {
             $diadi = $_POST['DIACHI'] ?? '';
             $sdt = $_POST['SODIENTHOAI'] ?? '';
 
-            if ($this->khModel->updateProfile($userId, [
+            // handle optional avatar upload
+            $hinhanh = $user['HINHANH'] ?? null;
+            if (!empty($_FILES['HINHANH']['name'])) {
+                $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
+                $ts = (int) round(microtime(true) * 1000);
+                $original = basename($_FILES['HINHANH']['name']);
+                $hinhanh = $ts . '_' . $original;
+                move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
+            }
+
+            // Use update() to allow updating HINHANH and preserve SOB
+            $updateData = [
                 'TEN_KH' => $username,
                 'DIACHI' => $diadi,
-                'SODIENTHOAI' => $sdt
-            ])) {
+                'SODIENTHOAI' => $sdt,
+                'HINHANH' => $hinhanh,
+                'SOB' => $user['SOB'] ?? 'user'
+            ];
+
+            if ($this->khModel->update($userId, $updateData)) {
                 $success = "Cập nhật thông tin thành công!";
                 // Cập nhật session tên user mới
                 $_SESSION['user_name'] = $username;
@@ -128,7 +144,7 @@ class UserController {
 
     // Trang orders
     public function orders() {
-        session_start();
+        if (session_status() !== PHP_SESSION_ACTIVE) session_start();
         $userId = $_SESSION['user_id'] ?? null;
 
         if (!$userId) {
@@ -136,15 +152,57 @@ class UserController {
             exit;
         }
 
-        // TODO: Lấy đơn hàng từ CHUNG_TU_BAN dựa theo $userId
-        // $orders = $this->orderModel->getByUserId($userId);
+        // Load user's orders
+        require_once ROOT . '/models/ChungTuBan.php';
+        $orderModel = new ChungTuBan($this->db);
+        $orders = $orderModel->getByUserId($userId);
 
         include ROOT . '/views/client/user/orders.php';
     }
 
+    // Show order detail
+    public function orderDetail() {
+        if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$userId) {
+            header("Location: index.php?controller=user&action=login");
+            exit;
+        }
+
+        $orderId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        if (!$orderId) {
+            header("Location: index.php?controller=user&action=orders");
+            exit;
+        }
+
+        require_once ROOT . '/models/ChungTuBan.php';
+        require_once ROOT . '/models/ChungTuBanCT.php';
+
+        $orderModel = new ChungTuBan($this->db);
+        $detailModel = new ChungTuBanCT($this->db);
+
+        $order = $orderModel->getById($orderId);
+        if (!$order) {
+            header("Location: index.php?controller=user&action=orders");
+            exit;
+        }
+
+        // Ensure the order belongs to the logged-in user
+        $ownerId = $order['ID_KHACHHANG'] ?? null;
+        if ($ownerId != $userId) {
+            // unauthorized
+            header("Location: index.php?controller=user&action=orders");
+            exit;
+        }
+
+        $items = $detailModel->getByChungTu($orderId);
+
+        include ROOT . '/views/client/user/order_detail.php';
+    }
+
     // Logout
     public function logout() {
-        session_start();
+        if (session_status() !== PHP_SESSION_ACTIVE) session_start();
         session_destroy();
         header("Location: index.php?controller=user&action=login");
         exit;

@@ -34,7 +34,7 @@ include ROOT . '/views/client/layouts/navbar.php';
             <div class="row">
                 <?php foreach($products as $product): ?>
                 <div class="col-lg-4 col-md-6 mb-4"> <div class="card h-100">
-                        <img src="uploads/<?= $product['HINHANH'] ?? 'default.png' ?>" class="card-img-top" alt="<?= $product['TENHANGHOA'] ?? '' ?>">
+                        <img src="upload/<?= htmlspecialchars($product['HINHANH'] ?? 'default.png') ?>" class="card-img-top" alt="<?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title"><?= $product['TENHANGHOA'] ?? 'Không tên' ?></h5>
                             <p class="card-text text-danger font-weight-bold">

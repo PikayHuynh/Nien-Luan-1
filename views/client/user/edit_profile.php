@@ -11,7 +11,13 @@
         <div class="alert alert-success"><?= $success ?></div>
     <?php endif; ?>
 
-    <form method="POST" action="index.php?controller=user&action=editProfile">
+    <?php if (!empty($user['HINHANH'])): ?>
+        <div class="text-center mb-3">
+            <img src="upload/<?= htmlspecialchars($user['HINHANH']) ?>" alt="avatar" style="max-width:120px; border-radius:6px;">
+        </div>
+    <?php endif; ?>
+
+    <form method="POST" action="index.php?controller=user&action=editProfile" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label">Username</label>
             <input type="text" class="form-control" name="TEN_KH" value="<?= htmlspecialchars($user['TEN_KH']) ?>" required>
@@ -23,6 +29,10 @@
         <div class="mb-3">
             <label class="form-label">Số điện thoại</label>
             <input type="text" class="form-control" name="SODIENTHOAI" value="<?= htmlspecialchars($user['SODIENTHOAI']) ?>">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ảnh đại diện</label>
+            <input type="file" class="form-control" name="HINHANH">
         </div>
         <button type="submit" class="btn btn-success w-100">Cập nhật</button>
     </form>

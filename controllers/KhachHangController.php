@@ -23,11 +23,14 @@ class KhachHangController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // upload hình
+            // upload hình -> save to project upload/ with millisecond timestamp prefix
             $hinhanh = null;
             if (!empty($_FILES['HINHANH']['name'])) {
-                $targetDir = "uploads/";
-                $hinhanh = time() . '_' . basename($_FILES['HINHANH']['name']);
+                $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
+                $ts = (int) round(microtime(true) * 1000);
+                $original = basename($_FILES['HINHANH']['name']);
+                $hinhanh = $ts . '_' . $original;
                 move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
             }
             $_POST['HINHANH'] = $hinhanh;
@@ -45,8 +48,11 @@ class KhachHangController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hinhanh = $khachHang['HINHANH'];
             if (!empty($_FILES['HINHANH']['name'])) {
-                $targetDir = "uploads/";
-                $hinhanh = time() . '_' . basename($_FILES['HINHANH']['name']);
+                $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
+                $ts = (int) round(microtime(true) * 1000);
+                $original = basename($_FILES['HINHANH']['name']);
+                $hinhanh = $ts . '_' . $original;
                 move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
             }
             $_POST['HINHANH'] = $hinhanh;

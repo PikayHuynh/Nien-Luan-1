@@ -24,7 +24,7 @@
     <label>Hình ảnh</label>
     <input type="file" class="form-control" name="HINHANH">
     <?php if(!empty($khachHang['HINHANH'])): ?>
-      <img src="uploads/<?= $khachHang['HINHANH'] ?>" width="50" class="mt-2">
+      <img src="upload/<?= htmlspecialchars($khachHang['HINHANH']) ?>" width="50" class="mt-2">
     <?php endif; ?>
   </div>
   <button type="submit" class="btn btn-success">Lưu</button>

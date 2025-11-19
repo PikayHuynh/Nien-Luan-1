@@ -8,6 +8,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="index.php?controller=product&action=list">Sản phẩm</a></li>
                 <li class="nav-item"><a class="nav-link" href="index.php?controller=cart&action=index">Giỏ hàng</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=orders">Đơn hàng đã đặt</a></li>
                 <?php if(isset($_SESSION['user_id'])): ?>
                     <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=profile">
                         Xin chào, <?= $_SESSION['user_name'] ?>

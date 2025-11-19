@@ -22,8 +22,8 @@
                 <td><?= $item['TENPHANLOAI'] ?></td>
                 <td><?= $item['MOTA'] ?></td>
                 <td>
-                    <?php if($item['HINHANH']): ?>
-                        <img src="uploads/<?= $item['HINHANH'] ?>" width="60">
+                    <?php if(!empty($item['HINHANH'])): ?>
+                        <img src="upload/<?= htmlspecialchars($item['HINHANH']) ?>" width="60">
                     <?php endif; ?>
                 </td>
                 <td>

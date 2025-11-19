@@ -24,8 +24,8 @@
             <td><?= $kh['SODIENTHOAI'] ?></td>
             <td><?= $kh['SOB'] ?></td>
             <td>
-                <?php if($kh['HINHANH']): ?>
-                    <img src="uploads/<?= $kh['HINHANH'] ?>" width="50" alt="">
+                <?php if(!empty($kh['HINHANH'])): ?>
+                    <img src="upload/<?= htmlspecialchars($kh['HINHANH']) ?>" width="50" alt="">
                 <?php endif; ?>
             </td>
             <td>

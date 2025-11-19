@@ -19,15 +19,20 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $total = 0; ?>
+                <?php $total = $total ?? ($_SESSION['cart_total'] ?? 0); ?>
                 <?php foreach($cart as $item): ?>
-                    <?php $subtotal = $item['quantity'] * $item['price']; ?>
-                    <?php $total += $subtotal; ?>
+                    <?php $subtotal = $item['subtotal'] ?? ($item['quantity'] * $item['price']); ?>
                     <tr>
                         <td><?= $item['name'] ?></td>
-                        <td><?= $item['quantity'] ?></td>
+                    <td>
+                        <form method="post" action="index.php?controller=cart&action=update" style="display:inline-block;">
+                            <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                            <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="1" style="width:80px; display:inline-block;" class="form-control form-control-sm">
+                            <button type="submit" class="btn btn-sm btn-primary mt-1">Cập nhật</button>
+                        </form>
+                    </td>
                         <td><?= number_format($item['price']) ?> VND</td>
-                        <td><?= number_format($subtotal) ?> VND</td>
+                    <td><?= number_format($subtotal) ?> VND</td>
                         <td>
                             <a href="index.php?controller=cart&action=remove&id=<?= $item['id'] ?>" class="btn btn-sm btn-danger">Xóa</a>
                         </td>

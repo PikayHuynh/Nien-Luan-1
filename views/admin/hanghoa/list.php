@@ -24,7 +24,7 @@
                 <td><?= $item['DONVITINH'] ?></td>
                 <td>
                     <?php if($item['HINHANH']): ?>
-                        <img src="uploads/<?= $item['HINHANH'] ?>" width="60">
+                        <img src="upload/<?= htmlspecialchars($item['HINHANH']) ?>" width="60">
                     <?php endif; ?>
                 </td>
                 <td><?= $item['TENPHANLOAI'] ?></td>

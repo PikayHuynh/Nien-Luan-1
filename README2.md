@@ -11,6 +11,8 @@ quanly_banhang/
 │
 ├── controllers/
 │   ├── DashboardController.php
+│   ├── CartController.php
+│   ├── UserController.php
 │   ├── KhachHangController.php
 │   ├── PhanLoaiController.php
 │   ├── HangHoaController.php
@@ -84,6 +86,8 @@ quanly_banhang/
 │       │   ├── login.php
 │       │   ├── register.php
 │       │   ├── profile.php
+│       │   ├── order_detail.php
+│       │   ├── edit-profile.php
 │       │   └── orders.php
 │       └── layouts/
 │           ├── header.php
