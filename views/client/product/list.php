@@ -53,59 +53,57 @@ include ROOT . '/views/client/layouts/navbar.php';
                 </div>
             </div>
 
-            <!-- Price range filter: placed directly below 'Danh mục sản phẩm' -->
             <div class="card mt-3">
                 <div class="card-header bg-light">
                     <strong>Mức giá</strong>
                 </div>
                 <div class="list-group list-group-flush">
                     <?php
-                    $ranges = [
-                        '0-100000' => '0 - 100.000',
-                        '100000-200000' => '100.000 - 200.000',
-                        '200000-500000' => '200.000 - 500.000',
-                        '500000-1000000' => '500.000 - 1.000.000',
-                        'price_asc'  => 'Giá: Thấp → Cao',
-                        'price_desc' => 'Giá: Cao → Thấp',
-                    ];
-                    $currentPrice = isset($_GET['price']) ? $_GET['price'] : null;
-                    foreach ($ranges as $key => $label):
-                    // Build URL that preserves category, feature, search when clicking a price range
-                    $priceUrl = "index.php?controller=product&action=list&price=" . $key;
-                    if (isset($id_phanloai) && $id_phanloai !== null) {
-                        $priceUrl .= "&id_phanloai=" . (int)$id_phanloai;
-                    }
-                    if (isset($_GET['feature']) && $_GET['feature']) {
-                        $priceUrl .= "&feature=" . urlencode($_GET['feature']);
-                    }
-                    if (isset($_GET['q']) && $_GET['q']) {
-                        $priceUrl .= "&q=" . urlencode($_GET['q']);
-                    }
-                    ?>
-                        <a href="<?= $priceUrl ?>" 
-                            class="list-group-item list-group-item-action <?= ($currentPrice === $key) ? 'active' : '' ?>">
-                            <?= $label ?>
-                        </a>
-                    <?php endforeach; ?>
-                    <?php
-                    // Build URL that clears price but preserves category, feature, search
-                    $clearPriceUrl = "index.php?controller=product&action=list";
-                    if (isset($id_phanloai) && $id_phanloai !== null) {
-                        $clearPriceUrl .= "&id_phanloai=" . (int)$id_phanloai;
-                    }
-                    if (isset($_GET['feature']) && $_GET['feature']) {
-                        $clearPriceUrl .= "&feature=" . urlencode($_GET['feature']);
-                    }
-                    if (isset($_GET['q']) && $_GET['q']) {
-                        $clearPriceUrl .= "&q=" . urlencode($_GET['q']);
-                    }
+                        $ranges = [
+                            '0-100000'        => '0 - 100.000',
+                            '100000-200000'   => '100.000 - 200.000',
+                            '200000-500000'   => '200.000 - 500.000',
+                            '500000-1000000'  => '500.000 - 1.000.000',
+                            'price_asc'       => 'Giá: Thấp → Cao',
+                            'price_desc'      => 'Giá: Cao → Thấp',
+                        ];
+
+                        $currentPrice = isset($_GET['price']) ? $_GET['price'] : null;
+
+                        foreach ($ranges as $key => $label):
+                            $priceUrl = "index.php?controller=product&action=list&price=$key";
+
+                            if (!empty($_GET['id_phanloai'])) {
+                                $priceUrl .= "&id_phanloai=" . (int)$_GET['id_phanloai'];
+                            }
+                            if (!empty($_GET['feature'])) {
+                                $priceUrl .= "&feature=" . urlencode($_GET['feature']);
+                            }
+                            if (!empty($_GET['q'])) {
+                                $priceUrl .= "&q=" . urlencode($_GET['q']);
+                            }
+                        ?>
+                            <a href="<?= $priceUrl ?>" 
+                            class="list-group-item <?= ($currentPrice === $key ? 'active' : '') ?>">
+                                <?= $label ?>
+                            </a>
+                        <?php endforeach; ?>
+                        <?php
+                        // Build URL that clears price but preserves category, feature, search
+                        $clearPriceUrl = "index.php?controller=product&action=list";
+                        if (isset($id_phanloai) && $id_phanloai !== null) {
+                            $clearPriceUrl .= "&id_phanloai=" . (int)$id_phanloai;
+                        }
+                        if (isset($_GET['feature']) && $_GET['feature']) {
+                            $clearPriceUrl .= "&feature=" . urlencode($_GET['feature']);
+                        }
+                        if (isset($_GET['q']) && $_GET['q']) {
+                            $clearPriceUrl .= "&q=" . urlencode($_GET['q']);
+                        }
                     ?>
                     <a href="<?= $clearPriceUrl ?>" class="list-group-item list-group-item-action <?= empty($currentPrice) ? 'active' : '' ?>">Tất cả mức giá</a>
                 </div>
             </div>
-
-
-
 
         </div>
 

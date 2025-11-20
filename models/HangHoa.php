@@ -11,31 +11,41 @@ class HangHoa {
         $stmt = $this->conn->query("SELECT * FROM $this->table");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    public function getPagingClient($limit, $offset, $id_phanloai = null, $feature = null, $minPrice = null, $maxPrice = null, $q = null) {
+
+    public function getPagingClient(
+        $limit, $offset,
+        $id_phanloai = null,
+        $feature = null,
+        $minPrice = null,
+        $maxPrice = null,
+        $q = null,
+        $sortPrice = null
+    ) {
         $params = [];
+
         $sql = "
             SELECT 
                 h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH,
                 p.TENPHANLOAI,
                 d.GIATRI AS DONGIA
-            FROM " . $this->table . " h
+            FROM HANG_HOA h
             LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
             LEFT JOIN DON_GIA_BAN d 
                 ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
         ";
 
+        // WHERE
         $where = [];
+
         if ($id_phanloai !== null) {
             $where[] = "h.ID_PHANLOAI = :id_phanloai";
-            $params[':id_phanloai'] = (int)$id_phanloai;
+            $params[':id_phanloai'] = $id_phanloai;
         }
 
         if ($minPrice !== null && $maxPrice !== null) {
-            // filter by applied price value (DON_GIA_BAN.GIATRI)
             $where[] = "d.GIATRI BETWEEN :minPrice AND :maxPrice";
-            $params[':minPrice'] = (int)$minPrice;
-            $params[':maxPrice'] = (int)$maxPrice;
+            $params[':minPrice'] = $minPrice;
+            $params[':maxPrice'] = $maxPrice;
         }
 
         if (!empty($q)) {
@@ -43,28 +53,30 @@ class HangHoa {
             $params[':q'] = '%' . $q . '%';
         }
 
-        if (!empty($where)) {
+        if ($where) {
             $sql .= " WHERE " . implode(' AND ', $where);
         }
 
-        // Choose ordering based on feature
-        if ($feature === 'promo') {
-            $order = "d.GIATRI ASC"; // show cheaper items first as "promotions"
+        // ORDER
+        if ($sortPrice === 'price_asc') {
+            $order = "d.GIATRI ASC";
+        } elseif ($sortPrice === 'price_desc') {
+            $order = "d.GIATRI DESC";
+        } elseif ($feature === 'promo') {
+            $order = "d.GIATRI ASC";
         } else {
-            // default and 'new' both show newest items first
             $order = "h.ID_HANGHOA DESC";
         }
 
-        $sql .= " 
-            ORDER BY " . $order . "
-            LIMIT :limit OFFSET :offset
-        ";
+        $sql .= " ORDER BY $order LIMIT :limit OFFSET :offset";
 
+        // BIND
         $stmt = $this->conn->prepare($sql);
+
         foreach ($params as $k => $v) {
-            // q is a string, others are ints
             $stmt->bindValue($k, $v, ($k === ':q') ? PDO::PARAM_STR : PDO::PARAM_INT);
         }
+
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 

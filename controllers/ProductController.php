@@ -16,69 +16,86 @@ class ProductController {
     }
 
     public function list() {
-        // 1. Lấy ID_PHANLOAI từ URL (để lọc)
-        // Nếu có id_phanloai trên URL, nó sẽ được dùng để lọc.
+        // Lấy ID_PHANLOAI
         $id_phanloai = isset($_GET['id_phanloai']) ? (int)$_GET['id_phanloai'] : null;
-        $feature = isset($_GET['feature']) ? $_GET['feature'] : null;
-        // price range filter format: min-max (e.g. 0-100000)
-        $priceRange = isset($_GET['price']) ? $_GET['price'] : null;
-        $minPrice = null; $maxPrice = null;
-        if ($priceRange) {
-            $parts = explode('-', $priceRange);
-            if (count($parts) == 2) {
-                $minPrice = (int) $parts[0];
-                $maxPrice = (int) $parts[1];
-            }
-        }
 
-        // search query (filter by name or description)
-        $q = isset($_GET['q']) ? trim($_GET['q']) : null;
-        // Only allow known features; ignore 'service' or any unknown values
+        // Feature filter
+        $feature = isset($_GET['feature']) ? $_GET['feature'] : null;
         $allowedFeatures = ['new', 'promo'];
         if ($feature === '' || !in_array($feature, $allowedFeatures)) {
             $feature = null;
         }
 
-        // 2. Lấy danh sách Phân loại để hiển thị sidebar lọc
-        $phanloaiList = $this->phanLoaiModel->getAll(); 
+        // PRICE FILTER (lọc + sort)
+        $priceParam = isset($_GET['price']) ? $_GET['price'] : null;
+        $minPrice = $maxPrice = null;
+        $sortPrice = null;
 
-        $limit = 9; 
+        if ($priceParam) {
+            if (strpos($priceParam, '-') !== false) {
+                // lọc khoảng giá
+                $parts = explode('-', $priceParam);
+                if (count($parts) == 2) {
+                    $minPrice = (int)$parts[0];
+                    $maxPrice = (int)$parts[1];
+                }
+            } elseif ($priceParam === 'price_asc' || $priceParam === 'price_desc') {
+                // sắp xếp theo giá
+                $sortPrice = $priceParam;
+            }
+        }
+
+        // SEARCH
+        $q = isset($_GET['q']) ? trim($_GET['q']) : null;
+
+        // Phân loại sidebar
+        $phanloaiList = $this->phanLoaiModel->getAll();
+
+        // PAGINATION
+        $limit = 9;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
-
+        $page = max(1, $page);
         $offset = ($page - 1) * $limit;
+        $currentPage = $page; // để view dùng phân trang
 
-        // 3. Lấy sản phẩm phân trang (Sử dụng hàm client mới và truyền tham số lọc)
-        // Hàm này sẽ dùng logic trong HangHoa.php đã cập nhật ở Bước 3.
-        $products = $this->productModel->getPagingClient($limit, $offset, $id_phanloai, $feature, $minPrice, $maxPrice, $q); 
 
-        // 4. Tổng số sản phẩm (truyền tham số lọc để đếm đúng số lượng)
-        $totalProducts = $this->productModel->countAllClient($id_phanloai, $minPrice, $maxPrice, $q); 
+        // Lấy sản phẩm
+        $products = $this->productModel->getPagingClient(
+            $limit, $offset,
+            $id_phanloai,
+            $feature,
+            $minPrice, $maxPrice,
+            $q,
+            $sortPrice
+        );
+
+        // Tổng số sản phẩm
+        $totalProducts = $this->productModel->countAllClient(
+            $id_phanloai,
+            $minPrice, $maxPrice,
+            $q
+        );
+
         $totalPages = ceil($totalProducts / $limit);
 
-        // =========================
-        // PHÂN TRANG GIỚI HẠN 5 TRANG (Giữ nguyên logic của bạn)
-        // =========================
-        $maxPages = 5; 
-        $currentPage = $page; 
+        // PHÂN TRANG TỐI ĐA 5 TRANG
+        $maxPages = 5;
+        $startPage = max(1, $page - floor($maxPages / 2));
+        $endPage   = min($totalPages, $startPage + $maxPages - 1);
 
-        // Trang bắt đầu và kết thúc
-        $startPage = max(1, $currentPage - floor($maxPages / 2));
-        $endPage = min($totalPages, $startPage + $maxPages - 1);
         if ($endPage - $startPage + 1 < $maxPages) {
             $startPage = max(1, $endPage - $maxPages + 1);
         }
 
-        // 5. Tạo tham số lọc để giữ trạng thái lọc khi chuyển trang (cho Phân Trang)
+        // GIỮ THAM SỐ LỌC KHI PHÂN TRANG
         $filter_param = '';
-        if ($id_phanloai !== null) $filter_param .= "&id_phanloai=" . $id_phanloai;
+        if ($id_phanloai) $filter_param .= "&id_phanloai=$id_phanloai";
         if ($feature) $filter_param .= "&feature=" . urlencode($feature);
-        if ($priceRange) $filter_param .= "&price=" . urlencode($priceRange);
+        if ($priceParam) $filter_param .= "&price=" . urlencode($priceParam);
         if ($q) $filter_param .= "&q=" . urlencode($q);
 
         include ROOT . '/views/client/product/list.php';
     }
-
 
 
     public function detail() {
