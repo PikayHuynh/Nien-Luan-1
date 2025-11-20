@@ -12,74 +12,102 @@ class HangHoa {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public function getPagingClient($limit, $offset, $id_phanloai = null) {
-    $sql = "
-        SELECT 
-            h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH,
-            p.TENPHANLOAI,
-            d.GIATRI AS DONGIA
-        FROM " . $this->table . " h
-        LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
-        LEFT JOIN DON_GIA_BAN d 
-            ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
-    ";
+    public function getPagingClient($limit, $offset, $id_phanloai = null, $feature = null, $minPrice = null, $maxPrice = null, $q = null) {
+        $params = [];
+        $sql = "
+            SELECT 
+                h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH,
+                p.TENPHANLOAI,
+                d.GIATRI AS DONGIA
+            FROM " . $this->table . " h
+            LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
+            LEFT JOIN DON_GIA_BAN d 
+                ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
+        ";
 
-    // Thêm điều kiện lọc
-    if ($id_phanloai !== null) {
-        $sql .= " WHERE h.ID_PHANLOAI = :id_phanloai";
+        $where = [];
+        if ($id_phanloai !== null) {
+            $where[] = "h.ID_PHANLOAI = :id_phanloai";
+            $params[':id_phanloai'] = (int)$id_phanloai;
+        }
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            // filter by applied price value (DON_GIA_BAN.GIATRI)
+            $where[] = "d.GIATRI BETWEEN :minPrice AND :maxPrice";
+            $params[':minPrice'] = (int)$minPrice;
+            $params[':maxPrice'] = (int)$maxPrice;
+        }
+
+        if (!empty($q)) {
+            $where[] = "(h.TENHANGHOA LIKE :q OR h.MOTA LIKE :q)";
+            $params[':q'] = '%' . $q . '%';
+        }
+
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        // Choose ordering based on feature
+        if ($feature === 'promo') {
+            $order = "d.GIATRI ASC"; // show cheaper items first as "promotions"
+        } else {
+            // default and 'new' both show newest items first
+            $order = "h.ID_HANGHOA DESC";
+        }
+
+        $sql .= " 
+            ORDER BY " . $order . "
+            LIMIT :limit OFFSET :offset
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        foreach ($params as $k => $v) {
+            // q is a string, others are ints
+            $stmt->bindValue($k, $v, ($k === ':q') ? PDO::PARAM_STR : PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    $sql .= " 
-        ORDER BY h.ID_HANGHOA DESC
-        LIMIT :limit OFFSET :offset
-    ";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 
-    if ($id_phanloai !== null) {
-        $stmt->bindValue(':id_phanloai', (int)$id_phanloai, PDO::PARAM_INT);
+    public function countAllClient($id_phanloai = null, $minPrice = null, $maxPrice = null, $q = null) {
+        $params = [];
+        $sql = "SELECT COUNT(*) FROM " . $this->table . " h
+                LEFT JOIN DON_GIA_BAN d ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1";
+
+        $where = [];
+        if ($id_phanloai !== null) {
+            $where[] = "h.ID_PHANLOAI = :id_phanloai";
+            $params[':id_phanloai'] = (int)$id_phanloai;
+        }
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $where[] = "d.GIATRI BETWEEN :minPrice AND :maxPrice";
+            $params[':minPrice'] = (int)$minPrice;
+            $params[':maxPrice'] = (int)$maxPrice;
+        }
+
+        if (!empty($q)) {
+            $where[] = "(h.TENHANGHOA LIKE :q OR h.MOTA LIKE :q)";
+            $params[':q'] = '%' . $q . '%';
+        }
+
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v, ($k === ':q') ? PDO::PARAM_STR : PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-    public function countAllClient($id_phanloai = null) {
-    $sql = "SELECT COUNT(*) FROM " . $this->table;
-
-    if ($id_phanloai !== null) {
-        $sql .= " WHERE ID_PHANLOAI = :id_phanloai";
-    }
-
-    $stmt = $this->conn->prepare($sql);
-
-    if ($id_phanloai !== null) {
-        $stmt->bindValue(':id_phanloai', (int)$id_phanloai, PDO::PARAM_INT);
-    }
-    
-    $stmt->execute();
-    return $stmt->fetchColumn();
-}
-
-    public function getAllClient() {
-        // $stmt = $this->conn->prepare("
-        //     SELECT 
-        //         h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH,
-        //         h.ID_PHANLOAI, p.TENPHANLOAI,
-        //         d.GIATRI AS DONGIA
-        //     FROM $this->table h
-        //     LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
-        //     LEFT JOIN DON_GIA_BAN d 
-        //         ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
-        //     ORDER BY h.ID_HANGHOA DESC
-        // ");
-        // $stmt->execute();
-        // return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        
-    }
 
     public function getPaging($limit, $offset) {
         $stmt = $this->conn->prepare("

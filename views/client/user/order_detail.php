@@ -42,7 +42,7 @@
 
         <h4>Tổng cộng: <?= number_format($sum) ?> VND</h4>
 
-        <a href="index.php?controller=user&action=orders" class="btn btn-secondary">Quay lại danh sách đơn hàng</a>
+        <a href="index.php?controller=user&action=orders" class="btn btn-primary">Quay lại danh sách đơn hàng</a>
     <?php endif; ?>
 </div>
 

@@ -2,9 +2,11 @@
 <?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <div class="container mt-4">
-	<h2>Chỉnh sửa Hàng Hóa #<?= htmlspecialchars($hanghoa['ID_HANGHOA'] ?? '') ?></h2>
+	<div class="row">
+		<div class="col-lg-8">
+			<h2>Chỉnh sửa Hàng Hóa #<?= htmlspecialchars($hanghoa['ID_HANGHOA'] ?? '') ?></h2>
 
-	<form method="post" action="" enctype="multipart/form-data">
+			<form method="post" action="" enctype="multipart/form-data">
 		<div class="mb-3">
 			<label class="form-label">Tên hàng hóa</label>
 			<input type="text" name="TENHANGHOA" class="form-control" value="<?= htmlspecialchars($hanghoa['TENHANGHOA'] ?? '') ?>" required>
@@ -40,7 +42,12 @@
 
 		<button class="btn btn-primary">Lưu</button>
 		<a href="index.php?controller=hanghoa&action=index" class="btn btn-secondary">Hủy</a>
-	</form>
+			</form>
+		</div>
+		<div class="col-lg-4 d-none d-lg-block">
+			<?php include ROOT . '/views/admin/layouts/edit_helper.php'; ?>
+		</div>
+	</div>
 </div>
 
 <?php include ROOT . '/views/admin/layouts/footer.php'; ?>

@@ -73,26 +73,36 @@ quanly_banhang/
 │   │       ├── footer.php
 │   │       └── sidebar.php
 │   │
-│   └── client/
-│       ├── home/
-│       │   └── index.php
-│       ├── product/
-│       │   ├── list.php
-│       │   └── detail.php
-│       ├── cart/
-│       │   ├── index.php
-│       │   └── checkout.php
-│       ├── user/
-│       │   ├── login.php
-│       │   ├── register.php
-│       │   ├── profile.php
-│       │   ├── order_detail.php
-│       │   ├── edit-profile.php
-│       │   └── orders.php
-│       └── layouts/
-│           ├── header.php
-│           ├── footer.php
-│           └── navbar.php
+│   │── client/
+│   │    ├── home/
+│   │    │   └── index.php
+│   │    ├── product/
+│   │    │   ├── list.php
+│   │    │   └── detail.php
+│   │    ├── cart/
+│   │    │   ├── index.php
+│   │    │   └── checkout.php
+│   │    ├── user/
+│   │    │   ├── login.php
+│   │    │   ├── register.php
+│   │    │   ├── profile.php
+│   │    │   ├── order_detail.php
+│   │    │   ├── edit-profile.php
+│   │    │   └── orders.php
+│   │    └── layouts/
+│   │        ├── header.php
+│   │        ├── footer.php
+│   │        └── navbar.php
+│   │
+│   └── resources/
+│       ├── client/
+│       │   └── style.css
+│       └── admin/
+│           └── style.css
+├── utils/
+│
+│
+│
 │
 ├── public/
 │   ├── css/

@@ -2,9 +2,11 @@
 <?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
 <div class="container mt-4">
-	<h2>Chỉnh sửa phân loại #<?= htmlspecialchars($phanloai['ID_PHANLOAI'] ?? '') ?></h2>
+	<div class="row">
+		<div class="col-lg-8">
+			<h2>Chỉnh sửa phân loại #<?= htmlspecialchars($phanloai['ID_PHANLOAI'] ?? '') ?></h2>
 
-	<form method="post" action="" enctype="multipart/form-data">
+			<form method="post" action="" enctype="multipart/form-data">
 		<div class="mb-3">
 			<label class="form-label">Tên phân loại</label>
 			<input type="text" name="TENPHANLOAI" class="form-control" value="<?= htmlspecialchars($phanloai['TENPHANLOAI'] ?? '') ?>" required>
@@ -25,7 +27,12 @@
 
 		<button class="btn btn-primary">Lưu</button>
 		<a href="index.php?controller=phanloai&action=index" class="btn btn-secondary">Hủy</a>
-	</form>
+			</form>
+		</div>
+		<div class="col-lg-4 d-none d-lg-block">
+			<?php include ROOT . '/views/admin/layouts/edit_helper.php'; ?>
+		</div>
+	</div>
 </div>
 
 <?php include ROOT . '/views/admin/layouts/footer.php'; ?>

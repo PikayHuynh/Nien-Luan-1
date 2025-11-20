@@ -1,9 +1,12 @@
 <?php include ROOT . '/views/admin/layouts/header.php'; ?>
 <?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
-<h3>Chỉnh sửa Chứng Từ Mua #<?= htmlspecialchars($ctm['ID_CTMUA'] ?? '') ?></h3>
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-lg-8">
+			<h3>Chỉnh sửa Chứng Từ Mua #<?= htmlspecialchars($ctm['ID_CTMUA'] ?? '') ?></h3>
 
-<form method="post" action="">
+			<form method="post" action="">
 	<div class="mb-3">
 		<label class="form-label">Mã số</label>
 		<input type="text" name="MASOCT" class="form-control" value="<?= htmlspecialchars($ctm['MASOCT'] ?? '') ?>">
@@ -32,6 +35,12 @@
 
 	<button class="btn btn-primary">Lưu</button>
 	<a href="index.php?controller=chungtumua&action=detail&id=<?= $ctm['ID_CTMUA'] ?>" class="btn btn-secondary">Hủy</a>
-</form>
+			</form>
+		</div>
+		<div class="col-lg-4 d-none d-lg-block">
+			<?php include ROOT . '/views/admin/layouts/edit_helper.php'; ?>
+		</div>
+	</div>
+</div>
 
 <?php include ROOT . '/views/admin/layouts/footer.php'; ?>

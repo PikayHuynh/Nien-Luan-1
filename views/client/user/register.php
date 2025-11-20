@@ -1,7 +1,7 @@
 <?php include ROOT . '/views/client/layouts/header.php'; ?>
 <?php include ROOT . '/views/client/layouts/navbar.php'; ?>
 
-<div class="container mt-5" style="max-width: 500px;">
+<div class="container mt-5 auth-container">
     <h3 class="mb-4 text-center">Đăng ký tài khoản</h3>
     <?php if(isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
     <form method="POST" action="index.php?controller=user&action=register">
