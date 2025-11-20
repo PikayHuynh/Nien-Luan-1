@@ -9,15 +9,25 @@ require_once 'models/ChungTuMuaCT.php';
 require_once 'models/ChungTuBan.php';
 require_once 'models/ChungTuBanCT.php';
 
+/**
+ * Lớp DashboardController quản lý trang dashboard admin.
+ */
 class DashboardController {
     private $conn;
 
+    /**
+     * Khởi tạo controller với kết nối cơ sở dữ liệu.
+     * @param object $db Kết nối cơ sở dữ liệu.
+     */
     public function __construct($db) {
         $this->conn = $db;
     }
 
+    /**
+     * Hiển thị trang dashboard với thống kê số lượng record từ các model.
+     */
     public function index() {
-        // Tạo object từng model
+        // Khởi tạo các model
         $khModel = new KhachHang($this->conn);
         $plModel = new PhanLoai($this->conn);
         $hhModel = new HangHoa($this->conn);
@@ -28,7 +38,7 @@ class DashboardController {
         $ctbModel = new ChungTuBan($this->conn);
         $ctbctModel = new ChungTuBanCT($this->conn);
 
-        // Lấy tổng số record từng module
+        // Lấy tổng số record từ từng model
         $data = [
             'khachhang' => count($khModel->getAll()),
             'phanloai' => count($plModel->getAll()),

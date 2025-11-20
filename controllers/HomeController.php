@@ -2,27 +2,37 @@
 require_once ROOT . '/models/HangHoa.php';
 require_once ROOT . '/models/PhanLoai.php';
 
+/**
+ * Lớp HomeController quản lý trang chủ phía client.
+ */
 class HomeController {
     private $db;
     private $productModel;
     private $phanLoaiModel;
-    
-    public function __construct($db) { 
+
+    /**
+     * Khởi tạo controller với kết nối cơ sở dữ liệu và các model liên quan.
+     * @param object $db Kết nối cơ sở dữ liệu.
+     */
+    public function __construct($db) {
         $this->db = $db;
         $this->productModel = new HangHoa($db);
         $this->phanLoaiModel = new PhanLoai($db);
     }
 
+    /**
+     * Hiển thị trang chủ với sản phẩm nổi bật, danh mục và thống kê.
+     */
     public function index() {
-        // Fetch featured products (latest 8 products)
+        // Lấy 8 sản phẩm nổi bật (mới nhất)
         $featuredProducts = $this->productModel->getPagingClient(8, 0, null, null, null, null, null);
-        
-        // Fetch categories for display
+
+        // Lấy danh sách danh mục
         $categories = $this->phanLoaiModel->getAll();
-        
-        // Get total product count for stats
+
+        // Lấy tổng số sản phẩm
         $totalProducts = $this->productModel->countAllClient();
-        
+
         $title = "Trang chủ";
         include ROOT . '/views/client/layouts/header.php';
         include ROOT . '/views/client/layouts/navbar.php';

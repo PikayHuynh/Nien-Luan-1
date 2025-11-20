@@ -2,51 +2,58 @@
 require_once 'models/DonGiaBan.php';
 require_once 'models/HangHoa.php';
 
+/**
+ * Lớp DonGiaBanController quản lý các chức năng liên quan đến đơn giá bán.
+ */
 class DonGiaBanController {
     private $model;
     private $hangHoaModel;
 
+    /**
+     * Khởi tạo controller với kết nối cơ sở dữ liệu và các model liên quan.
+     * @param object $db Kết nối cơ sở dữ liệu.
+     */
     public function __construct($db) {
         $this->model = new DonGiaBan($db);
         $this->hangHoaModel = new HangHoa($db);
     }
 
+    /**
+     * Hiển thị danh sách đơn giá bán với phân trang.
+     */
     public function index() {
-        // $data = $this->model->getAll();
-        $limit = 10; // mỗi trang hiển thị 10 sản phẩm
+        $limit = 10; // Số lượng đơn giá mỗi trang
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($page < 1) $page = 1;
 
         $offset = ($page - 1) * $limit;
 
-        // Lấy sản phẩm phân trang
+        // Lấy danh sách đơn giá theo phân trang
         $data = $this->model->getPaging($limit, $offset);
 
-        // Tổng số sản phẩm
+        // Tổng số đơn giá
         $totalProducts = $this->model->countAll();
         $totalPages = ceil($totalProducts / $limit);
 
+        $maxPages = 5;
+        $currentPage = $page;
 
-        // =========================
-        //  PHÂN TRANG GIỚI HẠN 5 TRANG
-        // =========================
-
-        $maxPages = 5;              // số trang muốn hiển thị một lần
-        $currentPage = $page;       // đổi tên cho dễ hiểu
-
-        // Trang bắt đầu
+        // Tính toán trang bắt đầu và kết thúc cho phân trang
         $startPage = max(1, $currentPage - floor($maxPages / 2));
-
-        // Trang kết thúc
         $endPage = min($totalPages, $startPage + $maxPages - 1);
 
-        // Nếu cuối danh sách không đủ 5 trang → dịch startPage lại
+        // Điều chỉnh nếu không đủ số trang hiển thị
         if ($endPage - $startPage + 1 < $maxPages) {
             $startPage = max(1, $endPage - $maxPages + 1);
         }
+
         include ROOT . '/views/admin/dongiaban/list.php';
     }
 
+    /**
+     * Tạo mới một đơn giá bán.
+     * Xử lý form POST để lưu dữ liệu, sau đó chuyển hướng.
+     */
     public function create() {
         $hanghoas = $this->hangHoaModel->getAll();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -57,6 +64,10 @@ class DonGiaBanController {
         include ROOT . '/views/admin/dongiaban/create.php';
     }
 
+    /**
+     * Sửa một đơn giá bán hiện có.
+     * Xử lý form POST để cập nhật dữ liệu, sau đó chuyển hướng.
+     */
     public function edit() {
         $id = $_GET['id'] ?? 0;
         $dongia = $this->model->getById($id);
@@ -71,12 +82,18 @@ class DonGiaBanController {
         include ROOT . '/views/admin/dongiaban/edit.php';
     }
 
+    /**
+     * Hiển thị chi tiết một đơn giá bán.
+     */
     public function detail() {
         $id = $_GET['id'] ?? 0;
         $dongia = $this->model->getById($id);
         include ROOT . '/views/admin/dongiaban/detail.php';
     }
 
+    /**
+     * Xóa một đơn giá bán.
+     */
     public function delete() {
         $id = $_GET['id'] ?? 0;
         $this->model->delete($id);
@@ -84,4 +101,3 @@ class DonGiaBanController {
         exit;
     }
 }
- 

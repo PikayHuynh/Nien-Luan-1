@@ -1,48 +1,59 @@
 <?php
 require_once 'models/HangHoa.php';
-require_once 'models/PhanLoai.php'; // để lấy danh sách phân loại
+require_once 'models/PhanLoai.php';
 
+/**
+ * Lớp HangHoaController quản lý các chức năng liên quan đến hàng hóa (sản phẩm).
+ */
 class HangHoaController {
     private $model;
     private $phanLoaiModel;
 
+    /**
+     * Khởi tạo controller với kết nối cơ sở dữ liệu và các model liên quan.
+     * @param object $db Kết nối cơ sở dữ liệu.
+     */
     public function __construct($db) {
         $this->model = new HangHoa($db);
         $this->phanLoaiModel = new PhanLoai($db);
     }
 
+    /**
+     * Hiển thị danh sách hàng hóa với phân trang.
+     */
     public function index() {
-        // $data = $this->model->getAll();
-        // $products = $this->productModel->getAllClient();
-        $limit = 10; // mỗi trang hiển thị 10 sản phẩm
+        $limit = 10; // Số lượng sản phẩm mỗi trang
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($page < 1) $page = 1;
 
         $offset = ($page - 1) * $limit;
 
-        // Lấy sản phẩm phân trang
+        // Lấy danh sách sản phẩm theo phân trang
         $data = $this->model->getPaging($limit, $offset);
 
         // Tổng số sản phẩm
         $totalProducts = $this->model->countAll();
         $totalPages = ceil($totalProducts / $limit);
 
-        $maxPages = 5;              // số trang muốn hiển thị một lần
-        $currentPage = $page;       // đổi tên cho dễ hiểu
+        $maxPages = 5;
+        $currentPage = $page;
 
-        // Trang bắt đầu
+        // Tính toán trang bắt đầu và kết thúc cho phân trang
         $startPage = max(1, $currentPage - floor($maxPages / 2));
-
-        // Trang kết thúc
         $endPage = min($totalPages, $startPage + $maxPages - 1);
 
-        // Nếu cuối danh sách không đủ 5 trang → dịch startPage lại
+        // Điều chỉnh nếu không đủ số trang hiển thị
         if ($endPage - $startPage + 1 < $maxPages) {
             $startPage = max(1, $endPage - $maxPages + 1);
         }
+
         include ROOT . '/views/admin/hanghoa/list.php';
     }
 
+    /**
+     * Tạo mới một hàng hóa.
+     * Xử lý form POST để lưu dữ liệu, bao gồm upload hình ảnh, sau đó chuyển hướng.
+     */
     public function create() {
         $phanloaiList = $this->phanLoaiModel->getAll();
 
@@ -68,6 +79,10 @@ class HangHoaController {
         include ROOT . '/views/admin/hanghoa/create.php';
     }
 
+    /**
+     * Sửa một hàng hóa hiện có.
+     * Xử lý form POST để cập nhật dữ liệu, bao gồm upload hình ảnh mới nếu có, sau đó chuyển hướng.
+     */
     public function edit() {
         $id = $_GET['id'] ?? 0;
         $hanghoa = $this->model->getById($id);
@@ -95,12 +110,18 @@ class HangHoaController {
         include ROOT . '/views/admin/hanghoa/edit.php';
     }
 
+    /**
+     * Hiển thị chi tiết một hàng hóa.
+     */
     public function detail() {
         $id = $_GET['id'] ?? 0;
         $hanghoa = $this->model->getById($id);
         include ROOT . '/views/admin/hanghoa/detail.php';
     }
 
+    /**
+     * Xóa một hàng hóa.
+     */
     public function delete() {
         $id = $_GET['id'] ?? 0;
         $this->model->delete($id);
