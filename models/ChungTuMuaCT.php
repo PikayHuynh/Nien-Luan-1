@@ -20,14 +20,25 @@ class ChungTuMuaCT {
     }
 
     public function create($data) {
-        $stmt = $this->conn->prepare("INSERT INTO $this->table (ID_CTMUA, ID_HANGHOA, SOLUONG, DONGIA) VALUES (?, ?, ?, ?)");
-        $stmt->execute([
-            $data['ID_CTMUA'],
-            $data['ID_HANGHOA'],
-            $data['SOLUONG'],
-            $data['DONGIA']
+        // $stmt = $this->conn->prepare("INSERT INTO $this->table (ID_CTMUA, ID_HANGHOA, SOLUONG, DONGIA) VALUES (?, ?, ?, ?)");
+        // $stmt->execute([
+        //     $data['ID_CTMUA'],
+        //     $data['ID_HANGHOA'],
+        //     $data['SOLUONG'],
+        //     $data['DONGIA']
+        // ]);
+        // return $this->conn->lastInsertId();
+        $stmt = $this->conn->prepare(
+            "INSERT INTO $this->table (ID_CTMUA, ID_HANGHOA, GIAMUA, SOLUONG)
+            VALUES (:ID_CTMUA, :ID_HANGHOA, :GIAMUA, :SOLUONG)"
+        );
+
+        return $stmt->execute([
+            'ID_CTMUA'   => $data['ID_CTMUA'],
+            'ID_HANGHOA' => $data['ID_HANGHOA'],
+            'GIAMUA'     => $data['GIAMUA'],
+            'SOLUONG'    => $data['SOLUONG']
         ]);
-        return $this->conn->lastInsertId();
     }
 
     public function update($id, $data) {

@@ -100,7 +100,9 @@ quanly_banhang/
 │       └── admin/
 │           └── style.css
 ├── utils/
-│
+│     ├  pagination.php
+│     ├  searching.php
+│     └ sorting.php
 │
 │
 │

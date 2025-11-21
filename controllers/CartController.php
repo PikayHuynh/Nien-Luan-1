@@ -33,74 +33,158 @@ class CartController {
      * Xử lý trang thanh toán.
      * Kiểm tra đăng nhập, giỏ hàng không rỗng, và xử lý đặt hàng nếu có POST.
      */
+    // public function checkout() {
+    //     // Kiểm tra đăng nhập (hỗ trợ cả hai định dạng session cũ và mới)
+    //     if (!isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
+    //         header("Location: index.php?controller=user&action=login");
+    //         exit;
+    //     }
+    //     $cart = $_SESSION['cart'] ?? [];
+    //     $total = $this->recalcCart();
+    //     if (empty($cart)) {
+    //         header("Location: index.php?controller=cart&action=index");
+    //         exit;
+    //     }
+
+    //     // Xử lý đặt hàng nếu form được submit
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         require_once ROOT . '/models/ChungTuBan.php';
+    //         require_once ROOT . '/models/ChungTuBanCT.php';
+
+    //         $orderModel = new ChungTuBan($this->db);
+    //         $orderDetailModel = new ChungTuBanCT($this->db);
+
+    //         $masoct = 'CTB-' . time();
+    //         $ngaydathang = date('Y-m-d H:i:s');
+    //         // Hỗ trợ cả hai định dạng ID khách hàng từ session
+    //         $id_khachhang = $_SESSION['user_id'] ?? ($_SESSION['user']['ID_KHACHHANG'] ?? null);
+    //         $tongtien = $_SESSION['cart_total'] ?? $total;
+
+    //         try {
+    //             $this->db->beginTransaction();
+
+    //             // Tạo đơn hàng
+    //             $orderId = $orderModel->create([
+    //                 'MASOCT' => $masoct,
+    //                 'NGAYDATHANG' => $ngaydathang,
+    //                 'ID_KHACHHANG' => $id_khachhang,
+    //                 'TONGTIENHANG' => $tongtien,
+    //                 'THUE' => 0,
+    //                 'TRANGTHAI' => "Đang xử lý",
+    //                 'GHICHU' => ''
+    //             ]);
+
+    //             if (!$orderId) {
+    //                 throw new Exception('Tạo đơn hàng thất bại (orderId null).');
+    //             }
+
+    //             // Tạo chi tiết đơn hàng
+    //             foreach ($cart as $item) {
+    //                 $giaban = isset($item['price']) ? (float)$item['price'] : 0;
+    //                 $soluong = isset($item['quantity']) ? (int)$item['quantity'] : 0;
+    //                 $orderDetailModel->create([
+    //                     'ID_CTBAN' => $orderId,
+    //                     'ID_HANGHOA' => $item['id'],
+    //                     'GIABAN' => $giaban,
+    //                     'SOLUONG' => $soluong
+    //                 ]);
+    //             }
+
+    //             $this->db->commit();
+
+    //             // Xóa giỏ hàng sau khi đặt hàng thành công
+    //             unset($_SESSION['cart']);
+    //             unset($_SESSION['cart_total']);
+    //             header('Location: index.php?controller=user&action=orders');
+    //             exit;
+    //         } catch (Exception $e) {
+    //             // Rollback nếu có lỗi
+    //             if ($this->db->inTransaction()) $this->db->rollBack();
+    //             $error = 'Lỗi lưu đơn hàng: ' . $e->getMessage();
+    //             include ROOT . "/views/client/cart/checkout.php";
+    //             return;
+    //         }
+    //     }
+
+    //     include ROOT . "/views/client/cart/checkout.php";
+    // }
+
     public function checkout() {
-        // Kiểm tra đăng nhập (hỗ trợ cả hai định dạng session cũ và mới)
         if (!isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
             header("Location: index.php?controller=user&action=login");
             exit;
         }
+
         $cart = $_SESSION['cart'] ?? [];
         $total = $this->recalcCart();
+
         if (empty($cart)) {
             header("Location: index.php?controller=cart&action=index");
             exit;
         }
 
-        // Xử lý đặt hàng nếu form được submit
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require_once ROOT . '/models/ChungTuBan.php';
-            require_once ROOT . '/models/ChungTuBanCT.php';
+            $id_khachhang = $_SESSION['user_id'] ?? ($_SESSION['user']['ID_KHACH_HANG'] ?? null);
 
-            $orderModel = new ChungTuBan($this->db);
-            $orderDetailModel = new ChungTuBanCT($this->db);
+            require_once ROOT . '/models/KhachHang.php';
+            $khModel = new KhachHang($this->db);
+            $isAdmin = $khModel->isAdmin($id_khachhang);
 
-            $masoct = 'CTB-' . time();
-            $ngaydathang = date('Y-m-d H:i:s');
-            // Hỗ trợ cả hai định dạng ID khách hàng từ session
-            $id_khachhang = $_SESSION['user_id'] ?? ($_SESSION['user']['ID_KHACHHANG'] ?? null);
+            if ($isAdmin) {
+                require_once ROOT . '/models/ChungTuMua.php';
+                require_once ROOT . '/models/ChungTuMuaCT.php';
+                $orderModel = new ChungTuMua($this->db);
+                $orderDetailModel = new ChungTuMuaCT($this->db);
+                $masoct = 'CTM-' . time();
+            } else {
+                require_once ROOT . '/models/ChungTuBan.php';
+                require_once ROOT . '/models/ChungTuBanCT.php';
+                $orderModel = new ChungTuBan($this->db);
+                $orderDetailModel = new ChungTuBanCT($this->db);
+                $masoct = 'CTB-' . time();
+            }
+
+            $ngayphatsinh = date('Y-m-d H:i:s');
             $tongtien = $_SESSION['cart_total'] ?? $total;
 
             try {
                 $this->db->beginTransaction();
 
-                // Tạo đơn hàng
                 $orderId = $orderModel->create([
                     'MASOCT' => $masoct,
-                    'NGAYDATHANG' => $ngaydathang,
+                    'NGAYPHATSINH' => $ngayphatsinh,
                     'ID_KHACHHANG' => $id_khachhang,
                     'TONGTIENHANG' => $tongtien,
-                    'THUE' => 0,
-                    'TRANGTHAI' => "Đang xử lý",
-                    'GHICHU' => ''
+                    'THUE' => 0
                 ]);
 
-                if (!$orderId) {
-                    throw new Exception('Tạo đơn hàng thất bại (orderId null).');
-                }
+                if (!$orderId) throw new Exception("Tạo chứng từ thất bại.");
 
-                // Tạo chi tiết đơn hàng
                 foreach ($cart as $item) {
-                    $giaban = isset($item['price']) ? (float)$item['price'] : 0;
-                    $soluong = isset($item['quantity']) ? (int)$item['quantity'] : 0;
+                    if (!isset($item['id'], $item['price'], $item['quantity'])) {
+                        continue; // bỏ qua item không đầy đủ
+                    }
                     $orderDetailModel->create([
-                        'ID_CTBAN' => $orderId,
+                        'ID_CTMUA' => $orderId,
                         'ID_HANGHOA' => $item['id'],
-                        'GIABAN' => $giaban,
-                        'SOLUONG' => $soluong
+                        'GIAMUA'      => (float)$item['price'],
+                        'SOLUONG'     => (int)$item['quantity']
                     ]);
                 }
 
                 $this->db->commit();
+                unset($_SESSION['cart'], $_SESSION['cart_total']);
 
-                // Xóa giỏ hàng sau khi đặt hàng thành công
-                unset($_SESSION['cart']);
-                unset($_SESSION['cart_total']);
-                header('Location: index.php?controller=user&action=orders');
+                if ($isAdmin) {
+                    header('Location: index.php?controller=user&action=orders');
+                } else {
+                    header("Location: index.php?controller=user&action=orders");
+                }
                 exit;
+
             } catch (Exception $e) {
-                // Rollback nếu có lỗi
                 if ($this->db->inTransaction()) $this->db->rollBack();
-                $error = 'Lỗi lưu đơn hàng: ' . $e->getMessage();
+                $error = "Lỗi lưu chứng từ: " . $e->getMessage();
                 include ROOT . "/views/client/cart/checkout.php";
                 return;
             }
@@ -108,6 +192,8 @@ class CartController {
 
         include ROOT . "/views/client/cart/checkout.php";
     }
+
+
 
     /**
      * Thêm sản phẩm vào giỏ hàng.
