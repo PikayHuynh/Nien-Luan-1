@@ -26,30 +26,25 @@ class ChungTuBanController {
      * Hiển thị danh sách chứng từ bán hàng với phân trang.
      */
     public function index() {
-        $limit = 10; // Số lượng chứng từ mỗi trang
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
+        require_once ROOT . '/utils/pagination.php';
 
-        $offset = ($page - 1) * $limit;
+        $pag = paginate($this->model, [
+            'limit' => 10,
+            'pageParam' => 'page',
+            'maxPages' => 5,
+            'getMethod' => 'getPaging',
+            'countMethod' => 'countAll',
+        ]);
 
-        // Lấy danh sách chứng từ theo phân trang
-        $data = $this->model->getPaging($limit, $offset);
+        $data = $pag['items'];
+        $totalPages = $pag['totalPages'];
+        $currentPage = $pag['currentPage'];
+        $startPage = $pag['startPage'];
+        $endPage = $pag['endPage'];
 
-        // Tổng số chứng từ
-        $totalProducts = $this->model->countAll();
-        $totalPages = ceil($totalProducts / $limit);
-
-        $maxPages = 5;
-        $currentPage = $page;
-
-        // Tính toán trang bắt đầu và kết thúc cho phân trang
-        $startPage = max(1, $currentPage - floor($maxPages / 2));
-        $endPage = min($totalPages, $startPage + $maxPages - 1);
-
-        // Điều chỉnh nếu không đủ số trang hiển thị
-        if ($endPage - $startPage + 1 < $maxPages) {
-            $startPage = max(1, $endPage - $maxPages + 1);
-        }
+        // expose models to views that need them
+        $khModel = $this->khModel;
+        $hangHoaModel = $this->hangHoaModel;
 
         include ROOT . '/views/admin/chungtuban/list.php';
     }
@@ -110,6 +105,11 @@ class ChungTuBanController {
         $id = $_GET['id'] ?? 0;
         $ct = $this->model->getById($id);
 
+        if (!$ct) {
+            header('Location: index.php?controller=chungtuban&action=index');
+            exit;
+        }
+
         $ctbctModel = new ChungTuBanCT($this->model->getConnection());
         $ctChiTiet = $ctbctModel->getByChungTu($id);
 
@@ -133,8 +133,12 @@ class ChungTuBanController {
             exit;
         }
 
-        $khachHangList = $this->khModel->getAll();
-        $hangHoaList = $this->hangHoaModel->getAll();
+        // load lists for selects; ensure arrays to avoid view errors
+        $khachHangList = $this->khModel->getAll() ?: [];
+        $hangHoaList = $this->hangHoaModel->getAll() ?: [];
+        $ctChiTiet = $ctChiTiet ?: [];
+
+        
         include ROOT . '/views/admin/chungtuban/edit.php';
     }
 

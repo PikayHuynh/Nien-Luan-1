@@ -88,6 +88,7 @@ switch($controllerName) {
         switch($action) {
             case 'index': $controller->index(); break;
             case 'create': $controller->create(); break;
+            case 'edit': $controller->edit(); break;
             case 'detail': $controller->detail(); break;
             case 'delete': $controller->delete(); break;
         }
@@ -98,6 +99,8 @@ switch($controllerName) {
         $controller = new ChungTuBanController($db);
         switch($action) {
             case 'index': $controller->index(); break;
+            case 'create': $controller->create(); break;
+            case 'edit': $controller->edit(); break;
             case 'detail': $controller->detail(); break;
             case 'delete': $controller->delete(); break;
             // case 'create': $controller->create(); break;

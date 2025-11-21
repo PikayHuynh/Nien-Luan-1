@@ -70,7 +70,7 @@ class CartController {
                     'ID_KHACHHANG' => $id_khachhang,
                     'TONGTIENHANG' => $tongtien,
                     'THUE' => 0,
-                    'TRANGTHAI' => 1,
+                    'TRANGTHAI' => "Đang xử lý",
                     'GHICHU' => ''
                 ]);
 

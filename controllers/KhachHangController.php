@@ -19,15 +19,28 @@ class KhachHangController {
      * Hiển thị danh sách khách hàng với phân trang.
      */
     public function index() {
-        // Lấy trang hiện tại
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 10;
-        $offset = ($page - 1) * $limit;
+        require_once ROOT . '/utils/pagination.php';
 
-        // Lấy dữ liệu phân trang
-        $data = $this->model->getAllPaging($offset, $limit);
-        $totalRecords = $this->model->countAll();
-        $totalPages = ceil($totalRecords / $limit);
+        $pag = paginate($this->model, [
+            'limit' => 10,
+            'pageParam' => 'page',
+            'maxPages' => 5,
+            'getMethod' => 'getAllPaging',
+            'countMethod' => 'countAll',
+            'offsetFirst' => true,
+        ]);
+
+        $data = $pag['items'];
+        // Mark which rows are admin so views can hide actions like delete
+        foreach ($data as &$row) {
+            $row['IS_ADMIN'] = $this->model->isAdmin($row['ID_KHACH_HANG']);
+        }
+        unset($row);
+        $totalPages = $pag['totalPages'];
+        $currentPage = $pag['currentPage'];
+        $page = $currentPage; // keep legacy variable used in view
+        $startPage = $pag['startPage'];
+        $endPage = $pag['endPage'];
 
         include ROOT . '/views/admin/khachhang/list.php';
     }
@@ -37,22 +50,31 @@ class KhachHangController {
      * Xử lý form POST để lưu dữ liệu, bao gồm upload hình ảnh, sau đó chuyển hướng.
      */
     public function create() {
+        $error = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hinhanh = null;
-            if (!empty($_FILES['HINHANH']['name'])) {
-                $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
-                if (!is_dir($targetDir)) {
-                    mkdir($targetDir, 0777, true);
-                }
-                $ts = (int) round(microtime(true) * 1000);
-                $original = basename($_FILES['HINHANH']['name']);
-                $hinhanh = $ts . '_' . $original;
-                move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
+            $username = trim($_POST['TEN_KH'] ?? '');
+            // Ensure username is unique
+            if ($username !== '' && $this->model->getByName($username)) {
+                $error = 'Username đã tồn tại!';
             }
-            $_POST['HINHANH'] = $hinhanh;
-            $this->model->create($_POST);
-            header('Location: index.php?controller=khachhang&action=index');
-            exit;
+
+            if ($error === '') {
+                if (!empty($_FILES['HINHANH']['name'])) {
+                    $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                    if (!is_dir($targetDir)) {
+                        mkdir($targetDir, 0777, true);
+                    }
+                    $ts = (int) round(microtime(true) * 1000);
+                    $original = basename($_FILES['HINHANH']['name']);
+                    $hinhanh = $ts . '_' . $original;
+                    move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
+                }
+                $_POST['HINHANH'] = $hinhanh;
+                $this->model->create($_POST);
+                header('Location: index.php?controller=khachhang&action=index');
+                exit;
+            }
         }
         include ROOT . '/views/admin/khachhang/create.php';
     }
@@ -65,22 +87,42 @@ class KhachHangController {
         $id = $_GET['id'] ?? 0;
         $khachHang = $this->model->getById($id);
 
+        // mark admin status for view and logic
+        $khachHang['IS_ADMIN'] = $this->model->isAdmin($id);
+        $error = '';
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hinhanh = $khachHang['HINHANH'];
-            if (!empty($_FILES['HINHANH']['name'])) {
-                $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
-                if (!is_dir($targetDir)) {
-                    mkdir($targetDir, 0777, true);
+
+            // If this account is admin, do not allow changing the username
+            if (!empty($khachHang['IS_ADMIN'])) {
+                $_POST['TEN_KH'] = $khachHang['TEN_KH'];
+            } else {
+                $newUsername = trim($_POST['TEN_KH'] ?? '');
+                if ($newUsername !== '' && $newUsername !== $khachHang['TEN_KH']) {
+                    $existing = $this->model->getByName($newUsername);
+                    if ($existing && $existing['ID_KHACH_HANG'] != $id) {
+                        $error = 'Username đã tồn tại!';
+                    }
                 }
-                $ts = (int) round(microtime(true) * 1000);
-                $original = basename($_FILES['HINHANH']['name']);
-                $hinhanh = $ts . '_' . $original;
-                move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
             }
-            $_POST['HINHANH'] = $hinhanh;
-            $this->model->update($id, $_POST);
-            header('Location: index.php?controller=khachhang&action=index');
-            exit;
+
+            if ($error === '') {
+                if (!empty($_FILES['HINHANH']['name'])) {
+                    $targetDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+                    if (!is_dir($targetDir)) {
+                        mkdir($targetDir, 0777, true);
+                    }
+                    $ts = (int) round(microtime(true) * 1000);
+                    $original = basename($_FILES['HINHANH']['name']);
+                    $hinhanh = $ts . '_' . $original;
+                    move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $hinhanh);
+                }
+                $_POST['HINHANH'] = $hinhanh;
+                $this->model->update($id, $_POST);
+                header('Location: index.php?controller=khachhang&action=index');
+                exit;
+            }
         }
 
         include ROOT . '/views/admin/khachhang/edit.php';
@@ -100,11 +142,17 @@ class KhachHangController {
      */
     public function delete() {
         $id = $_GET['id'] ?? 0;
+        // Prevent deleting admin accounts
+        if ($this->model->isAdmin($id)) {
+            echo "<div class='container mt-4'><div class='alert alert-danger'>Không thể xóa tài khoản quản trị (admin).</div></div>";
+            exit;
+        }
+
         try {
             $this->model->delete($id);
             header('Location: index.php?controller=khachhang&action=index');
         } catch (Exception $e) {
-            echo "<div class='alert alert-danger'>".$e->getMessage()."</div>";
+            echo "<div class='container mt-4'><div class='alert alert-danger'>".$e->getMessage()."</div></div>";
         }
         exit;
     }

@@ -39,8 +39,8 @@
                 <tr>
                     <td><?= $hh['TENHANGHOA'] ?? 'Không tồn tại' ?></td>
                     <td><?= $item['SOLUONG'] ?></td>
-                    <td><?= number_format($item['GIABAN']) ?> VND</td>
-                    <td><?= number_format($item['THANHTIEN']) ?> VND</td>
+                    <td><?= number_format($item['GIABAN'] ?? 0) ?> VND</td>
+                    <td><?= number_format($item['THANHTIEN'] ?? 0) ?> VND</td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

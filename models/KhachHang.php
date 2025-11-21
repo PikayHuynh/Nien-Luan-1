@@ -82,6 +82,11 @@ class KhachHang {
     }
 
     public function delete($id) {
+        // Prevent deleting admin accounts at model level as well
+        if ($this->isAdmin($id)) {
+            throw new Exception("Không thể xóa tài khoản quản trị (admin).");
+        }
+
         try {
             $this->conn->beginTransaction();
 
@@ -123,9 +128,12 @@ class KhachHang {
 
     // Kiểm tra admin
     public function isAdmin($idKH) {
-        $stmt = $this->conn->prepare("SELECT * FROM KHACH_HANG WHERE ID_KHACH_HANG = :id AND TEN_KH = 'admin'");
+        $stmt = $this->conn->prepare("SELECT TEN_KH, SOB FROM KHACH_HANG WHERE ID_KHACH_HANG = :id");
         $stmt->execute(['id' => $idKH]);
-        return $stmt->fetch() ? true : false;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) return false;
+        // Consider user admin if explicit role SOB='admin' or username is 'admin'
+        return (isset($row['SOB']) && strtolower($row['SOB']) === 'admin') || (isset($row['TEN_KH']) && strtolower($row['TEN_KH']) === 'admin');
     }
 
 }

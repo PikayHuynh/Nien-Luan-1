@@ -28,30 +28,21 @@ class ChungTuMuaController {
      * Hiển thị danh sách chứng từ mua hàng với phân trang.
      */
     public function index() {
-        $limit = 10; // Số lượng chứng từ mỗi trang
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
+        require_once ROOT . '/utils/pagination.php';
 
-        $offset = ($page - 1) * $limit;
+        $pag = paginate($this->model, [
+            'limit' => 10,
+            'pageParam' => 'page',
+            'maxPages' => 5,
+            'getMethod' => 'getPaging',
+            'countMethod' => 'countAll',
+        ]);
 
-        // Lấy danh sách chứng từ theo phân trang
-        $data = $this->model->getPaging($limit, $offset);
-
-        // Tổng số chứng từ
-        $totalProducts = $this->model->countAll();
-        $totalPages = ceil($totalProducts / $limit);
-
-        $maxPages = 5;
-        $currentPage = $page;
-
-        // Tính toán trang bắt đầu và kết thúc cho phân trang
-        $startPage = max(1, $currentPage - floor($maxPages / 2));
-        $endPage = min($totalPages, $startPage + $maxPages - 1);
-
-        // Điều chỉnh nếu không đủ số trang hiển thị
-        if ($endPage - $startPage + 1 < $maxPages) {
-            $startPage = max(1, $endPage - $maxPages + 1);
-        }
+        $data = $pag['items'];
+        $totalPages = $pag['totalPages'];
+        $currentPage = $pag['currentPage'];
+        $startPage = $pag['startPage'];
+        $endPage = $pag['endPage'];
 
         include ROOT . '/views/admin/chungtumua/list.php';
     }
@@ -103,8 +94,12 @@ class ChungTuMuaController {
             exit;
         }
 
-        $kh = $this->khModel->getAll();
-        $hh = $this->hhModel->getAll();
+        // load related lists and detail items; ensure arrays to avoid view errors
+        $kh = $this->khModel->getAll() ?: [];
+        $hh = $this->hhModel->getAll() ?: [];
+        $ctmct = $this->ctctModel->getByCTMua($id) ?: [];
+
+        
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -116,6 +111,22 @@ class ChungTuMuaController {
             ];
 
             $this->model->update($id, $data);
+
+            // If item arrays provided, replace details
+            if (!empty($_POST['ID_HANGHOA']) && is_array($_POST['ID_HANGHOA'])) {
+                $this->ctctModel->deleteByChungTu($id);
+                foreach ($_POST['ID_HANGHOA'] as $i => $idHH) {
+                    $soluong = $_POST['SOLUONG'][$i] ?? 0;
+                    $dongia = $_POST['DONGIA'][$i] ?? ($_POST['GIABAN'][$i] ?? 0);
+                    $this->ctctModel->create([
+                        'ID_CTMUA' => $id,
+                        'ID_HANGHOA' => $idHH,
+                        'SOLUONG' => $soluong,
+                        'DONGIA' => $dongia
+                    ]);
+                }
+            }
+
             header('Location: index.php?controller=chungtumua&action=detail&id=' . $id);
             exit;
         }

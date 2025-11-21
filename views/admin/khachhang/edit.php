@@ -4,9 +4,15 @@
 <h1><?= isset($khachHang) ? "Sửa" : "Thêm mới" ?> Khách Hàng</h1>
 
 <form method="POST" enctype="multipart/form-data">
+  <?php if(!empty($error)): ?>
+    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+  <?php endif; ?>
   <div class="mb-3">
     <label>Tên KH</label>
-    <input type="text" class="form-control" name="TEN_KH" value="<?= $khachHang['TEN_KH'] ?? '' ?>" required>
+    <input type="text" class="form-control" name="TEN_KH" value="<?= $khachHang['TEN_KH'] ?? '' ?>" required <?= (!empty($khachHang['IS_ADMIN']) ? 'disabled' : '') ?> >
+    <?php if(!empty($khachHang['IS_ADMIN'])): ?>
+      <div class="form-text">Tài khoản admin không thể đổi tên.</div>
+    <?php endif; ?>
   </div>
   <div class="mb-3">
     <label>Địa chỉ</label>

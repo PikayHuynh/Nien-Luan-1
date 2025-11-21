@@ -23,6 +23,7 @@
             <td><?= $ctm['TONGCONG'] ?></td>
             <td>
                 <a href="index.php?controller=chungtumua&action=detail&id=<?= $ctm['ID_CTMUA'] ?>" class="btn btn-info btn-sm">Xem</a>
+                <a href="index.php?controller=chungtumua&action=edit&id=<?= $ctm['ID_CTMUA'] ?>" class="btn btn-warning btn-sm">Sửa</a>
                 <a href="index.php?controller=chungtumua&action=delete&id=<?= $ctm['ID_CTMUA'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
             </td>
         </tr>

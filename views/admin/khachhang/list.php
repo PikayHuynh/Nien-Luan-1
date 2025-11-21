@@ -1,9 +1,17 @@
 <?php include ROOT . '/views/admin/layouts/header.php'; ?>
 <?php include ROOT . '/views/admin/layouts/sidebar.php'; ?>
 
-<h2 class="mb-4">Danh Sách Khách Hàng</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Danh Sách Khách Hàng</h2>
+    <a href="index.php?controller=khachhang&action=create" class="btn btn-sm btn-success rounded-pill d-inline-flex align-items-center" style="gap:.5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+        <span class="d-none d-sm-inline">Tạo mới</span>
+    </a>
+</div>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>ID</th>
@@ -31,7 +39,9 @@
             <td>
                 <a href="index.php?controller=khachhang&action=detail&id=<?= $kh['ID_KHACH_HANG'] ?>" class="btn btn-sm btn-info">Xem</a>
                 <a href="index.php?controller=khachhang&action=edit&id=<?= $kh['ID_KHACH_HANG'] ?>" class="btn btn-sm btn-warning">Sửa</a>
-                <a href="index.php?controller=khachhang&action=delete&id=<?= $kh['ID_KHACH_HANG'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                <?php if (empty($kh['IS_ADMIN'])): ?>
+                    <a href="index.php?controller=khachhang&action=delete&id=<?= $kh['ID_KHACH_HANG'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                <?php endif; ?>
             </td>
         </tr>
         <?php endforeach; ?>

@@ -25,7 +25,7 @@
                 <td><?= $ct['NGAYDATHANG'] ?></td>
                 <td>
                     <?php 
-                    $kh = $this->khModel->getById($ct['ID_KHACHHANG']);
+                    $kh = $khModel->getById($ct['ID_KHACHHANG'] ?? 0);
                     echo $kh['TEN_KH'] ?? '';
                     ?>
                 </td>
@@ -35,6 +35,7 @@
                 <td><?= $ct['TRANGTHAI'] ?></td>
                 <td>
                     <a href="index.php?controller=chungtuban&action=detail&id=<?= $ct['ID_CTBAN'] ?>" class="btn btn-sm btn-info">Xem chi tiết</a>
+                    <a href="index.php?controller=chungtuban&action=edit&id=<?= $ct['ID_CTBAN'] ?>" class="btn btn-sm btn-warning">Sửa</a>
                     <a href="index.php?controller=chungtuban&action=delete&id=<?= $ct['ID_CTBAN'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa không?')">Xóa</a>
                 </td>
             </tr>

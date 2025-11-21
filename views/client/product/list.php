@@ -16,6 +16,9 @@ include ROOT . '/views/client/layouts/navbar.php';
                     <?php 
                     // Build URL that preserves price, feature, search when clicking 'All'
                     $clearCatUrl = "index.php?controller=product&action=list";
+                    if (isset($_GET['use_algo']) && $_GET['use_algo'] == '1') {
+                        $clearCatUrl .= "&use_algo=1";
+                    }
                     if (isset($_GET['price']) && $_GET['price']) {
                         $clearCatUrl .= "&price=" . urlencode($_GET['price']);
                     }
@@ -35,6 +38,9 @@ include ROOT . '/views/client/layouts/navbar.php';
                         <?php
                         // Build URL that preserves price, feature, search when clicking a category
                         $catUrl = "index.php?controller=product&action=list&id_phanloai=" . $phanloai['ID_PHANLOAI'];
+                        if (isset($_GET['use_algo']) && $_GET['use_algo'] == '1') {
+                            $catUrl .= "&use_algo=1";
+                        }
                         if (isset($_GET['price']) && $_GET['price']) {
                             $catUrl .= "&price=" . urlencode($_GET['price']);
                         }
@@ -72,6 +78,9 @@ include ROOT . '/views/client/layouts/navbar.php';
 
                         foreach ($ranges as $key => $label):
                             $priceUrl = "index.php?controller=product&action=list&price=$key";
+                            if (isset($_GET['use_algo']) && $_GET['use_algo'] == '1') {
+                                $priceUrl .= "&use_algo=1";
+                            }
 
                             if (!empty($_GET['id_phanloai'])) {
                                 $priceUrl .= "&id_phanloai=" . (int)$_GET['id_phanloai'];
@@ -91,6 +100,9 @@ include ROOT . '/views/client/layouts/navbar.php';
                         <?php
                         // Build URL that clears price but preserves category, feature, search
                         $clearPriceUrl = "index.php?controller=product&action=list";
+                        if (isset($_GET['use_algo']) && $_GET['use_algo'] == '1') {
+                            $clearPriceUrl .= "&use_algo=1";
+                        }
                         if (isset($id_phanloai) && $id_phanloai !== null) {
                             $clearPriceUrl .= "&id_phanloai=" . (int)$id_phanloai;
                         }
@@ -122,6 +134,9 @@ include ROOT . '/views/client/layouts/navbar.php';
                     <input type="hidden" name="price" value="<?= htmlspecialchars($_GET['price']) ?>">
                 <?php endif; ?>
                 <div class="input-group">
+                    <?php if (isset($_GET['use_algo']) && $_GET['use_algo'] == '1'): ?>
+                        <input type="hidden" name="use_algo" value="1">
+                    <?php endif; ?>
                     <input type="text" name="q" class="form-control" placeholder="Tìm sản phẩm..." value="<?= $currentQ ?>">
                     <button class="btn btn-outline-secondary" type="submit">Tìm</button>
                     <?php if ($currentQ !== ''): ?>
@@ -129,11 +144,57 @@ include ROOT . '/views/client/layouts/navbar.php';
                             echo (isset($id_phanloai) && $id_phanloai !== null) ? '&id_phanloai=' . (int)$id_phanloai : '';
                             echo (isset($_GET['feature']) && $_GET['feature']) ? '&feature=' . urlencode($_GET['feature']) : '';
                             echo (isset($_GET['price']) && $_GET['price']) ? '&price=' . urlencode($_GET['price']) : '';
+                            echo (isset($_GET['use_algo']) && $_GET['use_algo'] == '1') ? '&use_algo=1' : '';
                         ?>">Xóa</a>
                     <?php endif; ?>
                 </div>
             </form>
             <h2>Sản phẩm</h2>
+            <?php if (!empty($useAlgo) && isset($_SESSION['user_name']) && $_SESSION['user_name'] === 'admin'): ?>
+                <?php
+                    $parts = [];
+                    if ($dbFetchTimeMs !== null) {
+                        $parts[] = 'Thời gian truy vấn CSDL: <strong>' . htmlspecialchars(number_format(((float)$dbFetchTimeMs) / 1000, 3)) . ' s</strong>';
+                    }
+                    if ($algoSearchTimeMs !== null) {
+                        $parts[] = 'search: <strong>' . htmlspecialchars(number_format(((float)$algoSearchTimeMs) / 1000, 3)) . ' s</strong>';
+                    }
+                    if ($algoSortTimeMs !== null) {
+                        $parts[] = 'Sort: <strong>' . htmlspecialchars(number_format(((float)$algoSortTimeMs) / 1000, 3)) . ' s</strong>';
+                    }
+                ?>
+                <?php if (!empty($parts)): ?>
+                    <div class="alert alert-info py-2">
+                        <strong>Algorithm mode:</strong>
+                        &nbsp;<?php echo implode('&nbsp;|&nbsp;', $parts); ?>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if (!$useAlgo && isset($dbFetchTimeMs) && isset($_SESSION['user_name']) && $_SESSION['user_name'] === 'admin'): ?>
+                <?php
+                    $dbParts = [];
+                    $formattedDbTime = htmlspecialchars(number_format(((float)$dbFetchTimeMs) / 1000, 3));
+                    if (!empty($q)) {
+                        $dbParts[] = 'Thời gian tìm kiếm : <strong>' . $formattedDbTime . ' s</strong>';
+                    }
+                    if (!empty($sortPrice) && ($sortPrice === 'price_asc' || $sortPrice === 'price_desc')) {
+                        $dbParts[] = 'Thời gian sắp xếp: <strong>' . $formattedDbTime . ' s</strong>';
+                    }
+                    if (empty($dbParts)) {
+                        $dbParts[] = 'Thời gian truy vấn CSDL: <strong>' . $formattedDbTime . ' s</strong>';
+                    }
+                ?>
+                <div class="alert alert-info py-2">
+                    <strong>Chế độ DB:</strong>
+                    &nbsp;<?php echo implode('&nbsp;|&nbsp;', $dbParts); ?>
+                </div>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['user_name']) && $_SESSION['user_name'] === 'admin' && !empty($_GET['debug']) && $_GET['debug'] == '1'): ?>
+                <div class="alert alert-secondary">
+                    <strong>Debug:</strong>
+                    <pre style="white-space:pre-wrap;font-size:12px"><?php echo htmlspecialchars(print_r($debugInfo, true)); ?></pre>
+                </div>
+            <?php endif; ?>
             <?php if (!empty($_GET['feature'])):
                 $feature = $_GET['feature'];
                 $featureMap = [

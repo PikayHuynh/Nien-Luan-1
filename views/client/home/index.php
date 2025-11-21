@@ -90,9 +90,9 @@
                     <div class="card featured-product-card h-100">
                         <div class="product-image-wrapper">
                             <?php if (!empty($product['HINHANH'])): ?>
-                                <img src="<?php echo htmlspecialchars($product['HINHANH']); ?>" 
-                                     alt="<?php echo htmlspecialchars($product['TENHANGHOA']); ?>"
-                                     class="featured-product-image">
+                                <img src="upload/<?php echo htmlspecialchars($product['HINHANH']); ?>" 
+                                        alt="<?php echo htmlspecialchars($product['TENHANGHOA']); ?>"
+                                        class="featured-product-image">
                             <?php else: ?>
                                 <div class="preview-thumb">📦</div>
                             <?php endif; ?>

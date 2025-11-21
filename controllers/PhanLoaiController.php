@@ -19,30 +19,21 @@ class PhanLoaiController {
      * Hiển thị danh sách phân loại với phân trang.
      */
     public function index() {
-        $limit = 10; // Số lượng phân loại mỗi trang
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
+        require_once ROOT . '/utils/pagination.php';
 
-        $offset = ($page - 1) * $limit;
+        $pag = paginate($this->model, [
+            'limit' => 10,
+            'pageParam' => 'page',
+            'maxPages' => 5,
+            'getMethod' => 'getPaging',
+            'countMethod' => 'countAll',
+        ]);
 
-        // Lấy danh sách phân loại theo phân trang
-        $data = $this->model->getPaging($limit, $offset);
-
-        // Tổng số phân loại
-        $totalProducts = $this->model->countAll();
-        $totalPages = ceil($totalProducts / $limit);
-
-        $maxPages = 5;
-        $currentPage = $page;
-
-        // Tính toán trang bắt đầu và kết thúc cho phân trang
-        $startPage = max(1, $currentPage - floor($maxPages / 2));
-        $endPage = min($totalPages, $startPage + $maxPages - 1);
-
-        // Điều chỉnh nếu không đủ số trang hiển thị
-        if ($endPage - $startPage + 1 < $maxPages) {
-            $startPage = max(1, $endPage - $maxPages + 1);
-        }
+        $data = $pag['items'];
+        $totalPages = $pag['totalPages'];
+        $currentPage = $pag['currentPage'];
+        $startPage = $pag['startPage'];
+        $endPage = $pag['endPage'];
 
         include ROOT . '/views/admin/phanloai/list.php';
     }
