@@ -50,12 +50,27 @@ class ChungTuBan {
     }
 
     public function create($data) {
-        $stmt = $this->conn->prepare("INSERT INTO $this->table (MASOCT, NGAYDATHANG, ID_KHACHHANG, TONGTIENHANG, THUE, TRANGTHAI, GHICHU)
-            VALUES (?, ?, ?, ?, ?, ?, ?)");
+        // $stmt = $this->conn->prepare("INSERT INTO $this->table (MASOCT, NGAYDATHANG, ID_KHACHHANG, TONGTIENHANG, THUE, TRANGTHAI, GHICHU)
+        //     VALUES (?, ?, ?, ?, ?, ?, ?)");
+        // $stmt->execute([
+        //     $data['MASOCT'], $data['NGAYDATHANG'], $data['ID_KHACHHANG'],
+        //     $data['TONGTIENHANG'], $data['THUE'], $data['TRANGTHAI'], $data['GHICHU']
+        // ]);
+        // return $this->conn->lastInsertId();
+
+        $stmt = $this->conn->prepare(
+            "INSERT INTO $this->table (MASOCT, NGAYDATHANG, ID_KHACHHANG, TONGTIENHANG, THUE, TRANGTHAI)
+            VALUES (:MASOCT, :NGAYDATHANG, :ID_KHACHHANG, :TONGTIENHANG, :THUE, :TRANGTHAI)"
+        );
         $stmt->execute([
-            $data['MASOCT'], $data['NGAYDATHANG'], $data['ID_KHACHHANG'],
-            $data['TONGTIENHANG'], $data['THUE'], $data['TRANGTHAI'], $data['GHICHU']
+            'MASOCT' => $data['MASOCT'],
+            'NGAYDATHANG'  => $data['NGAYDATHANG'],
+            'ID_KHACHHANG' => $data['ID_KHACHHANG'],
+            'TONGTIENHANG' => $data['TONGTIENHANG'],
+            'THUE' => $data['THUE'],
+            'TRANGTHAI' => $data['TRANGTHAI'] ?? 'Đang xử lý'  // mặc định
         ]);
+
         return $this->conn->lastInsertId();
     }
 

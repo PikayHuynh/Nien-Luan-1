@@ -9,10 +9,10 @@
     <?php else: ?>
         <div class="card mb-3">
             <div class="card-body">
-                <p><strong>Mã chứng từ:</strong> <?= htmlspecialchars($order['MASOCT']) ?></p>
-                <p><strong>Ngày đặt:</strong> <?= htmlspecialchars($order['NGAYDATHANG']) ?></p>
-                <p><strong>Tổng tiền:</strong> <?= number_format($order['TONGCONG'] ?? $order['TONGTIENHANG'] ?? 0) ?> VND</p>
-                <p><strong>Trạng thái:</strong> <?= htmlspecialchars($order['TRANGTHAI']) ?></p>
+                <p><strong>Mã chứng từ:</strong> <?= htmlspecialchars((string)($order['MASOCT'] ?? '')) ?></p>
+                <p><strong>Ngày đặt:</strong> <?= htmlspecialchars((string)($order['NGAYDATHANG'] ?? '')) ?></p>
+                <p><strong>Tổng tiền:</strong> <?= number_format((float)($order['TONGCONG'] ?? $order['TONGTIENHANG'] ?? 0)) ?> VND</p>
+                <p><strong>Trạng thái:</strong> <?= htmlspecialchars((string)($order['TRANGTHAI'] ?? '')) ?></p>
             </div>
         </div>
 
@@ -31,11 +31,14 @@
                 <?php foreach ($items as $it): ?>
                     <tr>
                         <td><?= htmlspecialchars($it['ID_HANGHOA']) ?></td>
-                        <td><?= number_format($it['GIABAN'] ?? $it['GIABAN']) ?> VND</td>
+                        <td><?= number_format((float)($it['GIABAN'] ?? 0)) ?> VND</td>
                         <td><?= (int)($it['SOLUONG'] ?? 0) ?></td>
-                        <td><?= number_format($it['THANHTIEN'] ?? ($it['GIABAN'] * ($it['SOLUONG'] ?? 0))) ?> VND</td>
+                        <td><?= number_format((float)(($it['THANHTIEN'] ?? 0))) ?> VND</td>
                     </tr>
-                    <?php $sum += ($it['THANHTIEN'] ?? (($it['GIABAN'] ?? 0) * ($it['SOLUONG'] ?? 0))); ?>
+
+                    <?php 
+                    $sum += (float)($it['THANHTIEN'] ?? (($it['GIAMUA'] ?? 0) * ($it['SOLUONG'] ?? 0))); 
+                    ?>
                 <?php endforeach; ?>
             </tbody>
         </table>

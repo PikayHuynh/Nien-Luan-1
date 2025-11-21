@@ -109,89 +109,177 @@ class CartController {
     //     include ROOT . "/views/client/cart/checkout.php";
     // }
 
+    // public function checkout() {
+    //     if (!isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
+    //         header("Location: index.php?controller=user&action=login");
+    //         exit;
+    //     }
+
+    //     $cart = $_SESSION['cart'] ?? [];
+    //     $total = $this->recalcCart();
+
+    //     if (empty($cart)) {
+    //         header("Location: index.php?controller=cart&action=index");
+    //         exit;
+    //     }
+
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         $id_khachhang = $_SESSION['user_id'] ?? ($_SESSION['user']['ID_KHACH_HANG'] ?? null);
+
+    //         require_once ROOT . '/models/KhachHang.php';
+    //         $khModel = new KhachHang($this->db);
+    //         $isAdmin = $khModel->isAdmin($id_khachhang);
+
+    //         if ($isAdmin) {
+    //             require_once ROOT . '/models/ChungTuMua.php';
+    //             require_once ROOT . '/models/ChungTuMuaCT.php';
+    //             $orderModel = new ChungTuMua($this->db);
+    //             $orderDetailModel = new ChungTuMuaCT($this->db);
+    //             $masoct = 'CTM-' . time();
+    //         } else {
+    //             require_once ROOT . '/models/ChungTuBan.php';
+    //             require_once ROOT . '/models/ChungTuBanCT.php';
+    //             $orderModel = new ChungTuBan($this->db);
+    //             $orderDetailModel = new ChungTuBanCT($this->db);
+    //             $masoct = 'CTB-' . time();
+    //         }
+
+    //         $ngayphatsinh = date('Y-m-d H:i:s');
+    //         $tongtien = $_SESSION['cart_total'] ?? $total;
+
+    //         $columnNgay = $isAdmin ? 'NGAYPHATSINH' : 'NGAYDATHANG';
+    //         try {
+    //             $this->db->beginTransaction();
+
+    //             $orderId = $orderModel->create([
+    //                 'MASOCT' => $masoct,
+    //                 $columnNgay => $ngayphatsinh,
+    //                 'ID_KHACHHANG' => $id_khachhang,
+    //                 'TONGTIENHANG' => $tongtien,
+    //                 'THUE' => 0,
+    //                 'TRANGTHAI' => 'Đang xử lý'
+    //             ]);
+
+    //             if (!$orderId) throw new Exception("Tạo chứng từ thất bại.");
+
+    //             foreach ($cart as $item) {
+    //                 if (!isset($item['id'], $item['price'], $item['quantity'])) {
+    //                     continue; // bỏ qua item không đầy đủ
+    //                 }
+    //                 $orderDetailModel->create([
+    //                     'ID_CTMUA' => $orderId,
+    //                     'ID_HANGHOA' => $item['id'],
+    //                     'GIAMUA'      => (float)$item['price'],
+    //                     'SOLUONG'     => (int)$item['quantity']
+    //                 ]);
+    //             }
+
+    //             $this->db->commit();
+    //             unset($_SESSION['cart'], $_SESSION['cart_total']);
+
+    //             if ($isAdmin) {
+    //                 header('Location: index.php?controller=user&action=orders');
+    //             } else {
+    //                 header("Location: index.php?controller=user&action=orders");
+    //             }
+    //             exit;
+
+    //         } catch (Exception $e) {
+    //             if ($this->db->inTransaction()) $this->db->rollBack();
+    //             $error = "Lỗi lưu chứng từ: " . $e->getMessage();
+    //             include ROOT . "/views/client/cart/checkout.php";
+    //             return;
+    //         }
+    //     }
+
+    //     include ROOT . "/views/client/cart/checkout.php";
+    // }
+
     public function checkout() {
-        if (!isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
+        $this->db->beginTransaction();
+        $id_khachhang = $_SESSION['user_id'] ?? ($_SESSION['user']['ID_KHACH_HANG'] ?? null);
+
+        // Kiểm tra login
+        if (!$id_khachhang) {
             header("Location: index.php?controller=user&action=login");
             exit;
         }
 
         $cart = $_SESSION['cart'] ?? [];
-        $total = $this->recalcCart();
-
         if (empty($cart)) {
             header("Location: index.php?controller=cart&action=index");
             exit;
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id_khachhang = $_SESSION['user_id'] ?? ($_SESSION['user']['ID_KHACH_HANG'] ?? null);
+        $tongtien = $_SESSION['cart_total'] ?? $this->recalcCart();
+        $ngaydathang = date('Y-m-d H:i:s');
 
-            require_once ROOT . '/models/KhachHang.php';
-            $khModel = new KhachHang($this->db);
-            $isAdmin = $khModel->isAdmin($id_khachhang);
+        require_once ROOT . '/models/KhachHang.php';
+        $khModel = new KhachHang($this->db);
+        $isAdmin = $khModel->isAdmin($id_khachhang);
 
-            if ($isAdmin) {
-                require_once ROOT . '/models/ChungTuMua.php';
-                require_once ROOT . '/models/ChungTuMuaCT.php';
-                $orderModel = new ChungTuMua($this->db);
-                $orderDetailModel = new ChungTuMuaCT($this->db);
-                $masoct = 'CTM-' . time();
-            } else {
-                require_once ROOT . '/models/ChungTuBan.php';
-                require_once ROOT . '/models/ChungTuBanCT.php';
-                $orderModel = new ChungTuBan($this->db);
-                $orderDetailModel = new ChungTuBanCT($this->db);
-                $masoct = 'CTB-' . time();
+        // ================== ADMIN ==================
+        if ($isAdmin) {
+            require_once ROOT . '/models/ChungTuMua.php';
+            require_once ROOT . '/models/ChungTuMuaCT.php';
+
+            $orderModel = new ChungTuMua($this->db);
+            $orderDetailModel = new ChungTuMuaCT($this->db);
+            $masoct = 'CTM-' . time();
+
+            $orderId = $orderModel->create([
+                'MASOCT'       => $masoct,
+                'NGAYPHATSINH' => $ngaydathang,
+                'ID_KHACHHANG' => $id_khachhang,
+                'TONGTIENHANG' => $tongtien,
+                'THUE'         => 0,
+                'TRANGTHAI'    => 'Đang xử lý'
+            ]);
+
+            foreach ($cart as $item) {
+                $orderDetailModel->create([
+                    'ID_CTMUA'    => $orderId,
+                    'ID_HANGHOA'  => $item['id'],
+                    'GIAMUA'      => (float)$item['price'],
+                    'SOLUONG'     => (int)$item['quantity']
+                ]);
             }
 
-            $ngayphatsinh = date('Y-m-d H:i:s');
-            $tongtien = $_SESSION['cart_total'] ?? $total;
+        } else {
+            // ================== USER ==================
+            require_once ROOT . '/models/ChungTuBan.php';
+            require_once ROOT . '/models/ChungTuBanCT.php';
 
-            try {
-                $this->db->beginTransaction();
+            $orderModel = new ChungTuBan($this->db);
+            $orderDetailModel = new ChungTuBanCT($this->db);
+            $masoct = 'CTB-' . time();
 
-                $orderId = $orderModel->create([
-                    'MASOCT' => $masoct,
-                    'NGAYPHATSINH' => $ngayphatsinh,
-                    'ID_KHACHHANG' => $id_khachhang,
-                    'TONGTIENHANG' => $tongtien,
-                    'THUE' => 0
+            $orderId = $orderModel->create([
+                'MASOCT'      => $masoct,
+                'NGAYDATHANG' => $ngaydathang,
+                'ID_KHACHHANG'=> $id_khachhang,
+                'TONGTIENHANG'=> $tongtien,
+                'THUE'        => 0,
+                'TRANGTHAI'   => 'Đang xử lý',
+                'GHICHU'      => ''
+            ]);
+
+            foreach ($cart as $item) {
+                $orderDetailModel->create([
+                    'ID_CTBAN'    => $orderId,
+                    'ID_HANGHOA'  => $item['id'],
+                    'GIABAN'      => (float)$item['price'],
+                    'SOLUONG'     => (int)$item['quantity']
                 ]);
-
-                if (!$orderId) throw new Exception("Tạo chứng từ thất bại.");
-
-                foreach ($cart as $item) {
-                    if (!isset($item['id'], $item['price'], $item['quantity'])) {
-                        continue; // bỏ qua item không đầy đủ
-                    }
-                    $orderDetailModel->create([
-                        'ID_CTMUA' => $orderId,
-                        'ID_HANGHOA' => $item['id'],
-                        'GIAMUA'      => (float)$item['price'],
-                        'SOLUONG'     => (int)$item['quantity']
-                    ]);
-                }
-
-                $this->db->commit();
-                unset($_SESSION['cart'], $_SESSION['cart_total']);
-
-                if ($isAdmin) {
-                    header('Location: index.php?controller=user&action=orders');
-                } else {
-                    header("Location: index.php?controller=user&action=orders");
-                }
-                exit;
-
-            } catch (Exception $e) {
-                if ($this->db->inTransaction()) $this->db->rollBack();
-                $error = "Lỗi lưu chứng từ: " . $e->getMessage();
-                include ROOT . "/views/client/cart/checkout.php";
-                return;
             }
         }
 
-        include ROOT . "/views/client/cart/checkout.php";
+        $this->db->commit();
+        unset($_SESSION['cart'], $_SESSION['cart_total']);
+        header('Location: index.php?controller=user&action=orders');
+        exit;
     }
+
 
 
 
