@@ -1,0 +1,11 @@
+http://localhost/Nienluan1 : trang chủ
+http://localhost/Nienluan1/index.php?controller=product&action=list : trang sản phẩm
+http://localhost/Nienluan1/index.php?controller=product&action=detail&id=? : trang chi tiết sản phẩm
+http://localhost/Nienluan1/index.php?controller=dashboard&action=index : dashboard admin
+http://localhost/Nienluan1/index.php?controller=khachhang&action=index : khách hành admin
+http://localhost/Nienluan1/index.php?controller=phanloai&action=index : Phân loại admin
+http://localhost/Nienluan1/index.php?controller=hanghoa&action=index : Hàng hóa admin
+http://localhost/Nienluan1/index.php?controller=thuoctinh&action=index : Thuộc tính admin
+http://localhost/Nienluan1/index.php?controller=dongiaban&action=index : Đơn giá bán admin
+http://localhost/Nienluan1/index.php?controller=chungtumua&action=index : Chứng từ mua admin
+http://localhost/Nienluan1/index.php?controller=chungtuban&action=index : Chứng từ bán admin
