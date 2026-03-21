@@ -39,9 +39,9 @@ class HangHoa
 
         $sql = "
             SELECT 
-                h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH, h.NGAYTAO, h.GIAGOC, h.SOLUONG,
+                h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH, h.NGAYTAO, h.GIAGOC, h.SOLUONG, h.DONGIA_BAN,
                 p.TENPHANLOAI,
-                d.GIATRI AS DONGIA,
+                COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) 
                  FROM CHUNG_TU_BAN_CT ct 
                  JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN 
@@ -99,9 +99,9 @@ class HangHoa
 
         $sql = "
             SELECT 
-                h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH, h.NGAYTAO, h.GIAGOC, h.SOLUONG,
+                h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH, h.NGAYTAO, h.GIAGOC, h.SOLUONG, h.DONGIA_BAN,
                 p.TENPHANLOAI,
-                d.GIATRI AS DONGIA,
+                COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) 
                  FROM CHUNG_TU_BAN_CT ct 
                  JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN 
@@ -124,7 +124,7 @@ class HangHoa
         }
 
         if ($minPrice !== null && $maxPrice !== null) {
-            $where[] = "d.GIATRI BETWEEN :minPrice AND :maxPrice";
+            $where[] = "COALESCE(d.GIATRI, h.DONGIA_BAN) BETWEEN :minPrice AND :maxPrice";
             $params[':minPrice'] = (int) $minPrice;
             $params[':maxPrice'] = (int) $maxPrice;
         }
@@ -140,11 +140,11 @@ class HangHoa
 
         // ------------------ ORDER ------------------
         if ($sortPrice === 'price_asc') {
-            $order = "d.GIATRI ASC";
+            $order = "COALESCE(d.GIATRI, h.DONGIA_BAN) ASC";
         } elseif ($sortPrice === 'price_desc') {
-            $order = "d.GIATRI DESC";
+            $order = "COALESCE(d.GIATRI, h.DONGIA_BAN) DESC";
         } elseif ($feature === 'promo') {
-            $order = "d.GIATRI ASC";
+            $order = "COALESCE(d.GIATRI, h.DONGIA_BAN) ASC";
         } else {
             $order = "h.ID_HANGHOA DESC"; // mặc định lấy mới nhất
         }
@@ -189,7 +189,7 @@ class HangHoa
         }
 
         if ($minPrice !== null && $maxPrice !== null) {
-            $where[] = "d.GIATRI BETWEEN :minPrice AND :maxPrice";
+            $where[] = "COALESCE(d.GIATRI, h.DONGIA_BAN) BETWEEN :minPrice AND :maxPrice";
             $params[':minPrice'] = (int) $minPrice;
             $params[':maxPrice'] = (int) $maxPrice;
         }
@@ -225,9 +225,9 @@ class HangHoa
 
         $sql = "
             SELECT
-                h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH, h.NGAYTAO, h.GIAGOC, h.SOLUONG,
+                h.ID_HANGHOA, h.TENHANGHOA, h.MOTA, h.DONVITINH, h.HINHANH, h.NGAYTAO, h.GIAGOC, h.SOLUONG, h.DONGIA_BAN,
                 h.ID_PHANLOAI, p.TENPHANLOAI,
-                d.GIATRI AS DONGIA,
+                COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) 
                  FROM CHUNG_TU_BAN_CT ct 
                  JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN 
@@ -254,7 +254,7 @@ class HangHoa
     }
 
     public function getHotProducts($limit = 8) {
-        $sql = "SELECT h.*, p.TENPHANLOAI, d.GIATRI AS DONGIA,
+        $sql = "SELECT h.*, p.TENPHANLOAI, COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) FROM CHUNG_TU_BAN_CT ct JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN WHERE ct.ID_HANGHOA = h.ID_HANGHOA AND b.NGAYDATHANG >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as SOLD_COUNT
                 FROM $this->table h
                 LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
@@ -268,7 +268,7 @@ class HangHoa
     }
 
     public function getNewProducts($limit = 8) {
-        $sql = "SELECT h.*, p.TENPHANLOAI, d.GIATRI AS DONGIA,
+        $sql = "SELECT h.*, p.TENPHANLOAI, COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) FROM CHUNG_TU_BAN_CT ct JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN WHERE ct.ID_HANGHOA = h.ID_HANGHOA) as SOLD_COUNT
                 FROM $this->table h
                 LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
@@ -282,12 +282,12 @@ class HangHoa
     }
 
     public function getSaleProducts($limit = 8) {
-        $sql = "SELECT h.*, p.TENPHANLOAI, d.GIATRI AS DONGIA,
+        $sql = "SELECT h.*, p.TENPHANLOAI, COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) FROM CHUNG_TU_BAN_CT ct JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN WHERE ct.ID_HANGHOA = h.ID_HANGHOA) as SOLD_COUNT
                 FROM $this->table h
                 LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
                 LEFT JOIN DON_GIA_BAN d ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
-                WHERE h.GIAGOC > d.GIATRI AND h.GIAGOC > 0
+                WHERE h.GIAGOC > COALESCE(d.GIATRI, h.DONGIA_BAN) AND h.GIAGOC > 0
                 ORDER BY h.ID_HANGHOA DESC LIMIT :limit";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
@@ -311,20 +311,38 @@ class HangHoa
     {
 
         $sql = "INSERT INTO $this->table 
-                (TENHANGHOA, MOTA, DONVITINH, HINHANH, ID_PHANLOAI, GIAGOC, NGAYTAO)
-                VALUES (:ten, :mota, :dvt, :hinhanh, :id_phanloai, :giagoc, :ngaytao)";
+                (TENHANGHOA, MOTA, DONVITINH, HINHANH, ID_PHANLOAI, GIAGOC, NGAYTAO, SOLUONG, DONGIA_BAN)
+                VALUES (:ten, :mota, :dvt, :hinhanh, :id_phanloai, :giagoc, :ngaytao, :soluong, :dongia_ban)";
 
         $stmt = $this->conn->prepare($sql);
 
-        return $stmt->execute([
+        $res = $stmt->execute([
             ':ten' => $data['TENHANGHOA'],
             ':mota' => $data['MOTA'],
             ':dvt' => $data['DONVITINH'],
             ':hinhanh' => $data['HINHANH'],
             ':id_phanloai' => $data['ID_PHANLOAI'],
             ':giagoc' => $data['GIAGOC'] ?? 0,
-            ':ngaytao' => $data['NGAYTAO'] ?? date('Y-m-d H:i:s')
+            ':ngaytao' => $data['NGAYTAO'] ?? date('Y-m-d H:i:s'),
+            ':soluong' => $data['SOLUONG'] ?? 0,
+            ':dongia_ban' => $data['DONGIA_BAN'] ?? 0
         ]);
+
+        if ($res) {
+            $newId = $this->conn->lastInsertId();
+            // Tự động đồng bộ sang bảng DON_GIA_BAN
+            $sqlPrice = "INSERT INTO DON_GIA_BAN (GIATRI, NGAYBATDAU, APDUNG, ID_HANGHOA) 
+                         VALUES (:giatri, :ngay, 1, :idhh)";
+            $stmtPrice = $this->conn->prepare($sqlPrice);
+            $stmtPrice->execute([
+                ':giatri' => $data['DONGIA_BAN'] ?? 0,
+                ':ngay' => date('Y-m-d'),
+                ':idhh' => $newId
+            ]);
+            return $newId;
+        }
+
+        return false;
     }
 
     public function update($id, $data)
@@ -337,12 +355,14 @@ class HangHoa
                     HINHANH = :hinhanh,
                     ID_PHANLOAI = :id_phanloai,
                     GIAGOC = :giagoc,
-                    NGAYTAO = :ngaytao
+                    NGAYTAO = :ngaytao,
+                    SOLUONG = :soluong,
+                    DONGIA_BAN = :dongia_ban
                 WHERE ID_HANGHOA = :id";
 
         $stmt = $this->conn->prepare($sql);
 
-        return $stmt->execute([
+        $res = $stmt->execute([
             ':ten' => $data['TENHANGHOA'],
             ':mota' => $data['MOTA'],
             ':dvt' => $data['DONVITINH'],
@@ -350,8 +370,33 @@ class HangHoa
             ':id_phanloai' => $data['ID_PHANLOAI'],
             ':giagoc' => $data['GIAGOC'] ?? 0,
             ':ngaytao' => $data['NGAYTAO'] ?? date('Y-m-d H:i:s'),
+            ':soluong' => $data['SOLUONG'] ?? 0,
+            ':dongia_ban' => $data['DONGIA_BAN'] ?? 0,
             ':id' => $id
         ]);
+
+        if ($res) {
+            // Tự động đồng bộ/cập nhật bảng DON_GIA_BAN
+            // Tìm xem có bản ghi nào đang APDUNG cho sản phẩm này không
+            $sqlCheck = "SELECT ID_DONGIA FROM DON_GIA_BAN WHERE ID_HANGHOA = ? AND APDUNG = 1 LIMIT 1";
+            $stmtCheck = $this->conn->prepare($sqlCheck);
+            $stmtCheck->execute([$id]);
+            $existing = $stmtCheck->fetch();
+
+            if ($existing) {
+                // Update giá tiền cho bản ghi cũ
+                $sqlUpdate = "UPDATE DON_GIA_BAN SET GIATRI = ? WHERE ID_DONGIA = ?";
+                $stmtUpdate = $this->conn->prepare($sqlUpdate);
+                $stmtUpdate->execute([$data['DONGIA_BAN'] ?? 0, $existing['ID_DONGIA']]);
+            } else {
+                // Tạo mới nếu chưa có
+                $sqlInsert = "INSERT INTO DON_GIA_BAN (GIATRI, NGAYBATDAU, APDUNG, ID_HANGHOA) 
+                              VALUES (?, ?, 1, ?)";
+                $stmtInsert = $this->conn->prepare($sqlInsert);
+                $stmtInsert->execute([$data['DONGIA_BAN'] ?? 0, date('Y-m-d'), $id]);
+            }
+        }
+        return $res;
     }
 
     /**

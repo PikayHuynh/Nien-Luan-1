@@ -57,6 +57,12 @@ include ROOT . '/views/admin/layouts/sidebar.php';
             <td><?= number_format($hanghoa['GIAGOC'] ?? 0) ?> VND</td>
         </tr>
 
+        <!-- Số lượng -->
+        <tr>
+            <th>Số lượng</th>
+            <td><?= htmlspecialchars($hanghoa['SOLUONG'] ?? 0) ?></td>
+        </tr>
+
         <!-- Ngày tạo -->
         <tr>
             <th>Ngày tạo</th>

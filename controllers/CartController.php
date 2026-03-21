@@ -110,6 +110,7 @@ class CartController
 
             // Thêm chi tiết từng sản phẩm
             foreach ($cart as $item) {
+                // Kiểm tra tồn kho (tùy chọn cho Admin nếu muốn, nhưng thường Admin nhập hàng nên SOLUONG tăng)
                 $orderDetailModel->create([
                     'ID_CTMUA' => $orderId,
                     'ID_HANGHOA' => $item['id'],
@@ -149,6 +150,17 @@ class CartController
                 'GHICHU' => $note
             ]);
 
+            // Kiểm tra tồn kho cho tất cả sản phẩm trước khi thực hiện trừ
+            foreach ($cart as $item) {
+                $p = $this->hangHoaModel->getById($item['id']);
+                if (!$p || $p['SOLUONG'] < $item['quantity']) {
+                    $this->db->rollBack();
+                    $_SESSION['error'] = "Sản phẩm '" . ($item['name'] ?? $item['id']) . "' không đủ hàng trong kho (Hiện có: " . ($p['SOLUONG'] ?? 0) . ")";
+                    header("Location: index.php?controller=cart&action=index");
+                    exit;
+                }
+            }
+
             // Thêm chi tiết sản phẩm
             foreach ($cart as $item) {
                 $orderDetailModel->create([
@@ -159,8 +171,30 @@ class CartController
                 ]);
                 $this->hangHoaModel->updateQuantity($item['id'], -(int) $item['quantity']);
                 $khoModel->create($item['id'], null, $orderId, (int) $item['quantity'], 'BAN');
+
+                // Cảnh báo tồn kho thấp (< 5 cái)
+                $pUpdated = $this->hangHoaModel->getById($item['id']);
+                if ($pUpdated && $pUpdated['SOLUONG'] < 5) {
+                    $tb->create([
+                        'NOIDUNG' => "⚠️ Cảnh báo tồn kho: Sản phẩm **" . $pUpdated['TEN_HANGHOA'] . "** chỉ còn **" . $pUpdated['SOLUONG'] . "** cái. Hãy cân nhắc nhập thêm hàng nhé! 📦",
+                        'LOAI' => 'admin'
+                    ]);
+                }
             }
         }
+
+        // Tạo thông báo cho Admin
+        require_once ROOT . '/models/ThongBao.php';
+        $tb = new ThongBao($this->db);
+        
+        $msg = $isAdmin 
+            ? "📦 Nhập hàng thành công! Chứng từ nhập **$masoct** đã được tạo." 
+            : "🛒 Đơn hàng mới: **$masoct** vừa được khách hàng đặt thành công.";
+
+        $tb->create([
+            'NOIDUNG' => $msg,
+            'LOAI' => 'admin'
+        ]);
 
         // Nếu mọi thứ thành công, xác nhận transaction
         $this->db->commit();

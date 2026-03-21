@@ -53,7 +53,7 @@ if ($userId !== null) {
  * ==========================
  */
 $routes = [
-    'dashboard'     => ['index'],
+    'dashboard'     => ['index', 'notifications'],
 
     'khachhang'     => ['index', 'create', 'edit', 'detail', 'delete'],
     'phanloai'      => ['index', 'create', 'edit', 'detail', 'delete'],
@@ -75,7 +75,9 @@ $routes = [
         'orders',
         'orderDetail',
         'logout',
-        'editProfile'
+        'editProfile',
+        'notifications',
+        'mark_read'
     ],
 
     'product' => ['list', 'detail'],

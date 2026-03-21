@@ -37,6 +37,8 @@ include ROOT . '/views/admin/layouts/sidebar.php';
                 <th>Đơn vị tính</th>
                 <th>Hình ảnh</th>
                 <th>Phân loại</th>
+                <th>Số lượng</th>
+                <th>Giá bán</th>
                 <th style="width: 180px;">Hành động</th>
             </tr>
         </thead>
@@ -89,6 +91,14 @@ include ROOT . '/views/admin/layouts/sidebar.php';
 
                     <!-- Phân loại -->
                     <td><?= htmlspecialchars($item['TENPHANLOAI']) ?></td>
+
+                    <!-- Số lượng -->
+                    <td><?= htmlspecialchars($item['SOLUONG'] ?? 0) ?></td>
+
+                    <!-- Giá bán -->
+                    <td class="text-danger fw-bold">
+                        <?= number_format($item['DONGIA'] ?? 0) ?> VND
+                    </td>
 
                     <!-- Hành động -->
                     <td>

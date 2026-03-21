@@ -10,6 +10,7 @@ class HangHoaController
 {
     private $model;            // Model hàng hóa
     private $phanLoaiModel;    // Model phân loại
+    private $thongBaoModel;    // Model thông báo
 
     /**
      * Khởi tạo controller và nạp các model cần thiết.
@@ -20,6 +21,8 @@ class HangHoaController
     {
         $this->model          = new HangHoa($db);
         $this->phanLoaiModel  = new PhanLoai($db);
+        require_once 'models/ThongBao.php';
+        $this->thongBaoModel  = new ThongBao($db);
     }
 
     /**
@@ -63,6 +66,18 @@ class HangHoaController
             // Gọi model để tạo hàng hóa
             $this->model->create($_POST);
 
+            // Tạo thông báo cho toàn bộ Client
+            $this->thongBaoModel->create([
+                'NOIDUNG' => "Sản phẩm mới: '" . $_POST['TEN_HANGHOA'] . "' vừa được lên kệ! Khám phá ngay.",
+                'LOAI' => 'all'
+            ]);
+
+            // Thông báo cho Admin
+            $this->thongBaoModel->create([
+                'NOIDUNG' => "🚀 Chúc mừng! Sản phẩm mới **" . $_POST['TEN_HANGHOA'] . "** đã được đăng bán thành công. Chúc Pikay Shop buôn may bán đắt! 💸",
+                'LOAI' => 'admin'
+            ]);
+
             // Chuyển hướng về trang danh sách sau khi tạo thành công
             header('Location: index.php?controller=hanghoa&action=index');
             exit;
@@ -90,6 +105,14 @@ class HangHoaController
 
             // Gọi model để cập nhật hàng hóa
             $this->model->update($id, $_POST);
+
+            // Kiểm tra nếu là hàng Sale thì tạo thông báo
+            if (!empty($_POST['GIAGOC']) && !empty($_POST['DONGIA_BAN']) && $_POST['GIAGOC'] > $_POST['DONGIA_BAN']) {
+                $this->thongBaoModel->create([
+                    'NOIDUNG' => "Săn Deal cực hời: Sản phẩm '" . $_POST['TENHANGHOA'] . "' đang giảm giá cực sâu!",
+                    'LOAI' => 'all'
+                ]);
+            }
 
             // Chuyển hướng về trang danh sách sau khi cập nhật
             header('Location: index.php?controller=hanghoa&action=index');

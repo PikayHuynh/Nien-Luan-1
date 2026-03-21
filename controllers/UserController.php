@@ -44,11 +44,13 @@ class UserController
                 // Chuyển hướng dựa trên vai trò: admin về dashboard, user về trang chủ
                 if ($this->khModel->isAdmin($user['ID_KHACH_HANG'])) {
                     header("Location: index.php?controller=dashboard&action=index");
-                } else {
+                }
+                else {
                     header("Location: index.php?controller=home&action=index");
                 }
                 exit;
-            } else {
+            }
+            else {
                 $error = $user ? "Sai mật khẩu!" : "User không tồn tại!";
             }
         }
@@ -73,9 +75,11 @@ class UserController
 
             if ($password !== $confirm_password) {
                 $error = "Mật khẩu không khớp!";
-            } elseif ($this->khModel->getByName($username)) {
+            }
+            elseif ($this->khModel->getByName($username)) {
                 $error = "Username đã tồn tại!";
-            } else {
+            }
+            else {
                 // Tạo tài khoản mới với vai trò mặc định là 'user'
                 $this->khModel->create([
                     'TEN_KH' => $username,
@@ -86,8 +90,19 @@ class UserController
                     'SOB' => 'user'
                 ]);
 
-                // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
-                header("Location: index.php?controller=user&action=login");
+
+
+                // Thông báo cho Admin
+                require_once ROOT . '/models/ThongBao.php';
+                $tbModel = new ThongBao($this->db);
+                $tbModel->create([
+                    'NOIDUNG' => "🎊 Chào mừng thành viên mới! **" . $username . "** vừa gia nhập Pikay Shop. Hãy gửi lời chào nhé! 👋",
+                    'LOAI' => 'admin'
+                ]);
+
+                // Chuyển hướng đến trang        // Sau khi đánh dấu xong, chuyển về trang phù hợp (nếu là admin thì dashboard, user thì notifications)
+                $isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] === 'admin');
+                header('Location: ' . ($isAdmin ? 'index.php?controller=dashboard&action=notifications' : 'index.php?controller=user&action=notifications'));
                 exit;
             }
         }
@@ -162,7 +177,8 @@ class UserController
 
                 // Tải lại thông tin người dùng để hiển thị trên form
                 $user = $this->khModel->getById($userId);
-            } else {
+            }
+            else {
                 $error = "Cập nhật thất bại!";
             }
         }
@@ -187,22 +203,83 @@ class UserController
 
         $isAdmin = $this->khModel->isAdmin($userId);
 
+        require_once ROOT . '/utils/pagination.php';
+
         if ($isAdmin) {
-            // Luồng xử lý cho Admin: Lấy các chứng từ mua do chính admin tạo
+            // Nếu là admin, hiển thị danh sách "Chứng từ Mua" (đơn hàng đã nhập).
             require_once ROOT . '/models/ChungTuMua.php';
             $orderModel = new ChungTuMua($this->db);
-            $orders = $orderModel->getByCustomerId($userId);
-            $isPurchase = true; // Cờ để view biết đây là Chứng từ Mua
-        } else {
-            // Luồng xử lý cho người dùng thường: Lấy các chứng từ bán
+
+            $pageData = paginate($orderModel, [
+                'limit' => 5,
+                'getMethod' => 'getByCustomerIdPaging',
+                'countMethod' => 'countByCustomerId',
+                'getArgs' => [$userId],
+                'countArgs' => [$userId]
+            ]);
+
+            $orders = $pageData['items'];
+            $isPurchase = true;
+        }
+        else {
+            // Nếu là người dùng thường, hiển thị danh sách "Chứng từ Bán" (đơn hàng đã mua).
             require_once ROOT . '/models/ChungTuBan.php';
             $orderModel = new ChungTuBan($this->db);
-            $orders = $orderModel->getByUserId($userId);
-            $isPurchase = false; // Đây là Chứng Từ Bán
+
+            $pageData = paginate($orderModel, [
+                'limit' => 5,
+                'getMethod' => 'getByUserIdPaging',
+                'countMethod' => 'countByUserId',
+                'getArgs' => [$userId],
+                'countArgs' => [$userId]
+            ]);
+            $orders = $pageData['items'];
+            $isPurchase = false;
         }
 
-        // Truyền $isPurchase vào view để biết loại chứng từ và xây dựng link chi tiết đúng
+        // Trích xuất các biến phân trang cho view
+        $totalPages = $pageData['totalPages'];
+        $currentPage = $pageData['currentPage'];
+        $pages = $pageData['pages'];
+        $startPage = $pageData['startPage'];
+        $endPage = $pageData['endPage'];
+
         include ROOT . '/views/client/user/orders.php';
+    }
+
+    /**
+     * Trang lịch sử thông báo Client
+     */
+    public function notifications()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: index.php?controller=user&action=login');
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        require_once ROOT . '/models/ThongBao.php';
+        require_once ROOT . '/utils/pagination.php';
+        $tbModel = new ThongBao($this->db);
+
+        $page = paginate($tbModel, [
+            'limit' => 10,
+            'getMethod' => 'getPagingForClient',
+            'countMethod' => 'countAllForClient',
+            'getArgs' => [$userId],
+            'countArgs' => [$userId]
+        ]);
+
+        $notifications = $page['items'];
+        $totalPages = $page['totalPages'];
+        $currentPage = $page['currentPage'];
+        $pages = $page['pages'];
+
+        $title = "Thông báo của tôi";
+        include ROOT . '/views/client/layouts/header.php';
+        include ROOT . '/views/client/layouts/navbar.php';
+        include ROOT . '/views/client/user/notifications.php';
+        include ROOT . '/views/client/layouts/footer.php';
     }
 
     /**
@@ -221,7 +298,7 @@ class UserController
         }
 
         // Lấy ID và loại chứng từ từ URL
-        $orderId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $orderId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
         $type = isset($_GET['type']) ? $_GET['type'] : ''; // Lấy tham số type ('mua' hoặc 'ban')
 
         if (!$orderId || ($type !== 'mua' && $type !== 'ban')) {
@@ -240,7 +317,8 @@ class UserController
             require_once ROOT . '/models/ChungTuMuaCT.php';
             $orderModel = new ChungTuMua($this->db);
             $detailModel = new ChungTuMuaCT($this->db);
-        } else {
+        }
+        else {
             // CHỨNG TỪ BÁN (Đơn hàng của User)
             require_once ROOT . '/models/ChungTuBan.php';
             require_once ROOT . '/models/ChungTuBanCT.php';
@@ -266,7 +344,8 @@ class UserController
                 header("Location: index.php?controller=user&action=orders");
                 exit;
             }
-        } else {
+        }
+        else {
             // Nếu là Chứng từ Bán (đơn hàng của người dùng),
             // bắt buộc ID_KHACHHANG phải khớp với người dùng đang đăng nhập.
             // Đây là bước bảo mật quan trọng để người dùng không xem được đơn hàng của nhau.
@@ -297,7 +376,7 @@ class UserController
                 mkdir($targetDir, 0777, true);
             }
 
-            $timestamp = (int) round(microtime(true) * 1000);
+            $timestamp = (int)round(microtime(true) * 1000);
             $newFileName = $timestamp . '_' . basename($_FILES['HINHANH']['name']);
 
             if (move_uploaded_file($_FILES['HINHANH']['tmp_name'], $targetDir . $newFileName)) {

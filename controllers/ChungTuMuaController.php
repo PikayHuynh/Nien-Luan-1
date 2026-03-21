@@ -11,6 +11,7 @@ require_once ROOT . '/models/Kho.php';
  */
 class ChungTuMuaController
 {
+    private $db;
     private $model;        // Model chứng từ mua (master)
     private $ctctModel;    // Model chi tiết chứng từ
     private $khModel;      // Model khách hàng
@@ -24,6 +25,7 @@ class ChungTuMuaController
      */
     public function __construct($db)
     {
+        $this->db = $db;
         $this->model = new ChungTuMua($db);
         $this->ctctModel = new ChungTuMuaCT($db);
         $this->khModel = new KhachHang($db);
@@ -118,7 +120,15 @@ class ChungTuMuaController
             ];
 
             // Gọi model để tạo chứng từ
-            $this->model->create($data);
+            $id = $this->model->create($data);
+
+            // Tạo thông báo cho Admin
+            require_once ROOT . '/models/ThongBao.php';
+            $tbModel = new ThongBao($this->db);
+            $tbModel->create([
+                'NOIDUNG' => "📦 Nhập hàng thành công! Chứng từ **" . $data['MASOCT'] . "** đã được tạo.",
+                'LOAI' => 'admin'
+            ]);
 
             header('Location: index.php?controller=chungtumua&action=index');
             exit;

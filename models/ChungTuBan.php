@@ -91,6 +91,30 @@ class ChungTuBan
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getByUserIdPaging($limit, $offset, $userId)
+    {
+        $sql = "SELECT * FROM $this->table 
+                WHERE ID_KHACHHANG = :userId 
+                ORDER BY NGAYDATHANG DESC
+                LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':userId', (int) $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countByUserId($userId)
+    {
+        $sql = "SELECT COUNT(*) FROM $this->table WHERE ID_KHACHHANG = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetchColumn();
+    }
+
     /**
      * Tạo chứng từ bán mới
      * Trả về ID vừa tạo

@@ -76,6 +76,44 @@ include ROOT . '/views/client/layouts/navbar.php';
             </table>
         </div>
 
+        <!-- ===============================================================
+            PHÂN TRANG
+        ================================================================ -->
+        <?php if ($totalPages > 1): ?>
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+
+                    <!-- Trang trước -->
+                    <?php if ($currentPage > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?controller=user&action=orders&page=<?= $currentPage - 1 ?>">
+                                «
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <!-- Các trang -->
+                    <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                        <li class="page-item <?= ($i == $currentPage ? 'active' : '') ?>">
+                            <a class="page-link" href="?controller=user&action=orders&page=<?= $i ?>">
+                                <?= $i ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Trang kế -->
+                    <?php if ($currentPage < $totalPages): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?controller=user&action=orders&page=<?= $currentPage + 1 ?>">
+                                »
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                </ul>
+            </nav>
+        <?php endif; ?>
+
     <?php endif; ?>
 
 </div>

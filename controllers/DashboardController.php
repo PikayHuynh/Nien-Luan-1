@@ -67,4 +67,27 @@ class DashboardController
         // Hiển thị giao diện dashboard
         include ROOT . '/views/admin/dashboard/index.php';
     }
+
+    /**
+     * Trang lịch sử thông báo Admin
+     */
+    public function notifications()
+    {
+        require_once ROOT . '/models/ThongBao.php';
+        require_once ROOT . '/utils/pagination.php';
+        $tbModel = new ThongBao($this->conn);
+
+        $page = paginate($tbModel, [
+            'limit' => 10,
+            'getMethod' => 'getPagingForAdmin',
+            'countMethod' => 'countAllForAdmin'
+        ]);
+
+        $notifications = $page['items'];
+        $totalPages = $page['totalPages'];
+        $currentPage = $page['currentPage'];
+        $pages = $page['pages'];
+
+        include ROOT . '/views/admin/dashboard/notifications.php';
+    }
 }

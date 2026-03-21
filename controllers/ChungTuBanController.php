@@ -10,6 +10,7 @@ require_once ROOT . '/models/Kho.php';
  */
 class ChungTuBanController
 {
+    private $db;
     private $model;        // Model ChungTuBan (master)
     private $ctctModel;    // Model ChungTuBanCT (detail)
     private $khModel;      // Model KhachHang
@@ -23,6 +24,7 @@ class ChungTuBanController
      */
     public function __construct($db)
     {
+        $this->db            = $db;
         $this->model         = new ChungTuBan($db);
         $this->ctctModel     = new ChungTuBanCT($db);
         $this->khModel       = new KhachHang($db);
@@ -173,7 +175,32 @@ class ChungTuBanController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // 1. Cập nhật thông tin master của chứng từ
+            $oldStatus = $ct['TRANGTHAI'];
+            $newStatus = $_POST['TRANGTHAI'];
+
             $this->model->update($id, $_POST);
+
+            // Nếu trạng thái thay đổi, gửi thông báo cho khách hàng
+            if ($oldStatus !== $newStatus) {
+                require_once ROOT . '/models/ThongBao.php';
+                $tbModel = new ThongBao($this->db);
+                $maSo = $ct['MASOCT'] ?? $id;
+                
+                $msg = "Đơn hàng $maSo của bạn đã chuyển sang trạng thái: $newStatus";
+                if ($newStatus === 'Đã giao hàng') {
+                    $msg = "🎉 Tuyệt vời! Đơn hàng **$maSo** đã giao thành công. Hy vọng bạn thích sản phẩm của chúng tôi! ❤️";
+                } elseif ($newStatus === 'Đã hủy') {
+                    $msg = "🚫 Thông báo: Đơn hàng **$maSo** của bạn đã bị hủy. Vui lòng liên hệ sđt cửa hàng để biết thêm chi tiết.";
+                } elseif ($newStatus === 'Đang xử lý') {
+                    $msg = "🚚 Tin vui! Đơn hàng **$maSo** đang được chuẩn bị và sẽ sớm đến tay bạn.";
+                }
+
+                $tbModel->create([
+                    'NOIDUNG' => $msg,
+                    'ID_NGUOINHAN' => $ct['ID_KHACHHANG'],
+                    'LOAI' => 'client'
+                ]);
+            }
 
             // Rollback HangHoa SOLUONG cho các chi tiết cũ
             $oldDetails = $this->ctctModel->getByChungTu($id);

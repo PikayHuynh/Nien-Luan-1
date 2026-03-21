@@ -52,11 +52,25 @@ include ROOT . '/views/admin/layouts/sidebar.php';
             </select>
         </div>
 
+        <!-- Giá bán (DONGIA_BAN) -->
+        <div class="mb-3">
+            <label class="form-label">Giá bán (VND)</label>
+            <input type="number" name="DONGIA_BAN" class="form-control" value="0" required
+                placeholder="Nhập giá bán trực tiếp">
+        </div>
+
         <!-- Giá gốc (Dùng để tính Sale) -->
         <div class="mb-3">
             <label class="form-label">Giá gốc (VND)</label>
             <input type="number" name="GIAGOC" class="form-control"
                 placeholder="Nhập giá gốc để hiển thị nhãn SALE nếu > giá bán">
+        </div>
+
+        <!-- Số lượng -->
+        <div class="mb-3">
+            <label class="form-label">Số lượng</label>
+            <input type="number" name="SOLUONG" class="form-control" value="0"
+                placeholder="Nhập số lượng hiện có">
         </div>
 
         <!-- Ngày tạo (Dùng để tính nhãn NEW) -->

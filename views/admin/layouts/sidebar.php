@@ -28,6 +28,22 @@
                 </a>
             </li>
 
+            <!-- Thông báo Admin -->
+            <?php
+            global $conn;
+            require_once ROOT . '/models/ThongBao.php';
+            $tbModel = new ThongBao($conn);
+            $unreadAdmin = $tbModel->countUnread(null, 'admin');
+            ?>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex justify-content-between align-items-center" href="index.php?controller=dashboard&action=notifications">
+                    <span><i class="bi bi-bell me-2"></i>Thông báo</span>
+                    <?php if ($unreadAdmin > 0): ?>
+                        <span class="badge bg-danger rounded-pill"><?= $unreadAdmin ?></span>
+                    <?php endif; ?>
+                </a>
+            </li>
+
             <!-- Khách hàng -->
             <li class="nav-item mb-2">
                 <a class="nav-link" href="index.php?controller=khachhang&action=index">
