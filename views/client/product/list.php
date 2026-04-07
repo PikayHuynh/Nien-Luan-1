@@ -38,9 +38,9 @@ function build_filter_url(array $new_params = []): string
         ================================================================== -->
         <div class="col-lg-3 mb-4">
             <!-- Lọc theo danh mục -->
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Danh mục sản phẩm</h5>
+            <div class="card border-0 shadow-sm">
+                <div class="card-header border-0">
+                    <h5 class="mb-0"><i class="bi bi-grid-3x3-gap me-2"></i>Danh mục</h5>
                 </div>
                 <div class="list-group list-group-flush">
                     <a href="<?= build_filter_url(['id_phanloai' => null]) ?>"
@@ -58,9 +58,9 @@ function build_filter_url(array $new_params = []): string
             </div>
 
             <!-- Lọc theo giá -->
-            <div class="card mt-3">
-                <div class="card-header bg-light">
-                    <strong>Mức giá</strong>
+            <div class="card mt-4 border-0 shadow-sm">
+                <div class="card-header border-0">
+                    <h5 class="mb-0"><i class="bi bi-funnel me-2"></i>Mức giá</h5>
                 </div>
                 <div class="list-group list-group-flush">
                     <?php
@@ -110,9 +110,9 @@ function build_filter_url(array $new_params = []): string
                     <input type="hidden" name="price" value="<?= htmlspecialchars($_GET['price']) ?>">
                 <?php endif; ?>
                 <div class="input-group">
-                    <input type="text" name="q" class="form-control" id="searchInput" placeholder="Tìm sản phẩm..."
+                    <input type="text" name="q" class="form-control bg-glass text-white" id="searchInput" placeholder="Tìm sản phẩm..."
                         value="<?= $currentQ ?>">
-                    <button class="btn btn-outline-secondary" type="submit">Tìm</button>
+                    <button class="btn btn-premium-glow px-4" type="submit">Tìm</button>
                     <?php if ($currentQ !== ''): ?>
                         <a class="btn btn-link" href="<?= build_filter_url(['q' => null]) ?>">Xóa</a>
                     <?php endif; ?>
@@ -136,7 +136,7 @@ function build_filter_url(array $new_params = []): string
                  PRODUCT GRID - LƯỚI SẢN PHẨM
             ================================================================== -->
             <?php if (!empty($products)): ?>
-                <div class="row">
+                <div class="row g-4">
                     <?php foreach ($products as $product):
                         $soldCount = $product['SOLD_COUNT'] ?? 0;
                         $isHot = $soldCount > 30;
@@ -157,25 +157,35 @@ function build_filter_url(array $new_params = []): string
                             $salePercent = round((($giaGoc - $donGia) / $giaGoc) * 100);
                         }
                     ?>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100 position-relative">
-                                <div class="position-absolute top-0 end-0 p-2" style="z-index: 10;">
-                                    <?php if ($isHot): ?><span class="badge bg-danger mb-1 d-block">HOT</span><?php endif; ?>
-                                    <?php if ($isNew): ?><span class="badge bg-success mb-1 d-block">NEW</span><?php endif; ?>
-                                    <?php if ($isSale): ?><span
-                                            class="badge bg-warning text-dark d-block">-<?= $salePercent ?>%</span><?php endif; ?>
+                        <div class="col-lg-4 col-md-4 col-sm-6 mb-4 animate__animated animate__fadeInUp">
+                            <div class="card h-100 product-card glass-card">
+                                <div class="position-absolute top-0 end-0 p-2 z-3 text-end">
+                                    <?php if ($isHot): ?><span class="badge bg-danger mb-1 d-block shadow-sm">HOT</span><?php endif; ?>
+                                    <?php if ($isNew): ?><span class="badge bg-success mb-1 d-block shadow-sm">NEW</span><?php endif; ?>
+                                    <?php if ($isSale): ?><span class="badge bg-warning text-dark d-block shadow-sm">-<?= $salePercent ?>%</span><?php endif; ?>
                                 </div>
-                                <img src="upload/<?= htmlspecialchars($product['HINHANH'] ?? 'item-default.png') ?>"
+                                <a href="index.php?controller=product&action=detail&id=<?= $product['ID_HANGHOA'] ?>" class="product-img-link overflow-hidden rounded-top-4">
+                                     <img src="upload/<?= htmlspecialchars($product['HINHANH'] ?? 'item-default.png') ?>"
                                     class="card-img-top" alt="<?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>">
-                                <div class="card-body d-flex flex-column">
-                                    <a class="title-product"
-                                        href="index.php?controller=product&action=detail&id=<?= $product['ID_HANGHOA'] ?>"><?= $product['TENHANGHOA'] ?? 'Không tên' ?></a>
-                                    <p class="card-text text-danger font-weight-bold">
-                                        <?= isset($product['DONGIA']) ? number_format($product['DONGIA']) : 0 ?> VND
-                                    </p>
-                                    <p class="card-text text-muted small"><?= $product['TENPHANLOAI'] ?? '' ?></p>
-                                    <a href="index.php?controller=cart&action=add&id=<?= $product['ID_HANGHOA'] ?>"
-                                        class="btn btn-primary mt-auto">Thêm giỏ hàng</a>
+                                </a>
+                                <div class="card-body d-flex flex-column p-3">
+                                    <div class="text-muted small mb-1"><?= htmlspecialchars($product['TENPHANLOAI'] ?? '') ?></div>
+                                    <a class="text-decoration-none"
+                                        href="index.php?controller=product&action=detail&id=<?= $product['ID_HANGHOA'] ?>">
+                                        <h6 class="fw-bold text-white mb-2"><?= $product['TENHANGHOA'] ?? 'Không tên' ?></h6>
+                                    </a>
+                                    <div class="mt-auto">
+                                        <div class="price-wrapper mb-3">
+                                            <span class="current-price"><?= number_format($donGia) ?> <span>đ</span></span>
+                                            <?php if ($isSale): ?>
+                                                <span class="old-price"><?= number_format($giaGoc) ?> đ</span>
+                                            <?php endif; ?>
+                                        </div>
+                                         <a href="index.php?controller=cart&action=add&id=<?= $product['ID_HANGHOA'] ?>" 
+                                            class="btn btn-premium-glow w-100 rounded-pill py-2 fw-bold">
+                                            <i class="bi bi-cart-plus me-2"></i> Thêm giỏ hàng
+                                         </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

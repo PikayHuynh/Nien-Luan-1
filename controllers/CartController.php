@@ -176,7 +176,7 @@ class CartController
                 $pUpdated = $this->hangHoaModel->getById($item['id']);
                 if ($pUpdated && $pUpdated['SOLUONG'] < 5) {
                     $tb->create([
-                        'NOIDUNG' => "⚠️ Cảnh báo tồn kho: Sản phẩm **" . $pUpdated['TEN_HANGHOA'] . "** chỉ còn **" . $pUpdated['SOLUONG'] . "** cái. Hãy cân nhắc nhập thêm hàng nhé! 📦",
+                        'NOIDUNG' => "⚠️ Cảnh báo tồn kho: Sản phẩm **" . $pUpdated['TENHANGHOA'] . "** chỉ còn **" . $pUpdated['SOLUONG'] . "** cái. Hãy cân nhắc nhập thêm hàng nhé! 📦",
                         'LOAI' => 'admin'
                     ]);
                 }

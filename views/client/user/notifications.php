@@ -1,70 +1,101 @@
-<div class="container mt-5 mb-5">
+<?php 
+include ROOT . '/views/client/layouts/header.php';
+include ROOT . '/views/client/layouts/navbar.php';
+?>
+
+<div class="container mt-5 mb-5 pt-4">
     <div class="row justify-content-center">
-        <div class="col-md-10">
-            <h2 class="mb-4 text-primary"><i class="bi bi-bell-fill me-2"></i>Thông báo của tôi</h2>
+        <div class="col-lg-9">
+            
+            <div class="d-flex align-items-center mb-5">
+                <div class="p-3 rounded-circle bg-glass border border-white-10 me-3 shadow-lg">
+                    <i class="bi bi-bell text-primary fs-3"></i>
+                </div>
+                <div>
+                    <h2 class="fw-bold mb-0 text-white">Thông báo của tôi</h2>
+                    <p class="text-muted small mb-0">Cập nhật những tin tức mới nhất từ hệ thống</p>
+                </div>
+            </div>
             
             <?php if (empty($notifications)): ?>
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center py-5">
-                        <i class="bi bi-chat-left-dots text-muted" style="font-size: 3rem;"></i>
-                        <h5 class="mt-3 text-muted">Bạn chưa có thông báo nào.</h5>
-                        <a href="index.php?controller=home&action=index" class="btn btn-primary mt-3">Tiếp tục mua sắm</a>
+                <div class="card bg-glass border-white-10 text-center py-5 rounded-4 shadow-lg">
+                    <div class="mb-4 opacity-25">
+                        <i class="bi bi-chat-dots-fill display-1"></i>
                     </div>
+                    <h4 class="text-white fw-bold">Hộp thư trống</h4>
+                    <p class="text-muted mb-4">Bạn chưa nhận được thông báo nào từ chúng tôi.</p>
+                    <a href="index.php?controller=home&action=index" class="btn btn-primary px-5 rounded-pill shadow-lg">
+                        Tiếp tục mua sắm
+                    </a>
                 </div>
             <?php else: ?>
-                <div class="card shadow-sm border-0">
-                    <div class="list-group list-group-flush">
-                        <?php foreach ($notifications as $n): ?>
-                            <div class="list-group-item list-group-item-action py-3 border-bottom <?= $n['IS_READ'] ? '' : 'bg-light fw-bold' ?>">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
-                                            <i class="bi <?= $n['LOAI'] == 'all' ? 'bi-megaphone' : 'bi-info-circle' ?> text-primary"></i>
-                                        </div>
-                                        <div>
-                                            <p class="mb-1 text-dark"><?= htmlspecialchars($n['NOIDUNG']) ?></p>
-                                            <small class="text-muted"><?= date('H:i, d/m/Y', strtotime($n['NGAYTAO'])) ?></small>
+                <div class="notification-list d-flex flex-column gap-3">
+                    <?php foreach ($notifications as $n): 
+                        $isNew = !$n['IS_READ'];
+                        $icon = $n['LOAI'] == 'all' ? 'bi-megaphone' : 'bi-info-circle';
+                        $iconClass = $n['LOAI'] == 'all' ? 'text-warning' : 'text-primary';
+                    ?>
+                        <div class="card bg-glass border-white-10 rounded-4 p-3 shadow-sm transition-all hover-lift <?= $isNew ? 'border-primary-40' : '' ?>">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="rounded-circle bg-dark-soft border border-white-5 p-2 flex-shrink-0">
+                                        <i class="bi <?= $icon ?> <?= $iconClass ?> fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 text-white <?= $isNew ? 'fw-bold' : '' ?>"><?= htmlspecialchars($n['NOIDUNG']) ?></p>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <small class="text-muted"><i class="bi bi-clock me-1"></i><?= date('H:i, d/m/Y', strtotime($n['NGAYTAO'])) ?></small>
+                                            <?php if ($isNew): ?>
+                                                <span class="badge bg-danger rounded-pill px-2" style="font-size: 0.65rem;">MỚI</span>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
-                                    <?php if (!$n['IS_READ']): ?>
-                                        <span class="badge rounded-pill bg-danger">Mới</span>
-                                    <?php endif; ?>
                                 </div>
-                                <?php if (!$n['IS_READ']) $tbModel->markAsRead($n['ID']); ?>
+                                <div class="ms-3">
+                                    <button class="btn btn-link text-muted p-0 text-decoration-none border-0" title="Chi tiết">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                </div>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
+                            <?php if ($isNew && isset($tbModel)) $tbModel->markAsRead($n['ID']); ?>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
                 
-                <!-- Phân trang -->
+                <!-- PAGINATION -->
                 <?php if ($totalPages > 1): ?>
-                    <nav class="mt-4">
-                        <ul class="pagination justify-content-center">
+                    <nav class="mt-5">
+                        <ul class="pagination justify-content-center gap-2 border-0">
                             <?php if ($currentPage > 1): ?>
                                 <li class="page-item">
-                                    <a class="page-link" href="?controller=user&action=notifications&page=<?= $currentPage - 1 ?>">« Ngược</a>
+                                    <a class="page-link rounded-circle border-white-10 bg-glass" href="?controller=user&action=notifications&page=<?= $currentPage - 1 ?>">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
                                 </li>
                             <?php endif; ?>
 
                             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                                 <li class="page-item <?= ($i == $currentPage ? 'active' : '') ?>">
-                                    <a class="page-link" href="?controller=user&action=notifications&page=<?= $i ?>"><?= $i ?></a>
+                                    <a class="page-link rounded-circle border-white-10 bg-glass" href="?controller=user&action=notifications&page=<?= $i ?>">
+                                        <?= $i ?>
+                                    </a>
                                 </li>
                             <?php endfor; ?>
 
                             <?php if ($currentPage < $totalPages): ?>
                                 <li class="page-item">
-                                    <a class="page-link" href="?controller=user&action=notifications&page=<?= $currentPage + 1 ?>">Tiếp »</a>
+                                    <a class="page-link rounded-circle border-white-10 bg-glass" href="?controller=user&action=notifications&page=<?= $currentPage + 1 ?>">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
                                 </li>
                             <?php endif; ?>
                         </ul>
                     </nav>
                 <?php endif; ?>
 
-                <div class="mt-4 text-center">
-                    <p class="text-muted small">Trang <?= $currentPage ?> / <?= $totalPages ?></p>
-                </div>
             <?php endif; ?>
         </div>
     </div>
 </div>
+
+<?php include ROOT . '/views/client/layouts/footer.php'; ?>
