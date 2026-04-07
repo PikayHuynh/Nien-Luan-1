@@ -50,6 +50,11 @@ $modules = [
         'link' => 'index.php?controller=chungtuban&action=index',
         'color' => 'dark'
     ],
+    'Kho' => [
+        'count' => $data['kho'] ?? 0,
+        'link' => 'index.php?controller=dongiaban&action=index',
+        'color' => 'primary'
+    ]
 ];
 ?>
 
