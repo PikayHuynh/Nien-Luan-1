@@ -37,10 +37,11 @@ class ChungTuMuaCT
      */
     public function getByChungTu($idCTMua)
     {
-
-        $sql = "SELECT * FROM $this->table 
-                WHERE ID_CTMUA = ? 
-                ORDER BY ID_CT ASC";
+        $sql = "SELECT ct.*, h.TENHANGHOA 
+                FROM $this->table ct
+                JOIN HANG_HOA h ON ct.ID_HANGHOA = h.ID_HANGHOA
+                WHERE ct.ID_CTMUA = ? 
+                ORDER BY ct.ID_CT ASC";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$idCTMua]);

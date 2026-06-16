@@ -2,10 +2,10 @@
 -- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th12 15, 2025 lúc 04:22 AM
--- Phiên bản máy phục vụ: 8.0.30
--- Phiên bản PHP: 8.3.16
+-- Host: localhost:3306
+-- Generation Time: Apr 15, 2026 at 01:55 PM
+-- Server version: 8.0.30
+-- PHP Version: 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `quanly_banhang_2`
+-- Database: `quanly_banhang_2`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chung_tu_ban`
+-- Table structure for table `chung_tu_ban`
 --
 
 CREATE TABLE `chung_tu_ban` (
@@ -41,62 +41,88 @@ CREATE TABLE `chung_tu_ban` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `chung_tu_ban`
+-- Dumping data for table `chung_tu_ban`
 --
 
 INSERT INTO `chung_tu_ban` (`ID_CTBAN`, `MASOCT`, `NGAYDATHANG`, `ID_KHACHHANG`, `TONGTIENHANG`, `THUE`, `TRANGTHAI`, `GHICHU`) VALUES
 (1, 'BAN00041', '2025-04-02', 42, 1429366.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 41'),
-(2, 'BAN00031', '2025-02-04', 32, 4906950.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 31'),
+(2, 'BAN00031', '2025-02-04', 32, 4906950.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 31'),
 (3, 'BAN00021', '2025-05-24', 22, 6567758.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 21'),
 (4, 'BAN00011', '2025-06-18', 12, 6824867.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 11'),
-(5, 'BAN00001', '2025-02-04', 2, 4762646.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 1'),
+(5, 'BAN00001', '2025-02-04', 2, 4762646.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 1'),
 (6, 'BAN00042', '2025-06-27', 43, 3266488.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 42'),
 (7, 'BAN00032', '2025-03-31', 33, 1399459.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 32'),
-(8, 'BAN00022', '2025-02-19', 23, 3391343.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 22'),
+(8, 'BAN00022', '2025-02-19', 23, 3391343.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 22'),
 (9, 'BAN00012', '2025-03-21', 13, 2040383.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 12'),
 (10, 'BAN00002', '2025-10-23', 3, 6445195.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 2'),
-(11, 'BAN00043', '2025-04-14', 44, 6295269.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 43'),
+(11, 'BAN00043', '2025-04-14', 44, 6295269.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 43'),
 (12, 'BAN00033', '2024-12-16', 34, 3803361.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 33'),
 (13, 'BAN00023', '2025-06-30', 24, 5806437.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 23'),
-(14, 'BAN00013', '2025-08-19', 14, 2292066.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 13'),
+(14, 'BAN00013', '2025-08-19', 14, 2292066.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 13'),
 (15, 'BAN00003', '2025-06-01', 4, 5491328.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 3'),
 (16, 'BAN00044', '2025-01-24', 45, 1906652.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 44'),
-(17, 'BAN00034', '2025-05-10', 35, 1004437.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 34'),
+(17, 'BAN00034', '2025-05-10', 35, 1004437.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 34'),
 (18, 'BAN00024', '2025-01-17', 25, 8124438.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 24'),
 (19, 'BAN00014', '2025-07-12', 15, 7524404.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 14'),
-(20, 'BAN00004', '2025-06-17', 5, 4043736.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 4'),
+(20, 'BAN00004', '2025-06-17', 5, 4043736.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 4'),
 (21, 'BAN00045', '2025-11-02', 46, 7311350.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 45'),
-(23, 'BAN00025', '2025-10-26', 26, 6116619.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 25'),
+(23, 'BAN00025', '2025-10-26', 26, 6116619.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 25'),
 (24, 'BAN00015', '2025-06-20', 16, 7917398.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 15'),
 (25, 'BAN00005', '2025-05-23', 6, 5581000.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 5'),
-(26, 'BAN00046', '2025-01-30', 47, 982428.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 46'),
+(26, 'BAN00046', '2025-01-30', 47, 982428.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 46'),
 (28, 'BAN00026', '2024-12-10', 27, 3463869.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 26'),
 (30, 'BAN00006', '2025-10-18', 7, 330734.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 6'),
 (31, 'BAN00047', '2025-02-24', 48, 5970803.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 47'),
-(32, 'BAN00037', '2025-07-24', 38, 4668663.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 37'),
+(32, 'BAN00037', '2025-07-24', 38, 4668663.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 37'),
 (33, 'BAN00027', '2025-02-22', 28, 1167367.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 27'),
 (34, 'BAN00017', '2025-07-30', 18, 2362022.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 17'),
-(35, 'BAN00007', '2025-07-14', 8, 572117.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 7'),
+(35, 'BAN00007', '2025-07-14', 8, 572117.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 7'),
 (37, 'BAN00038', '2025-01-01', 39, 1479493.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 38'),
-(38, 'BAN00028', '2025-10-24', 29, 8002113.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 28'),
+(38, 'BAN00028', '2025-10-24', 29, 8002113.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 28'),
 (39, 'BAN00018', '2025-04-20', 19, 924719.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 18'),
 (40, 'BAN00008', '2025-04-06', 9, 7750650.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 8'),
-(41, 'BAN00049', '2025-02-11', 50, 1139894.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 49'),
+(41, 'BAN00049', '2025-02-11', 50, 1139894.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 49'),
 (42, 'BAN00039', '2025-09-08', 40, 6102143.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 39'),
 (43, 'BAN00029', '2025-11-14', 30, 7881677.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 29'),
-(44, 'BAN00019', '2025-03-17', 20, 5032574.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 19'),
+(44, 'BAN00019', '2025-03-17', 20, 5032574.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 19'),
 (45, 'BAN00009', '2024-12-22', 10, 6883817.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 9'),
 (46, 'BAN00050', '2025-07-08', 1, 3699367.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 50'),
 (48, 'BAN00030', '2025-01-03', 31, 1044621.00, 0.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 30'),
 (49, 'BAN00020', '2025-01-24', 21, 7245167.00, 10.00, 'Đã Hủy', 'Ghi chú cho chứng từ bán 20'),
-(50, 'BAN00010', '2025-01-08', 11, 6456589.00, 8.00, 'Đang Xử Lý', 'Ghi chú cho chứng từ bán 10'),
-(52, 'CTB-1764908939', '2025-12-05', 2, 12950661.00, 10.00, 'Đang xử lý', NULL),
-(53, 'CTB-1765688885', '2025-12-14', 2, 7551795.00, 10.00, 'Đang xử lý', NULL);
+(50, 'BAN00010', '2025-01-08', 11, 6456589.00, 8.00, 'Đã Giao Hàng', 'Ghi chú cho chứng từ bán 10'),
+(52, 'CTB-1764908939', '2025-12-05', 2, 12950661.00, 10.00, 'Đã Giao Hàng', NULL),
+(53, 'CTB-1765688885', '2025-12-14', 2, 7551795.00, 10.00, 'Đã Giao Hàng', NULL),
+(54, 'CTB-1765809207', '2025-12-15', 2, 10450698.00, 10.00, 'Đã Giao Hàng', NULL),
+(55, 'CTB-1769447541', '2026-01-26', 2, 12950661.00, 10.00, 'Đã Giao Hàng', NULL),
+(56, 'CTB-1769447552', '2026-01-26', 2, 27477820.00, 10.00, 'Đã Giao Hàng', NULL),
+(57, 'CTB-1769447614', '2026-01-26', 2, 3483566.00, 10.00, 'Đã Giao Hàng', NULL),
+(58, 'CTB-1769452881', '2026-01-26', 2, 75407997.60, 10.00, 'Đã giao hàng', '                                            '),
+(60, 'CTB-1769454649', '2026-01-26', 2, 5573705.60, 10.00, 'Đang xử lý', NULL),
+(61, 'CTB-1769455915', '2026-01-26', 2, 13814038.40, 10.00, 'Đang xử lý', NULL),
+(62, 'CTB-1769456096', '2026-01-27', 2, 31592921.60, 10.00, 'Đã giao hàng', '                                            '),
+(63, 'CTB-1769488280', '2026-01-27', 2, 30961401.60, 10.00, 'Đã giao hàng', '                                                                                        '),
+(64, 'CTB-1769488388', '2026-01-27', 2, 3870175.20, 10.00, 'Đã giao hàng', '                                            '),
+(65, 'CTB-1769488487', '2026-01-27', 2, 104494730.40, 10.00, 'Đang xử lý', NULL),
+(66, 'CTB-1772466284', '2026-03-02', 2, 15000000.00, 10.00, 'Đã giao hàng', '                                            '),
+(67, 'CTB-1772466319', '2026-03-02', 2, 31419999.00, 10.00, 'Đã giao hàng', '                                            '),
+(68, 'CTB-1772466332', '2026-03-02', 2, 4500000.00, 10.00, 'Đang xử lý', NULL),
+(69, 'CTB-1772466414', '2026-03-02', 2, 13964444.00, 10.00, 'Đang xử lý', NULL),
+(70, 'CTB-1772468458', '2026-03-02', 2, 13964444.00, 10.00, 'Đang xử lý', NULL),
+(71, 'CTB-1773845017', '2026-03-18', 2, 400000.00, 10.00, 'Đã giao hàng', '                                            '),
+(72, 'CTB-1773928554', '2026-03-19', 2, 32000000.00, 10.00, 'Đã giao hàng', '                                            '),
+(73, 'CTB-1773928861', '2026-03-19', 2, 1600000.00, 10.00, 'Đang xử lý', NULL),
+(74, 'CTB-1773928970', '2026-03-19', 2, 416000000.00, 10.00, 'Đã giao hàng', '                                            '),
+(75, 'CTB-1773929134', '2026-03-19', 2, 544000000.00, 10.00, 'Đã giao hàng', '                                            '),
+(76, 'CTB-1773984078', '2026-03-20', 2, 440000.00, 10.00, 'Đã giao hàng', '                                            '),
+(77, 'CTB-1773984236', '2026-03-20', 2, 12000000.00, 10.00, 'Đã giao hàng', '                                            '),
+(78, 'CTB-1773984333', '2026-03-20', 2, 12000000.00, 10.00, 'Đã giao hàng', '                                            '),
+(79, 'CTB-1773984603', '2026-03-20', 2, 2792888.80, 10.00, 'Đang xử lý', NULL),
+(80, 'CTB-1774109132', '2026-03-21', 2, 440000.00, 10.00, 'Đã giao hàng', '                                            ');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chung_tu_ban_ct`
+-- Table structure for table `chung_tu_ban_ct`
 --
 
 CREATE TABLE `chung_tu_ban_ct` (
@@ -109,7 +135,7 @@ CREATE TABLE `chung_tu_ban_ct` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `chung_tu_ban_ct`
+-- Dumping data for table `chung_tu_ban_ct`
 --
 
 INSERT INTO `chung_tu_ban_ct` (`ID_CT`, `ID_HANGHOA`, `GIABAN`, `SOLUONG`, `ID_CTBAN`) VALUES
@@ -154,12 +180,38 @@ INSERT INTO `chung_tu_ban_ct` (`ID_CT`, `ID_HANGHOA`, `GIABAN`, `SOLUONG`, `ID_C
 (48, 31, 749714.00, 4, 30),
 (50, 11, 4411947.00, 4, 10),
 (51, 48, 4316887.00, 3, 52),
-(52, 47, 2517265.00, 3, 53);
+(52, 47, 2517265.00, 3, 53),
+(53, 49, 3483566.00, 3, 54),
+(54, 48, 4316887.00, 3, 55),
+(55, 36, 5495564.00, 5, 56),
+(56, 49, 3483566.00, 1, 57),
+(59, 49, 3483566.00, 2, 60),
+(60, 48, 4316887.00, 4, 61),
+(62, 46, NULL, 8, 62),
+(63, 50, NULL, 27, 58),
+(66, 41, NULL, 8, 63),
+(68, 41, NULL, 1, 64),
+(69, 41, 4837719.00, 27, 65),
+(72, 53, 500000.00, 9, 68),
+(73, 50, 3491111.00, 4, 69),
+(74, 50, NULL, 9, 67),
+(75, 50, 3491111.00, 5, 70),
+(76, 53, NULL, 30, 66),
+(79, 54, NULL, 1, 72),
+(80, 53, NULL, 1, 71),
+(81, 53, 500000.00, 4, 73),
+(83, 54, NULL, 13, 74),
+(85, 54, NULL, 17, 75),
+(87, 57, NULL, 1, 76),
+(89, 56, NULL, 1, 77),
+(91, 55, NULL, 1, 78),
+(92, 50, 3491111.00, 1, 79),
+(94, 57, NULL, 1, 80);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chung_tu_mua`
+-- Table structure for table `chung_tu_mua`
 --
 
 CREATE TABLE `chung_tu_mua` (
@@ -174,7 +226,7 @@ CREATE TABLE `chung_tu_mua` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `chung_tu_mua`
+-- Dumping data for table `chung_tu_mua`
 --
 
 INSERT INTO `chung_tu_mua` (`ID_CTMUA`, `MASOCT`, `NGAYPHATSINH`, `ID_KHACHHANG`, `TONGTIENHANG`, `THUE`) VALUES
@@ -208,7 +260,6 @@ INSERT INTO `chung_tu_mua` (`ID_CTMUA`, `MASOCT`, `NGAYPHATSINH`, `ID_KHACHHANG`
 (29, 'MUA00016', '2025-04-11', 19, 4391156.00, 5.00),
 (30, 'MUA00006', '2025-08-24', 9, 220256.00, 0.00),
 (31, 'MUA00047', '2025-08-16', 50, 3764459.00, 10.00),
-(32, 'MUA00037', '2024-11-30', 40, 8642424.00, 5.00),
 (33, 'MUA00027', '2025-08-09', 30, 9425928.00, 0.00),
 (34, 'MUA00017', '2025-02-20', 20, 410827.00, 10.00),
 (35, 'MUA00007', '2025-01-17', 10, 2072361.00, 5.00),
@@ -222,7 +273,6 @@ INSERT INTO `chung_tu_mua` (`ID_CTMUA`, `MASOCT`, `NGAYPHATSINH`, `ID_KHACHHANG`
 (43, 'MUA00029', '2025-04-05', 32, 6460252.00, 10.00),
 (44, 'MUA00019', '2025-08-30', 22, 3098529.00, 5.00),
 (45, 'MUA00009', '2025-02-17', 12, 9829794.00, 0.00),
-(46, 'MUA00050', '2025-05-13', 5, 7979326.00, 10.00),
 (47, 'MUA00040', '2025-08-03', 43, 2239054.00, 5.00),
 (48, 'MUA00030', '2025-10-13', 33, 9828100.00, 0.00),
 (49, 'MUA00020', '2025-05-30', 23, 5682425.00, 10.00),
@@ -232,12 +282,30 @@ INSERT INTO `chung_tu_mua` (`ID_CTMUA`, `MASOCT`, `NGAYPHATSINH`, `ID_KHACHHANG`
 (53, 'CTM-1764909343', '2025-12-05', 1, 10450698.00, 10.00),
 (54, 'CTM-1764909896', '2025-12-05', 1, 10473333.00, 10.00),
 (55, 'CTM-1765178617', '2025-12-08', 1, 3491111.00, 10.00),
-(56, 'CTM-1765688907', '2025-12-14', 1, 6967132.00, 10.00);
+(56, 'CTM-1765688907', '2025-12-14', 1, 6967132.00, 10.00),
+(57, 'CTM-1769447438', '2026-01-26', 1, 3491111.00, 10.00),
+(59, 'CTM-1769447514', '2026-01-26', 1, 4316887.00, 10.00),
+(60, 'CTM-1769454541', '2026-01-26', 1, 3491111.00, 10.00),
+(61, 'CTM-1769454561', '2026-01-26', 1, 31352094.00, 10.00),
+(64, 'CTM-1772466128', '2026-03-02', 1, 2500000.00, 10.00),
+(65, 'CTM-1772466155', '2026-03-02', 1, 34911110.00, 10.00),
+(67, 'CTM-1772466213', '2026-03-02', 1, 2000000.00, 10.00),
+(68, 'CTM-1773841019', '2026-03-18', 1, 500000.00, 10.00),
+(69, 'CTM-1773928475', '2026-03-19', 1, 40000000.00, 10.00),
+(70, 'CTM-1773928711', '2026-03-19', 1, 800000000.00, 10.00),
+(71, 'CTM-1773928822', '2026-03-19', 1, 1500000.00, 10.00),
+(72, 'CTM-1773929096', '2026-03-19', 1, 480000000.00, 10.00),
+(73, 'CTM-1773930122', '2026-03-19', 1, 3491111.00, 10.00),
+(74, 'CTM-1773930126', '2026-03-19', 1, 2517265.00, 10.00),
+(75, 'CTM-1773984694', '2026-03-20', 1, 240000000.00, 10.00),
+(76, 'CTM-1773984836', '2026-03-20', 1, 24437777.00, 10.00),
+(77, 'CTM-1773985106', '2026-03-20', 1, 40000000.00, 10.00),
+(78, 'CTM-1774109099', '2026-03-21', 1, 30000000.00, 10.00);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chung_tu_mua_ct`
+-- Table structure for table `chung_tu_mua_ct`
 --
 
 CREATE TABLE `chung_tu_mua_ct` (
@@ -250,7 +318,7 @@ CREATE TABLE `chung_tu_mua_ct` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `chung_tu_mua_ct`
+-- Dumping data for table `chung_tu_mua_ct`
 --
 
 INSERT INTO `chung_tu_mua_ct` (`ID_CT`, `ID_HANGHOA`, `GIAMUA`, `SOLUONG`, `ID_CTMUA`) VALUES
@@ -258,7 +326,6 @@ INSERT INTO `chung_tu_mua_ct` (`ID_CT`, `ID_HANGHOA`, `GIAMUA`, `SOLUONG`, `ID_C
 (3, 22, 3415464.00, 6, 21),
 (4, 12, 761633.00, 3, 11),
 (5, 2, 2831860.00, 8, 1),
-(7, 33, 575580.00, 7, 32),
 (8, 23, 3580193.00, 5, 22),
 (9, 13, 1943450.00, 1, 12),
 (11, 44, 1881676.00, 9, 43),
@@ -274,7 +341,6 @@ INSERT INTO `chung_tu_mua_ct` (`ID_CT`, `ID_HANGHOA`, `GIAMUA`, `SOLUONG`, `ID_C
 (23, 26, 2208603.00, 1, 25),
 (24, 16, 3680833.00, 2, 15),
 (25, 6, 1158403.00, 8, 5),
-(26, 47, 3982170.00, 6, 46),
 (27, 37, 335606.00, 6, 36),
 (28, 27, 1636993.00, 4, 26),
 (29, 17, 3182423.00, 7, 16),
@@ -303,12 +369,30 @@ INSERT INTO `chung_tu_mua_ct` (`ID_CT`, `ID_HANGHOA`, `GIAMUA`, `SOLUONG`, `ID_C
 (53, 49, 3483566.00, 3, 53),
 (54, 50, 3491111.00, 3, 54),
 (55, 50, 3491111.00, 1, 55),
-(56, 49, 3483566.00, 2, 56);
+(56, 49, 3483566.00, 2, 56),
+(57, 50, 3491111.00, 1, 57),
+(59, 48, 4316887.00, 1, 59),
+(60, 50, 3491111.00, 1, 60),
+(61, 49, 3483566.00, 9, 61),
+(64, 53, 500000.00, 5, 64),
+(65, 50, 3491111.00, 10, 65),
+(67, 53, 500000.00, 4, 67),
+(68, 53, 500000.00, 1, 68),
+(69, 54, 40000000.00, 1, 69),
+(70, 54, 40000000.00, 20, 70),
+(71, 53, 500000.00, 3, 71),
+(72, 54, 40000000.00, 12, 72),
+(73, 50, 3491111.00, 1, 73),
+(74, 47, 2517265.00, 1, 74),
+(75, 54, 40000000.00, 6, 75),
+(76, 50, 3491111.00, 7, 76),
+(77, 54, 40000000.00, 1, 77),
+(78, 56, 15000000.00, 2, 78);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `don_gia_ban`
+-- Table structure for table `don_gia_ban`
 --
 
 CREATE TABLE `don_gia_ban` (
@@ -320,7 +404,7 @@ CREATE TABLE `don_gia_ban` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `don_gia_ban`
+-- Dumping data for table `don_gia_ban`
 --
 
 INSERT INTO `don_gia_ban` (`ID_DONGIA`, `GIATRI`, `NGAYBATDAU`, `APDUNG`, `ID_HANGHOA`) VALUES
@@ -368,12 +452,20 @@ INSERT INTO `don_gia_ban` (`ID_DONGIA`, `GIATRI`, `NGAYBATDAU`, `APDUNG`, `ID_HA
 (47, 3578406.00, '2025-11-15', 1, 40),
 (48, 2069722.00, '2025-06-07', 1, 30),
 (49, 2619077.00, '2025-03-16', 1, 20),
-(50, 1634964.00, '2025-11-13', 1, 10);
+(50, 1634964.00, '2025-11-13', 1, 10),
+(52, 10000.00, '2026-03-02', 1, 2),
+(53, 500000.00, '2026-03-02', 1, 53),
+(54, 40000000.00, '2026-03-19', 1, 54),
+(55, 15000000.00, '2026-03-19', 1, 55),
+(56, 550000.00, '2026-03-20', 1, 57),
+(57, 20000000.00, '2026-03-21', 1, 58),
+(58, 5000000.00, '2026-03-22', 1, 59),
+(59, 500000.00, '2026-03-22', 1, 60);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `hang_hoa`
+-- Table structure for table `hang_hoa`
 --
 
 CREATE TABLE `hang_hoa` (
@@ -382,65 +474,76 @@ CREATE TABLE `hang_hoa` (
   `MOTA` text COLLATE utf8mb4_unicode_ci,
   `DONVITINH` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `HINHANH` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ID_PHANLOAI` int DEFAULT NULL
+  `ID_PHANLOAI` int DEFAULT NULL,
+  `DONGIA_BAN` decimal(18,2) DEFAULT '0.00',
+  `NGAYTAO` date DEFAULT NULL,
+  `GIAGOC` decimal(15,2) DEFAULT NULL,
+  `SOLUONG` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `hang_hoa`
+-- Dumping data for table `hang_hoa`
 --
 
-INSERT INTO `hang_hoa` (`ID_HANGHOA`, `TENHANGHOA`, `MOTA`, `DONVITINH`, `HINHANH`, `ID_PHANLOAI`) VALUES
-(1, 'iPad Air 5 M1', 'Mô tả chi tiết sản phẩm 41.', 'Bộ', NULL, 2),
-(2, 'CPU Intel Core i9-14900K', 'Mô tả chi tiết sản phẩm 31.', 'Hộp', NULL, 8),
-(4, 'Tai Nghe Sony WH-1000XM5', 'Mô tả chi tiết sản phẩm 11.', 'Hộp', NULL, 4),
-(5, 'Samsung Galaxy Tab S9', 'Mô tả chi tiết sản phẩm 1.', 'Bộ', NULL, 2),
-(6, 'MacBook Air M2 (2024)', 'Mô tả chi tiết sản phẩm 42.', 'Cái', NULL, 3),
-(7, 'Samsung Galaxy S23', 'Mô tả chi tiết sản phẩm 32.', 'Chiếc', NULL, 1),
-(8, 'Robot Hút Bụi Ecovacs Deebot T20', 'Mô tả chi tiết sản phẩm 22.', 'Cái', NULL, 7),
-(9, 'Router Wi-Fi 6 TP-Link AX73', 'Mô tả chi tiết sản phẩm 12.', 'Chiếc', NULL, 5),
-(10, 'Dell XPS 13 Plus', 'Mô tả chi tiết sản phẩm 2.', 'Cái', NULL, 3),
-(11, 'Sạc Nhanh Anker 65W', 'Mô tả chi tiết sản phẩm 43.', 'Hộp', NULL, 4),
-(12, 'Xiaomi Pad 6', 'Mô tả chi tiết sản phẩm 33.', 'Bộ', NULL, 2),
-(13, 'RAM Corsair Vengeance 32GB (2x16GB)', 'Mô tả chi tiết sản phẩm 23.', 'Hộp', NULL, 8),
-(14, 'Sản Phẩm 13', 'Mô tả chi tiết sản phẩm 13.', 'Bộ', NULL, 6),
-(15, 'Ốp Lưng MagSafe iPhone', 'Mô tả chi tiết sản phẩm 3.', 'Hộp', NULL, 4),
-(16, 'Bộ Phát Wi-Fi Mesh Mercusys', 'Mô tả chi tiết sản phẩm 44.', 'Chiếc', NULL, 5),
-(17, 'HP Pavilion Gaming 15', 'Mô tả chi tiết sản phẩm 34.', 'Cái', NULL, 3),
-(18, 'iPhone 15 Pro Max', 'Mô tả chi tiết sản phẩm 24.', 'Chiếc', NULL, 1),
-(19, 'Nồi Cơm Điện Cao Tần Zojirushi', 'Mô tả chi tiết sản phẩm 14.', 'Cái', NULL, 7),
-(20, 'Switch Mạng Gigabit', 'Mô tả chi tiết sản phẩm 4.', 'Chiếc', NULL, 5),
-(22, 'Chuột Không Dây Logitech MX Master 3S', 'Mô tả chi tiết sản phẩm 35.', 'Hộp', NULL, 4),
-(23, 'Lenovo Tab P11 Gen 2', 'Mô tả chi tiết sản phẩm 25.', 'Bộ', NULL, 2),
-(24, 'Card Đồ Họa NVIDIA RTX 4080', 'Mô tả chi tiết sản phẩm 15.', 'Hộp', NULL, 8),
-(26, 'Máy Lọc Không Khí Sharp FP-J80EV', 'Mô tả chi tiết sản phẩm 46.', 'Cái', NULL, 7),
-(27, 'Modem DrayTek Vigor 2927', 'Mô tả chi tiết sản phẩm 36.', 'Chiếc', NULL, 5),
-(28, 'Asus ZenBook Duo', 'Mô tả chi tiết sản phẩm 26.', 'Cái', NULL, 3),
-(29, 'Xiaomi Redmi Note 13', 'Mô tả chi tiết sản phẩm 16.', 'Chiếc', NULL, 1),
-(30, 'Bếp Từ Đôi Bosch PID675DC1E', 'Mô tả chi tiết sản phẩm 6.', 'Cái', NULL, 7),
-(31, 'SSD Samsung 990 Pro 1TB', 'Mô tả chi tiết sản phẩm 47.', 'Hộp', NULL, 8),
-(33, 'Bàn Phím Cơ AKKO 3098', 'Mô tả chi tiết sản phẩm 27.', 'Hộp', NULL, 4),
-(34, 'Kindle Paperwhite', 'Mô tả chi tiết sản phẩm 17.', 'Bộ', NULL, 2),
-(35, 'Mainboard Asus ROG Strix Z790-E', 'Mô tả chi tiết sản phẩm 7.', 'Hộp', NULL, 8),
-(36, 'Oppo Find N3 Flip', 'Mô tả chi tiết sản phẩm 48.', 'Chiếc', NULL, 1),
-(37, 'Máy Hút Bụi Cầm Tay Dyson V15', 'Mô tả chi tiết sản phẩm 38.', 'Cái', NULL, 7),
-(38, 'Repeater Xiaomi Pro', 'Mô tả chi tiết sản phẩm 28.', 'Chiếc', NULL, 5),
-(39, 'Lenovo Legion 5', 'Mô tả chi tiết sản phẩm 18.', 'Cái', NULL, 3),
-(40, 'Realme C55', 'Mô tả chi tiết sản phẩm 8.', 'Chiếc', NULL, 1),
-(41, 'Microsoft Surface Go 3', 'Mô tả chi tiết sản phẩm 49.', 'Bộ', '1764175008994_5650372_surface_go_3_under_embargo_until_22.webp', 2),
-(42, 'Tản Nhiệt Nước Cooler Master MasterLiquid', 'Mô tả chi tiết sản phẩm 39.', 'Hộp', '1764174985990_images.jpg', 8),
-(44, 'Ổ Cứng Di Động Samsung T7', 'Mô tả chi tiết sản phẩm 19.', 'Hộp', '1764174725771_samsung_t7_portable_ssd_thumb_4f35411519.png', 4),
-(45, 'Acer Iconia Tab M10', 'Mô tả chi tiết sản phẩm 9.', 'Bộ', '1764174699099_acer-iconia-tab-m10_2_.webp', 2),
-(46, 'Acer Nitro V', 'Mô tả chi tiết sản phẩm 50.', 'Cái', '1764174508609_text_ng_n_11__4_19.webp', 3),
-(47, 'Nokia C21 Plus', 'Mô tả chi tiết sản phẩm 40.', 'Chiếc', '1764174407510_nokia-c21-plus-600x600.jpg', 1),
-(48, 'Quạt Điều Hòa Daikiosan', 'Mô tả chi tiết sản phẩm 30.', 'Cái', '1764174390829_quat-dieu-hoa-daikiosan-dka-04000c-01.jpg', 7),
-(49, 'Cáp Mạng Cat6 UTP', 'Mô tả chi tiết sản phẩm 20.', 'Chiếc', '1764174333626_5570_lention_l6_2m_bl.jpg', 5),
-(50, 'MSI Thin GF63', 'Mô tả chi tiết sản phẩm 10.', 'Cái', '1764174258347_gf63.1.jpg', 3),
-(52, 'Phím cơ RGB', '', 'Cái', NULL, 10);
+INSERT INTO `hang_hoa` (`ID_HANGHOA`, `TENHANGHOA`, `MOTA`, `DONVITINH`, `HINHANH`, `ID_PHANLOAI`, `DONGIA_BAN`, `NGAYTAO`, `GIAGOC`, `SOLUONG`) VALUES
+(1, 'iPad Air 5 M1', 'Mô tả chi tiết sản phẩm 41.', 'Bộ', NULL, 2, 0.00, NULL, NULL, 0),
+(2, 'CPU Intel Core i9-14900K', 'Mô tả chi tiết sản phẩm 31.', 'Hộp', NULL, 8, 0.00, NULL, NULL, 0),
+(4, 'Tai Nghe Sony WH-1000XM5', 'Mô tả chi tiết sản phẩm 11.', 'Hộp', NULL, 4, 0.00, NULL, NULL, 0),
+(5, 'Samsung Galaxy Tab S9', 'Mô tả chi tiết sản phẩm 1.', 'Bộ', NULL, 2, 0.00, NULL, NULL, 0),
+(6, 'MacBook Air M2 (2024)', 'Mô tả chi tiết sản phẩm 42.', 'Cái', NULL, 3, 0.00, NULL, NULL, 0),
+(7, 'Samsung Galaxy S23', 'Mô tả chi tiết sản phẩm 32.', 'Chiếc', NULL, 1, 0.00, NULL, NULL, 0),
+(8, 'Robot Hút Bụi Ecovacs Deebot T20', 'Mô tả chi tiết sản phẩm 22.', 'Cái', NULL, 7, 0.00, NULL, NULL, 0),
+(9, 'Router Wi-Fi 6 TP-Link AX73', 'Mô tả chi tiết sản phẩm 12.', 'Chiếc', NULL, 5, 0.00, NULL, NULL, 0),
+(10, 'Dell XPS 13 Plus', 'Mô tả chi tiết sản phẩm 2.', 'Cái', NULL, 3, 0.00, NULL, NULL, 0),
+(11, 'Sạc Nhanh Anker 65W', 'Mô tả chi tiết sản phẩm 43.', 'Hộp', NULL, 4, 0.00, NULL, NULL, 0),
+(12, 'Xiaomi Pad 6', 'Mô tả chi tiết sản phẩm 33.', 'Bộ', NULL, 2, 0.00, NULL, NULL, 0),
+(13, 'RAM Corsair Vengeance 32GB (2x16GB)', 'Mô tả chi tiết sản phẩm 23.', 'Hộp', NULL, 8, 0.00, NULL, NULL, 0),
+(14, 'Sản Phẩm 13', 'Mô tả chi tiết sản phẩm 13.', 'Bộ', NULL, 6, 0.00, NULL, NULL, 0),
+(15, 'Ốp Lưng MagSafe iPhone', 'Mô tả chi tiết sản phẩm 3.', 'Hộp', NULL, 4, 0.00, NULL, NULL, 0),
+(16, 'Bộ Phát Wi-Fi Mesh Mercusys', 'Mô tả chi tiết sản phẩm 44.', 'Chiếc', NULL, 5, 0.00, NULL, NULL, 0),
+(17, 'HP Pavilion Gaming 15', 'Mô tả chi tiết sản phẩm 34.', 'Cái', NULL, 3, 0.00, NULL, NULL, 0),
+(18, 'iPhone 15 Pro Max', 'Mô tả chi tiết sản phẩm 24.', 'Chiếc', NULL, 1, 0.00, NULL, NULL, 0),
+(19, 'Nồi Cơm Điện Cao Tần Zojirushi', 'Mô tả chi tiết sản phẩm 14.', 'Cái', NULL, 7, 0.00, NULL, NULL, 0),
+(20, 'Switch Mạng Gigabit', 'Mô tả chi tiết sản phẩm 4.', 'Chiếc', NULL, 5, 0.00, NULL, NULL, 0),
+(22, 'Chuột Không Dây Logitech MX Master 3S', 'Mô tả chi tiết sản phẩm 35.', 'Hộp', NULL, 4, 0.00, NULL, NULL, 0),
+(23, 'Lenovo Tab P11 Gen 2', 'Mô tả chi tiết sản phẩm 25.', 'Bộ', NULL, 2, 0.00, NULL, NULL, 0),
+(24, 'Card Đồ Họa NVIDIA RTX 4080', 'Mô tả chi tiết sản phẩm 15.', 'Hộp', NULL, 8, 0.00, NULL, NULL, 0),
+(26, 'Máy Lọc Không Khí Sharp FP-J80EV', 'Mô tả chi tiết sản phẩm 46.', 'Cái', NULL, 7, 0.00, NULL, NULL, 0),
+(27, 'Modem DrayTek Vigor 2927', 'Mô tả chi tiết sản phẩm 36.', 'Chiếc', NULL, 5, 0.00, NULL, NULL, 0),
+(28, 'Asus ZenBook Duo', 'Mô tả chi tiết sản phẩm 26.', 'Cái', NULL, 3, 0.00, NULL, NULL, 0),
+(29, 'Xiaomi Redmi Note 13', 'Mô tả chi tiết sản phẩm 16.', 'Chiếc', NULL, 1, 0.00, NULL, NULL, 0),
+(30, 'Bếp Từ Đôi Bosch PID675DC1E', 'Mô tả chi tiết sản phẩm 6.', 'Cái', NULL, 7, 0.00, NULL, NULL, 0),
+(31, 'SSD Samsung 990 Pro 1TB', 'Mô tả chi tiết sản phẩm 47.', 'Hộp', NULL, 8, 0.00, NULL, NULL, 0),
+(33, 'Bàn Phím Cơ AKKO 3098', 'Mô tả chi tiết sản phẩm 27.', 'Hộp', NULL, 4, 0.00, NULL, NULL, 0),
+(34, 'Kindle Paperwhite', 'Mô tả chi tiết sản phẩm 17.', 'Bộ', NULL, 2, 0.00, NULL, NULL, 0),
+(35, 'Mainboard Asus ROG Strix Z790-E', 'Mô tả chi tiết sản phẩm 7.', 'Hộp', NULL, 8, 0.00, NULL, NULL, 0),
+(36, 'Oppo Find N3 Flip', 'Mô tả chi tiết sản phẩm 48.', 'Chiếc', NULL, 1, 0.00, NULL, NULL, 0),
+(37, 'Máy Hút Bụi Cầm Tay Dyson V15', 'Mô tả chi tiết sản phẩm 38.', 'Cái', NULL, 7, 0.00, NULL, NULL, 0),
+(38, 'Repeater Xiaomi Pro', 'Mô tả chi tiết sản phẩm 28.', 'Chiếc', NULL, 5, 0.00, NULL, NULL, 0),
+(39, 'Lenovo Legion 5', 'Mô tả chi tiết sản phẩm 18.', 'Cái', NULL, 3, 0.00, NULL, NULL, 0),
+(40, 'Realme C55', 'Mô tả chi tiết sản phẩm 8.', 'Chiếc', NULL, 1, 0.00, NULL, NULL, 0),
+(41, 'Microsoft Surface Go 3', 'Mô tả chi tiết sản phẩm 49.', 'Bộ', '1764175008994_5650372_surface_go_3_under_embargo_until_22.webp', 2, 0.00, NULL, NULL, 0),
+(42, 'Tản Nhiệt Nước Cooler Master MasterLiquid', 'Mô tả chi tiết sản phẩm 39.', 'Hộp', '1764174985990_images.jpg', 8, 0.00, NULL, NULL, 0),
+(44, 'Ổ Cứng Di Động Samsung T7', 'Mô tả chi tiết sản phẩm 19.', 'Hộp', '1764174725771_samsung_t7_portable_ssd_thumb_4f35411519.png', 4, 0.00, NULL, NULL, 0),
+(45, 'Acer Iconia Tab M10', 'Mô tả chi tiết sản phẩm 9.', 'Bộ', '1764174699099_acer-iconia-tab-m10_2_.webp', 2, 0.00, NULL, NULL, 0),
+(46, 'Acer Nitro V', 'Mô tả chi tiết sản phẩm 50.', 'Cái', '1764174508609_text_ng_n_11__4_19.webp', 3, 0.00, NULL, NULL, 0),
+(47, 'Nokia C21 Plus', 'Mô tả chi tiết sản phẩm 40.', 'Chiếc', '1764174407510_nokia-c21-plus-600x600.jpg', 1, 0.00, NULL, NULL, 1),
+(48, 'Quạt Điều Hòa Daikiosan', 'Mô tả chi tiết sản phẩm 30.', 'Cái', '1764174390829_quat-dieu-hoa-daikiosan-dka-04000c-01.jpg', 7, 0.00, NULL, NULL, 0),
+(49, 'Cáp Mạng Cat6 UTP', 'Mô tả chi tiết sản phẩm 20.', 'Chiếc', '1764174333626_5570_lention_l6_2m_bl.jpg', 5, 0.00, NULL, NULL, 0),
+(50, 'MSI Thin GF63', 'Mô tả chi tiết sản phẩm 10.', 'Cái', '1764174258347_gf63.1.jpg', 3, 0.00, '2026-01-27', 4837719.00, 7),
+(53, 'Phím cơ RGB', 'Mới ra', 'Cái', NULL, 4, 0.00, '2026-03-02', 1000000.00, -1),
+(54, 'Iphone 17', 'Iphone 17 ', 'Chiếc', '1773926171572_e9647f036a76e0961c0799a79f73e25b.jpg', 1, 0.00, '2026-03-19', 40000000.00, 24),
+(55, 'Asus i7', '', 'Cái', '1773930527367_pxfuel (3).jpg', 2, 0.00, '2026-03-19', 20000000.00, 9),
+(56, 'Mac', '', 'Cái', '1773982760590_pxfuel (9).jpg', 3, 15000000.00, '2026-03-20', 20000000.00, 6),
+(57, 'Logitech', '', 'Cái', '1773983100032_pxfuel (4).jpg', 4, 550000.00, '2026-03-20', 650000.00, 13),
+(58, 'MacBook', '', 'Cái', '1774109920841_kaisa-crystal-rose-prestige-skin-lol-wild-rift-hd-wallpaper-uhdpaper.com-841@2@a.jpg', 2, 20000000.00, '2026-03-21', 25000000.00, 15),
+(59, 'Phím cơ RGB123', '', 'Hộp', '1774118576376_goku-dragon-ball-hd-wallpaper-uhdpaper.com-262@3@a.jpg', 1, 5000000.00, '2026-03-22', 5000000.00, 15),
+(60, 'adsadasd', '', 'Hộp', NULL, 1, 500000.00, '2026-03-22', 500000.00, 15);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `khach_hang`
+-- Table structure for table `khach_hang`
 --
 
 CREATE TABLE `khach_hang` (
@@ -454,7 +557,7 @@ CREATE TABLE `khach_hang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `khach_hang`
+-- Dumping data for table `khach_hang`
 --
 
 INSERT INTO `khach_hang` (`ID_KHACH_HANG`, `TEN_KH`, `DIACHI`, `SODIENTHOAI`, `HINHANH`, `SOB`, `PASSWORD`) VALUES
@@ -508,13 +611,55 @@ INSERT INTO `khach_hang` (`ID_KHACH_HANG`, `TEN_KH`, `DIACHI`, `SODIENTHOAI`, `H
 (48, 'Khách Hàng 30', 'Địa Chỉ 30', '0944344249', NULL, 'KH032', '123456'),
 (49, 'Khách Hàng 20', 'Địa Chỉ 20', '0987359913', NULL, 'KH022', '123456'),
 (50, 'Khách Hàng 10', 'Địa Chỉ 10', '0993766824', NULL, 'KH012', '123456'),
-(53, 'admin12345', 'cần thơ', '0123456789', '1765179674528_pxfuel (12).jpg', 'SOB001', NULL),
-(54, 'user123', '', '', NULL, 'user', '123456');
+(53, 'admin12345', 'cần thơ', '0123456789', '1765179674528_pxfuel (12).jpg', 'SOB001', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `phan_loai`
+-- Table structure for table `kho`
+--
+
+CREATE TABLE `kho` (
+  `ID_KHO` int NOT NULL,
+  `ID_HANGHOA` int NOT NULL,
+  `ID_CTMUA` int DEFAULT NULL,
+  `ID_CTBAN` int DEFAULT NULL,
+  `SOLUONG` int NOT NULL,
+  `LOAI_CHUNG_TU` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'MUA hoặc BAN',
+  `NGAY_TAO` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `kho`
+--
+
+INSERT INTO `kho` (`ID_KHO`, `ID_HANGHOA`, `ID_CTMUA`, `ID_CTBAN`, `SOLUONG`, `LOAI_CHUNG_TU`, `NGAY_TAO`) VALUES
+(1, 53, 68, NULL, 1, 'MUA', '2026-03-18 20:36:59'),
+(3, 54, 69, NULL, 1, 'MUA', '2026-03-19 20:54:35'),
+(5, 54, NULL, 72, 1, 'BAN', '2026-03-19 20:56:32'),
+(6, 53, NULL, 71, 1, 'BAN', '2026-03-19 20:58:09'),
+(7, 54, 70, NULL, 20, 'MUA', '2026-03-19 20:58:31'),
+(8, 53, 71, NULL, 3, 'MUA', '2026-03-19 21:00:22'),
+(9, 53, NULL, 73, 4, 'BAN', '2026-03-19 21:01:01'),
+(11, 54, NULL, 74, 13, 'BAN', '2026-03-19 21:03:28'),
+(12, 54, 72, NULL, 12, 'MUA', '2026-03-19 21:04:56'),
+(14, 54, NULL, 75, 17, 'BAN', '2026-03-19 21:05:51'),
+(15, 50, 73, NULL, 1, 'MUA', '2026-03-19 21:22:02'),
+(16, 47, 74, NULL, 1, 'MUA', '2026-03-19 21:22:06'),
+(18, 57, NULL, 76, 1, 'BAN', '2026-03-20 12:21:55'),
+(20, 56, NULL, 77, 1, 'BAN', '2026-03-20 12:24:19'),
+(22, 55, NULL, 78, 1, 'BAN', '2026-03-20 12:25:52'),
+(23, 50, NULL, 79, 1, 'BAN', '2026-03-20 12:30:03'),
+(24, 54, 75, NULL, 6, 'MUA', '2026-03-20 12:31:34'),
+(25, 50, 76, NULL, 7, 'MUA', '2026-03-20 12:33:56'),
+(26, 54, 77, NULL, 1, 'MUA', '2026-03-20 12:38:26'),
+(27, 56, 78, NULL, 2, 'MUA', '2026-03-21 23:04:59'),
+(29, 57, NULL, 80, 1, 'BAN', '2026-03-21 23:06:03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `phan_loai`
 --
 
 CREATE TABLE `phan_loai` (
@@ -525,7 +670,7 @@ CREATE TABLE `phan_loai` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `phan_loai`
+-- Dumping data for table `phan_loai`
 --
 
 INSERT INTO `phan_loai` (`ID_PHANLOAI`, `TENPHANLOAI`, `MOTA`, `HINHANH`) VALUES
@@ -536,13 +681,53 @@ INSERT INTO `phan_loai` (`ID_PHANLOAI`, `TENPHANLOAI`, `MOTA`, `HINHANH`) VALUES
 (5, 'Thiết Bị Mạng', 'Router, modem, cáp mạng, thiết bị phát wifi.', NULL),
 (6, 'Máy Ảnh', 'Máy ảnh DSLR, Mirrorless và các phụ kiện liên quan.', NULL),
 (7, 'Đồ Gia Dụng', 'Thiết bị điện tử phục vụ gia đình: nồi cơm điện, máy hút bụi.', NULL),
-(8, 'Linh Kiện PC', 'CPU, RAM, Mainboard, VGA, SSD.', NULL),
-(10, 'Bàn Phím', '', NULL);
+(8, 'Linh Kiện PC', 'CPU, RAM, Mainboard, VGA, SSD.', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `thuoc_tinh`
+-- Table structure for table `thong_bao`
+--
+
+CREATE TABLE `thong_bao` (
+  `ID` int NOT NULL,
+  `NOIDUNG` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ID_NGUOINHAN` int DEFAULT NULL,
+  `LOAI` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'client',
+  `NGAYTAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `IS_READ` tinyint DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `thong_bao`
+--
+
+INSERT INTO `thong_bao` (`ID`, `NOIDUNG`, `ID_NGUOINHAN`, `LOAI`, `NGAYTAO`, `IS_READ`) VALUES
+(1, 'Sản phẩm mới: \'\' vừa được lên kệ! Khám phá ngay.', NULL, 'all', '2026-03-20 11:59:20', 1),
+(2, 'Sản phẩm mới: \'\' vừa được lên kệ! Khám phá ngay.', NULL, 'all', '2026-03-20 12:05:00', 1),
+(3, 'Đơn hàng mới: \'CTB-1773984078\' vừa được khách hàng đặt thành công.', NULL, 'admin', '2026-03-20 12:21:18', 1),
+(4, 'Đơn hàng mới: \'CTB-1773984236\' vừa được khách hàng đặt thành công.', NULL, 'admin', '2026-03-20 12:23:56', 1),
+(5, 'Đơn hàng CTB-1773984236 của bạn đã chuyển sang trạng thái: Đã giao hàng', 2, 'client', '2026-03-20 12:24:19', 1),
+(6, 'Đơn hàng mới: \'CTB-1773984333\' vừa được khách hàng đặt thành công.', NULL, 'admin', '2026-03-20 12:25:33', 1),
+(7, '🎉 Tuyệt vời! Đơn hàng **CTB-1773984333** đã giao thành công. Hy vọng bạn thích sản phẩm của chúng tôi! ❤️', 2, 'client', '2026-03-20 12:25:52', 1),
+(8, 'Đơn hàng mới: \'CTB-1773984603\' vừa được khách hàng đặt thành công.', NULL, 'admin', '2026-03-20 12:30:03', 1),
+(9, 'Đơn hàng mới: \'CTM-1773984694\' vừa được khách hàng đặt thành công.', NULL, 'admin', '2026-03-20 12:31:34', 1),
+(10, '📦 Nhập hàng thành công! Chứng từ nhập **CTM-1773984836** đã được tạo.', NULL, 'admin', '2026-03-20 12:33:56', 1),
+(11, '📦 Nhập hàng thành công! Chứng từ nhập **CTM-1773985106** đã được tạo.', NULL, 'admin', '2026-03-20 12:38:26', 1),
+(12, '📦 Nhập hàng thành công! Chứng từ nhập **CTM-1774109099** đã được tạo.', NULL, 'admin', '2026-03-21 23:04:59', 1),
+(13, '🛒 Đơn hàng mới: **CTB-1774109132** vừa được khách hàng đặt thành công.', NULL, 'admin', '2026-03-21 23:05:32', 1),
+(14, '🎉 Tuyệt vời! Đơn hàng **CTB-1774109132** đã giao thành công. Hy vọng bạn thích sản phẩm của chúng tôi! ❤️', 2, 'client', '2026-03-21 23:06:03', 1),
+(15, 'Sản phẩm mới: \'\' vừa được lên kệ! Khám phá ngay.', NULL, 'all', '2026-03-21 23:18:40', 1),
+(16, '🚀 Chúc mừng! Sản phẩm mới **** đã được đăng bán thành công. Chúc Pikay Shop buôn may bán đắt! 💸', NULL, 'admin', '2026-03-21 23:18:40', 1),
+(17, 'Sản phẩm mới: \'\' vừa được lên kệ! Khám phá ngay.', NULL, 'all', '2026-03-22 01:42:56', 1),
+(18, '🚀 Chúc mừng! Sản phẩm mới **** đã được đăng bán thành công. Chúc Pikay Shop buôn may bán đắt! 💸', NULL, 'admin', '2026-03-22 01:42:56', 1),
+(19, 'Sản phẩm mới: \'adsadasd\' vừa được lên kệ! Khám phá ngay.', NULL, 'all', '2026-03-22 01:50:32', 1),
+(20, '🚀 Chúc mừng! Sản phẩm mới **adsadasd** đã được đăng bán thành công. Chúc Pikay Shop buôn may bán đắt! 💸', NULL, 'admin', '2026-03-22 01:50:32', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thuoc_tinh`
 --
 
 CREATE TABLE `thuoc_tinh` (
@@ -554,7 +739,7 @@ CREATE TABLE `thuoc_tinh` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `thuoc_tinh`
+-- Dumping data for table `thuoc_tinh`
 --
 
 INSERT INTO `thuoc_tinh` (`ID_THUOCTINH`, `TEN`, `GIATRI`, `HINHANH`, `ID_HANGHOA`) VALUES
@@ -602,22 +787,21 @@ INSERT INTO `thuoc_tinh` (`ID_THUOCTINH`, `TEN`, `GIATRI`, `HINHANH`, `ID_HANGHO
 (47, 'Màu Sắc', 'Giá Trị 40', NULL, 40),
 (48, 'Màu Sắc', 'Giá Trị 30', NULL, 30),
 (49, 'Màu Sắc', 'Giá Trị 20', NULL, 20),
-(50, 'Màu Sắc', 'Giá Trị 10', NULL, 10),
-(52, 'Màu Sắc', '100', NULL, 52);
+(50, 'Màu Sắc', 'Giá Trị 10', NULL, 10);
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `chung_tu_ban`
+-- Indexes for table `chung_tu_ban`
 --
 ALTER TABLE `chung_tu_ban`
   ADD PRIMARY KEY (`ID_CTBAN`),
   ADD KEY `ID_KHACHHANG` (`ID_KHACHHANG`);
 
 --
--- Chỉ mục cho bảng `chung_tu_ban_ct`
+-- Indexes for table `chung_tu_ban_ct`
 --
 ALTER TABLE `chung_tu_ban_ct`
   ADD PRIMARY KEY (`ID_CT`),
@@ -625,14 +809,14 @@ ALTER TABLE `chung_tu_ban_ct`
   ADD KEY `ID_CTBAN` (`ID_CTBAN`);
 
 --
--- Chỉ mục cho bảng `chung_tu_mua`
+-- Indexes for table `chung_tu_mua`
 --
 ALTER TABLE `chung_tu_mua`
   ADD PRIMARY KEY (`ID_CTMUA`),
   ADD KEY `ID_KHACHHANG` (`ID_KHACHHANG`);
 
 --
--- Chỉ mục cho bảng `chung_tu_mua_ct`
+-- Indexes for table `chung_tu_mua_ct`
 --
 ALTER TABLE `chung_tu_mua_ct`
   ADD PRIMARY KEY (`ID_CT`),
@@ -640,140 +824,171 @@ ALTER TABLE `chung_tu_mua_ct`
   ADD KEY `ID_CTMUA` (`ID_CTMUA`);
 
 --
--- Chỉ mục cho bảng `don_gia_ban`
+-- Indexes for table `don_gia_ban`
 --
 ALTER TABLE `don_gia_ban`
   ADD PRIMARY KEY (`ID_DONGIA`),
   ADD KEY `ID_HANGHOA` (`ID_HANGHOA`);
 
 --
--- Chỉ mục cho bảng `hang_hoa`
+-- Indexes for table `hang_hoa`
 --
 ALTER TABLE `hang_hoa`
   ADD PRIMARY KEY (`ID_HANGHOA`),
   ADD KEY `ID_PHANLOAI` (`ID_PHANLOAI`);
 
 --
--- Chỉ mục cho bảng `khach_hang`
+-- Indexes for table `khach_hang`
 --
 ALTER TABLE `khach_hang`
   ADD PRIMARY KEY (`ID_KHACH_HANG`);
 
 --
--- Chỉ mục cho bảng `phan_loai`
+-- Indexes for table `kho`
+--
+ALTER TABLE `kho`
+  ADD PRIMARY KEY (`ID_KHO`),
+  ADD KEY `ID_HANGHOA` (`ID_HANGHOA`);
+
+--
+-- Indexes for table `phan_loai`
 --
 ALTER TABLE `phan_loai`
   ADD PRIMARY KEY (`ID_PHANLOAI`);
 
 --
--- Chỉ mục cho bảng `thuoc_tinh`
+-- Indexes for table `thong_bao`
+--
+ALTER TABLE `thong_bao`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `thuoc_tinh`
 --
 ALTER TABLE `thuoc_tinh`
   ADD PRIMARY KEY (`ID_THUOCTINH`),
   ADD KEY `ID_HANGHOA` (`ID_HANGHOA`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `chung_tu_ban`
+-- AUTO_INCREMENT for table `chung_tu_ban`
 --
 ALTER TABLE `chung_tu_ban`
-  MODIFY `ID_CTBAN` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `ID_CTBAN` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
--- AUTO_INCREMENT cho bảng `chung_tu_ban_ct`
+-- AUTO_INCREMENT for table `chung_tu_ban_ct`
 --
 ALTER TABLE `chung_tu_ban_ct`
-  MODIFY `ID_CT` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `ID_CT` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
--- AUTO_INCREMENT cho bảng `chung_tu_mua`
+-- AUTO_INCREMENT for table `chung_tu_mua`
 --
 ALTER TABLE `chung_tu_mua`
-  MODIFY `ID_CTMUA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `ID_CTMUA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
--- AUTO_INCREMENT cho bảng `chung_tu_mua_ct`
+-- AUTO_INCREMENT for table `chung_tu_mua_ct`
 --
 ALTER TABLE `chung_tu_mua_ct`
-  MODIFY `ID_CT` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `ID_CT` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
--- AUTO_INCREMENT cho bảng `don_gia_ban`
+-- AUTO_INCREMENT for table `don_gia_ban`
 --
 ALTER TABLE `don_gia_ban`
-  MODIFY `ID_DONGIA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `ID_DONGIA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
--- AUTO_INCREMENT cho bảng `hang_hoa`
+-- AUTO_INCREMENT for table `hang_hoa`
 --
 ALTER TABLE `hang_hoa`
-  MODIFY `ID_HANGHOA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `ID_HANGHOA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
--- AUTO_INCREMENT cho bảng `khach_hang`
+-- AUTO_INCREMENT for table `khach_hang`
 --
 ALTER TABLE `khach_hang`
   MODIFY `ID_KHACH_HANG` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
--- AUTO_INCREMENT cho bảng `phan_loai`
+-- AUTO_INCREMENT for table `kho`
+--
+ALTER TABLE `kho`
+  MODIFY `ID_KHO` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `phan_loai`
 --
 ALTER TABLE `phan_loai`
   MODIFY `ID_PHANLOAI` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT cho bảng `thuoc_tinh`
+-- AUTO_INCREMENT for table `thong_bao`
+--
+ALTER TABLE `thong_bao`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `thuoc_tinh`
 --
 ALTER TABLE `thuoc_tinh`
   MODIFY `ID_THUOCTINH` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
--- Ràng buộc đối với các bảng kết xuất
+-- Constraints for dumped tables
 --
 
 --
--- Ràng buộc cho bảng `chung_tu_ban`
+-- Constraints for table `chung_tu_ban`
 --
 ALTER TABLE `chung_tu_ban`
   ADD CONSTRAINT `chung_tu_ban_ibfk_1` FOREIGN KEY (`ID_KHACHHANG`) REFERENCES `khach_hang` (`ID_KHACH_HANG`);
 
 --
--- Ràng buộc cho bảng `chung_tu_ban_ct`
+-- Constraints for table `chung_tu_ban_ct`
 --
 ALTER TABLE `chung_tu_ban_ct`
   ADD CONSTRAINT `chung_tu_ban_ct_ibfk_1` FOREIGN KEY (`ID_HANGHOA`) REFERENCES `hang_hoa` (`ID_HANGHOA`),
   ADD CONSTRAINT `chung_tu_ban_ct_ibfk_2` FOREIGN KEY (`ID_CTBAN`) REFERENCES `chung_tu_ban` (`ID_CTBAN`);
 
 --
--- Ràng buộc cho bảng `chung_tu_mua`
+-- Constraints for table `chung_tu_mua`
 --
 ALTER TABLE `chung_tu_mua`
   ADD CONSTRAINT `chung_tu_mua_ibfk_1` FOREIGN KEY (`ID_KHACHHANG`) REFERENCES `khach_hang` (`ID_KHACH_HANG`);
 
 --
--- Ràng buộc cho bảng `chung_tu_mua_ct`
+-- Constraints for table `chung_tu_mua_ct`
 --
 ALTER TABLE `chung_tu_mua_ct`
   ADD CONSTRAINT `chung_tu_mua_ct_ibfk_1` FOREIGN KEY (`ID_HANGHOA`) REFERENCES `hang_hoa` (`ID_HANGHOA`),
   ADD CONSTRAINT `chung_tu_mua_ct_ibfk_2` FOREIGN KEY (`ID_CTMUA`) REFERENCES `chung_tu_mua` (`ID_CTMUA`);
 
 --
--- Ràng buộc cho bảng `don_gia_ban`
+-- Constraints for table `don_gia_ban`
 --
 ALTER TABLE `don_gia_ban`
   ADD CONSTRAINT `don_gia_ban_ibfk_1` FOREIGN KEY (`ID_HANGHOA`) REFERENCES `hang_hoa` (`ID_HANGHOA`);
 
 --
--- Ràng buộc cho bảng `hang_hoa`
+-- Constraints for table `hang_hoa`
 --
 ALTER TABLE `hang_hoa`
   ADD CONSTRAINT `hang_hoa_ibfk_1` FOREIGN KEY (`ID_PHANLOAI`) REFERENCES `phan_loai` (`ID_PHANLOAI`);
 
 --
--- Ràng buộc cho bảng `thuoc_tinh`
+-- Constraints for table `kho`
+--
+ALTER TABLE `kho`
+  ADD CONSTRAINT `kho_ibfk_1` FOREIGN KEY (`ID_HANGHOA`) REFERENCES `hang_hoa` (`ID_HANGHOA`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `thuoc_tinh`
 --
 ALTER TABLE `thuoc_tinh`
   ADD CONSTRAINT `thuoc_tinh_ibfk_1` FOREIGN KEY (`ID_HANGHOA`) REFERENCES `hang_hoa` (`ID_HANGHOA`);

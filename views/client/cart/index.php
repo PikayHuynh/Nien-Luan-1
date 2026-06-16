@@ -56,7 +56,7 @@ $total = $total ?? ($_SESSION['cart_total'] ?? 0);
                     <!-- LEFT COLUMN: CART ITEMS -->
                     <div class="col-lg-8">
                         <div class="cart-items">
-                            <?php foreach ($cart as $item): 
+                            <?php foreach ($cart as $item):
                                 $subtotal = $item['subtotal'] ?? ($item['quantity'] * $item['price']);
                             ?>
                                 <div class="card bg-glass border-white-10 mb-3 p-3 rounded-4 shadow-sm">
@@ -66,10 +66,11 @@ $total = $total ?? ($_SESSION['cart_total'] ?? 0);
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="rounded-3 p-1" style="width: 70px; height: 70px; background: rgba(255,255,255,0.05); border: 1px solid var(--lp-border);">
-                                                        <img src="upload/<?= htmlspecialchars($item['image'] ?? 'item-default.png') ?>" 
-                                                             class="w-100 h-100 rounded-2" 
-                                                             style="object-fit: cover;"
-                                                             alt="<?= htmlspecialchars($item['name']) ?>">
+                                                        <img src="upload/<?= (!empty($item['image']) ? htmlspecialchars($item['image']) : 'item-default.png') ?>"
+                                                            class="w-100 h-100 rounded-2"
+                                                            style="object-fit: cover;"
+                                                            alt="<?= htmlspecialchars($item['name']) ?>"
+                                                            onerror="this.src='upload/item-default.png'; this.onerror=null;">
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
@@ -101,8 +102,8 @@ $total = $total ?? ($_SESSION['cart_total'] ?? 0);
                                                 <small class="text-muted d-block">Thành tiền</small>
                                                 <strong class="text-primary fs-5"><?= number_format($subtotal) ?> đ</strong>
                                             </div>
-                                            <a href="index.php?controller=cart&action=remove&id=<?= htmlspecialchars($item['id']) ?>" 
-                                               class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa">
+                                            <a href="index.php?controller=cart&action=remove&id=<?= htmlspecialchars($item['id']) ?>"
+                                                class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa">
                                                 <i class="bi bi-trash fs-5"></i>
                                             </a>
                                         </div>
@@ -116,12 +117,12 @@ $total = $total ?? ($_SESSION['cart_total'] ?? 0);
                     <div class="col-lg-4">
                         <div class="card bg-glass border-white-10 p-4 rounded-4 shadow-lg sticky-top" style="top: 100px; z-index: 100;">
                             <h4 class="fw-bold text-white mb-4">Tổng đơn hàng</h4>
-                            
+
                             <div class="d-flex justify-content-between mb-3">
                                 <span class="text-muted">Tổng sản phẩm</span>
                                 <span class="text-white"><?= count($cart) ?></span>
                             </div>
-                            
+
                             <div class="d-flex justify-content-between mb-3">
                                 <span class="text-muted">Tạm tính</span>
                                 <span class="text-white"><?= number_format($total) ?> đ</span>

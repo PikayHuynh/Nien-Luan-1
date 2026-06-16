@@ -75,14 +75,23 @@ include ROOT . '/views/admin/layouts/sidebar.php';
         <tbody>
             <?php foreach ($ctChiTiet as $item): ?>
                 <?php
-                // Lấy thông tin hàng hóa từ danh sách
-                $hh = $hangHoaData[$item['ID_HANGHOA']] ?? [];
+                // Lấy đơn giá: Ưu tiên giá lúc bán, nếu = 0 thì lấy giá hiện tại
+                $unitPrice = (float)($item['GIABAN'] ?? 0);
+                if ($unitPrice <= 0 && isset($item['CURRENT_PRICE'])) {
+                    $unitPrice = (float)$item['CURRENT_PRICE'];
+                }
+
+                // Thành tiền
+                $thanhtien = (float)($item['THANHTIEN'] ?? 0);
+                if ($thanhtien <= 0) {
+                    $thanhtien = $unitPrice * (int)($item['SOLUONG'] ?? 0);
+                }
                 ?>
                 <tr>
-                    <td><?= $hh['TENHANGHOA'] ?? 'Không tồn tại' ?></td>
-                    <td><?= $item['SOLUONG'] ?></td>
-                    <td><?= number_format($item['GIABAN'] ?? 0) ?> VND</td>
-                    <td><?= number_format($item['THANHTIEN'] ?? 0) ?> VND</td>
+                    <td><?= htmlspecialchars($item['TENHANGHOA'] ?? 'N/A') ?></td>
+                    <td><?= (int)$item['SOLUONG'] ?></td>
+                    <td><?= number_format($unitPrice) ?> VND</td>
+                    <td><?= number_format($thanhtien) ?> VND</td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

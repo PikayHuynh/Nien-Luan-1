@@ -57,16 +57,16 @@
                                     <i class="bi bi-receipt fs-5"></i>
                                 </a>
                             </li>
-                            
+
                             <!-- Thông báo Client -->
                             <?php
                             global $conn;
                             require_once ROOT . '/models/ThongBao.php';
                             $tbModel = new ThongBao($conn);
-                            
+
                             $isAdminUser = (isset($_SESSION['user_name']) && $_SESSION['user_name'] === 'admin');
-                            $unreadCount = $isAdminUser 
-                                ? $tbModel->countUnread(null, 'admin') 
+                            $unreadCount = $isAdminUser
+                                ? $tbModel->countUnread(null, 'admin')
                                 : $tbModel->countUnread($_SESSION['user_id'], 'client');
                             ?>
                             <li class="nav-item dropdown">
@@ -83,8 +83,8 @@
                                         <?= $isAdminUser ? 'Thông báo hệ thống' : 'Thông báo mới nhất' ?>
                                     </li>
                                     <?php
-                                    $notis = $isAdminUser 
-                                        ? $tbModel->getUnreadForAdmin(5) 
+                                    $notis = $isAdminUser
+                                        ? $tbModel->getUnreadForAdmin(5)
                                         : $tbModel->getUnreadForClient($_SESSION['user_id'], 5);
 
                                     if (empty($notis)):
@@ -101,8 +101,8 @@
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                     <li><a class="dropdown-item text-center text-primary py-2 small fw-bold" href="<?= $isAdminUser ? 'index.php?controller=dashboard&action=notifications' : 'index.php?controller=user&action=notifications' ?>">
-                                        Xem tất cả lịch sử
-                                    </a></li>
+                                            Xem tất cả lịch sử
+                                        </a></li>
                                 </ul>
                             </li>
 
@@ -117,7 +117,9 @@
                                     <?php if ($isAdminUser): ?>
                                         <li><a class="dropdown-item py-2 text-primary fw-bold" href="index.php?controller=dashboard&action=index"><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</a></li>
                                     <?php endif; ?>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item py-2 text-danger" href="index.php?controller=user&action=logout"><i class="bi bi-box-arrow-right me-2"></i> Đăng xuất</a></li>
                                 </ul>
                             </li>

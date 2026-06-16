@@ -6,7 +6,7 @@ include ROOT . '/views/client/layouts/navbar.php';
 <div class="container mt-5 mb-5 pt-5">
     <div class="row justify-content-center">
         <div class="col-md-5 col-lg-4">
-            
+
             <div class="text-center mb-4">
                 <div class="d-inline-block p-3 rounded-circle bg-glass border border-white-10 mb-3 shadow-lg">
                     <i class="bi bi-person-lock text-primary display-4"></i>
@@ -25,7 +25,7 @@ include ROOT . '/views/client/layouts/navbar.php';
             <!-- FORM ĐĂNG NHẬP -->
             <div class="card bg-glass border-white-10 p-4 rounded-4 shadow-2xl">
                 <form method="POST" action="index.php?controller=user&action=login">
-                    
+
                     <div class="mb-4">
                         <label class="form-label text-white small fw-bold text-uppercase opacity-75">Tên đăng nhập</label>
                         <div class="input-group bg-dark rounded-3 border border-white-10 overflow-hidden">

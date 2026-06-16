@@ -213,15 +213,15 @@ class ChungTuBan
     }
 
     /**
-     * Lấy doanh thu theo ngày trong tháng (cho biểu đồ)
+     * Lấy doanh thu theo ngày trong tháng (cho biểu đồ) trong 1 tháng
      */
     public function getRevenueByDay($month, $year)
     {
         $sql = "SELECT DAY(NGAYDATHANG) as day, SUM(TONGCONG) as revenue
                 FROM $this->table
                 WHERE MONTH(NGAYDATHANG) = :month 
-                  AND YEAR(NGAYDATHANG) = :year
-                  AND (TRANGTHAI = 'Đã Giao Hàng' OR TRANGTHAI = 'Đang xử lý')
+                    AND YEAR(NGAYDATHANG) = :year
+                    AND (TRANGTHAI = 'Đã Giao Hàng' OR TRANGTHAI = 'Đang xử lý')
                 GROUP BY DAY(NGAYDATHANG)
                 ORDER BY day ASC";
 

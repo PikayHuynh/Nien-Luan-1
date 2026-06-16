@@ -1,4 +1,4 @@
-<?php 
+<?php
 include ROOT . '/views/client/layouts/header.php';
 include ROOT . '/views/client/layouts/navbar.php';
 ?>
@@ -6,7 +6,7 @@ include ROOT . '/views/client/layouts/navbar.php';
 <div class="container mt-5 mb-5 pt-4">
     <div class="row justify-content-center">
         <div class="col-lg-9">
-            
+
             <div class="d-flex align-items-center mb-5">
                 <div class="p-3 rounded-circle bg-glass border border-white-10 me-3 shadow-lg">
                     <i class="bi bi-bell text-primary fs-3"></i>
@@ -16,7 +16,7 @@ include ROOT . '/views/client/layouts/navbar.php';
                     <p class="text-muted small mb-0">Cập nhật những tin tức mới nhất từ hệ thống</p>
                 </div>
             </div>
-            
+
             <?php if (empty($notifications)): ?>
                 <div class="card bg-glass border-white-10 text-center py-5 rounded-4 shadow-lg">
                     <div class="mb-4 opacity-25">
@@ -30,7 +30,7 @@ include ROOT . '/views/client/layouts/navbar.php';
                 </div>
             <?php else: ?>
                 <div class="notification-list d-flex flex-column gap-3">
-                    <?php foreach ($notifications as $n): 
+                    <?php foreach ($notifications as $n):
                         $isNew = !$n['IS_READ'];
                         $icon = $n['LOAI'] == 'all' ? 'bi-megaphone' : 'bi-info-circle';
                         $iconClass = $n['LOAI'] == 'all' ? 'text-warning' : 'text-primary';
@@ -61,7 +61,7 @@ include ROOT . '/views/client/layouts/navbar.php';
                         </div>
                     <?php endforeach; ?>
                 </div>
-                
+
                 <!-- PAGINATION -->
                 <?php if ($totalPages > 1): ?>
                     <nav class="mt-5">

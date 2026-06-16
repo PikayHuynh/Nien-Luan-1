@@ -81,12 +81,10 @@ include ROOT . '/views/admin/layouts/sidebar.php';
 
                     <!-- Hình ảnh -->
                     <td>
-                        <?php if (!empty($item['HINHANH'])): ?>
-                            <img src="upload/<?= htmlspecialchars($item['HINHANH']) ?>" width="60"
-                                style="border-radius: 6px; border: 1px solid #ddd;">
-                        <?php else: ?>
-                            <span class="text-muted">Không có</span>
-                        <?php endif; ?>
+                        <img src="upload/<?= (!empty($item['HINHANH']) ? htmlspecialchars($item['HINHANH']) : 'item-default.png') ?>" 
+                            width="60"
+                            style="border-radius: 6px; border: 1px solid #ddd;"
+                            onerror="this.src='upload/item-default.png'; this.onerror=null;">
                     </td>
 
                     <!-- Phân loại -->

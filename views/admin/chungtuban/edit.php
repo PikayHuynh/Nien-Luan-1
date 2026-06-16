@@ -140,7 +140,7 @@ include ROOT . '/views/admin/layouts/sidebar.php';
                                     <!-- Đơn giá -->
                                     <td>
                                         <input type="number" name="DONGIA[]" class="form-control"
-                                            value="<?= htmlspecialchars($item['GIABAN'] ?? ($item['DONGIA'] ?? 0)) ?>">
+                                            value="<?= htmlspecialchars(($item['GIABAN'] > 0) ? $item['GIABAN'] : ($item['CURRENT_PRICE'] ?? 0)) ?>">
                                     </td>
 
                                 </tr>

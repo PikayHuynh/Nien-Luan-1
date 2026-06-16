@@ -37,8 +37,10 @@ class ChungTuBanCT
      */
     public function getByChungTu($idCtb)
     {
-
-        $sql = "SELECT * FROM $this->table WHERE ID_CTBAN = ?";
+        $sql = "SELECT ct.*, h.TENHANGHOA, h.DONGIA_BAN as CURRENT_PRICE
+                FROM $this->table ct
+                JOIN HANG_HOA h ON ct.ID_HANGHOA = h.ID_HANGHOA
+                WHERE ct.ID_CTBAN = ?";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$idCtb]);
