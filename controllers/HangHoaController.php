@@ -68,13 +68,13 @@ class HangHoaController
 
             // Tạo thông báo cho toàn bộ Client
             $this->thongBaoModel->create([
-                'NOIDUNG' => "Sản phẩm mới: '" . $_POST['TEN_HANGHOA'] . "' vừa được lên kệ! Khám phá ngay.",
+                'NOIDUNG' => "Sản phẩm mới: '" . $_POST['TENHANGHOA'] . "' vừa được lên kệ! Khám phá ngay.",
                 'LOAI' => 'all'
             ]);
 
             // Thông báo cho Admin
             $this->thongBaoModel->create([
-                'NOIDUNG' => "🚀 Chúc mừng! Sản phẩm mới **" . $_POST['TEN_HANGHOA'] . "** đã được đăng bán thành công. Chúc Pikay Shop buôn may bán đắt! 💸",
+                'NOIDUNG' => "🚀 Chúc mừng! Sản phẩm mới **" . $_POST['TENHANGHOA'] . "** đã được đăng bán thành công. Chúc Pikay Shop buôn may bán đắt! 💸",
                 'LOAI' => 'admin'
             ]);
 

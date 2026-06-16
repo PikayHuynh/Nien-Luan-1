@@ -120,4 +120,56 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // ===============================
+    //  PREMIUM CARD INTERACTIONS
+    // ===============================
+    const premiumCards = document.querySelectorAll(".product-card, .category-tile");
+
+    premiumCards.forEach(card => {
+        card.addEventListener("mousemove", e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+
+            card.style.transform = `perspective(1000px) translateY(-15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            
+            // Update shadow based on mouse position
+            card.style.boxShadow = `${-rotateY * 2}px ${rotateX * 2}px 50px rgba(0,0,0,0.5)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+            card.style.transform = "";
+            card.style.boxShadow = "";
+        });
+    });
+
+    // ===============================
+    //  SCROLL REVEAL ANIMATIONS
+    // ===============================
+    const revealElements = document.querySelectorAll(".reveal");
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+                // Optional: Stop observing after reveal
+                // revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1, // Trigger when 10% of the element is visible
+        rootMargin: "0px 0px -50px 0px" // Trigger slightly before it hits the viewport
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
 });
+
+
+

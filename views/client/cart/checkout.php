@@ -10,131 +10,126 @@ $cart  = $_SESSION['cart'] ?? [];
 $total = $_SESSION['cart_total'] ?? 0;
 ?>
 
-<div class="container mt-5 mb-5">
+<div class="container mt-5 mb-5 pt-4">
     <div class="row">
-        <div class="col-md-8 mx-auto">
+        <div class="col-lg-8 mx-auto">
 
-            <!-- ===========================================================
-                 TIÊU ĐỀ TRANG
-            ============================================================ -->
-            <h1 class="mb-4">Xác nhận thanh toán</h1>
+            <!-- PAGE TITLE -->
+            <div class="d-flex align-items-center mb-5">
+                <a href="index.php?controller=cart&action=index" class="btn btn-outline-light rounded-circle me-3 border-white-10 p-2">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <h1 class="fw-bold mb-0 text-white">Xác nhận đơn hàng</h1>
+            </div>
 
-            <!-- ===========================================================
-                 THÔNG BÁO LỖI (NẾU CÓ)
-            ============================================================ -->
+            <!-- ERROR NOTIFICATION -->
             <?php if (!empty($error)): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger bg-glass border-white-10 alert-dismissible fade show mb-4 rounded-4 shadow-sm" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <strong>Lỗi:</strong> <?= htmlspecialchars($error) ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-toggle="alert"></button>
                 </div>
             <?php endif; ?>
 
 
-            <!-- ===========================================================
-                 NẾU GIỎ HÀNG TRỐNG
-            ============================================================ -->
             <?php if (empty($cart)): ?>
-                <div class="card border-0 shadow-sm text-center p-5">
-                    <h5 class="text-muted mb-3">Giỏ hàng trống</h5>
-                    <p class="text-muted mb-4">Không có sản phẩm để thanh toán.</p>
-
-                    <!-- Nút quay lại trang sản phẩm -->
-                    <a href="index.php?controller=product&action=list"
-                        class="btn btn-primary btn-lg">
-                        Tiếp tục mua sắm
+                <div class="card bg-glass border-white-10 text-center p-5 rounded-4 shadow-lg">
+                    <div class="mb-4">
+                        <i class="bi bi-cart-x display-1 text-muted"></i>
+                    </div>
+                    <h3 class="text-white fw-bold mb-3">Giỏ hàng trống</h3>
+                    <p class="text-muted mb-4 fs-5">Không có sản phẩm để thanh toán.</p>
+                    <a href="index.php?controller=product&action=list" class="btn btn-primary btn-lg px-5 rounded-pill shadow-lg">
+                        <i class="bi bi-shop me-2"></i> Tiếp tục mua sắm
                     </a>
                 </div>
 
             <?php else: ?>
 
-                <!-- =======================================================
-                     CHI TIẾT ĐƠN HÀNG
-                ======================================================== -->
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">Chi tiết đơn hàng</h5>
+                <!-- ORDER SUMMARY TABLE -->
+                <div class="card bg-glass border-white-10 mb-4 rounded-4 shadow-lg overflow-hidden">
+                    <div class="card-header border-bottom border-white-10 bg-white-5 py-3">
+                        <h5 class="mb-0 fw-bold text-white"><i class="bi bi-list-check me-2 text-primary"></i>Chi tiết đơn hàng</h5>
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead style="background: rgba(176, 139, 255, 0.06);">
+                            <table class="table table-dark table-hover mb-0" style="--bs-table-bg: transparent;">
+                                <thead class="text-muted small text-uppercase">
                                     <tr>
-                                        <th>Sản phẩm</th>
-                                        <th class="text-end">Số lượng</th>
-                                        <th class="text-end">Đơn giá</th>
-                                        <th class="text-end">Thành tiền</th>
+                                        <th class="ps-4 py-3 border-white-10">Sản phẩm</th>
+                                        <th class="text-center py-3 border-white-10">Số lượng</th>
+                                        <th class="text-end py-3 border-white-10">Đơn giá</th>
+                                        <th class="text-end pe-4 py-3 border-white-10">Thành tiền</th>
                                     </tr>
                                 </thead>
 
-                                <tbody>
-                                    <?php foreach ($cart as $it): ?>
+                                <tbody class="border-top-0">
+                                    <?php foreach ($cart as $it): 
+                                        $itSubtotal = $it['subtotal'] ?? ($it['price'] * $it['quantity']);
+                                    ?>
                                         <tr>
-                                            <td>
-                                                <strong><?= htmlspecialchars($it['name']) ?></strong>
+                                            <td class="ps-4 py-3 border-white-10">
+                                                <div class="fw-bold text-white"><?= htmlspecialchars($it['name']) ?></div>
+                                                <small class="text-muted">Mã: <?= htmlspecialchars($it['id']) ?></small>
                                             </td>
 
-                                            <td class="text-end">
-                                                <?= (int)$it['quantity'] ?>
+                                            <td class="text-center py-3 border-white-10 align-middle">
+                                                <span class="badge bg-dark border border-white-10 rounded-pill px-3 py-2"><?= (int)$it['quantity'] ?></span>
                                             </td>
 
-                                            <td class="text-end">
-                                                <?= number_format($it['price']) ?> VND
+                                            <td class="text-end py-3 border-white-10 align-middle">
+                                                <?= number_format($it['price']) ?> đ
                                             </td>
 
-                                            <td class="text-end fw-bold">
-                                                <?= number_format($it['subtotal'] ?? ($it['price'] * $it['quantity'])) ?> VND
+                                            <td class="text-end pe-4 py-3 border-white-10 align-middle fw-bold text-primary">
+                                                <?= number_format($itSubtotal) ?> đ
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- =======================================================
-                     TỔNG TIỀN CẦN THANH TOÁN
-                ======================================================== -->
-                <div class="card border-0 shadow-sm p-4 mb-4"
-                    style="background: linear-gradient(135deg, rgba(176, 139, 255, 0.1), rgba(111, 86, 183, 0.06));">
-
+                <!-- TOTAL CALCULATION -->
+                <div class="card bg-glass border-white-10 p-4 mb-4 rounded-4 shadow-lg">
                     <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <h5 class="mb-0">Tổng cộng</h5>
+                        <div class="col-md-7">
+                            <h5 class="mb-1 fw-bold text-white">Tổng cộng thanh toán</h5>
+                            <p class="text-muted small mb-0">Đã bao gồm các loại thuế và phí vận chuyển cơ bản.</p>
                         </div>
 
-                        <div class="col-md-4 text-end">
-                            <h3 class="mb-0" style="color: var(--lp-primary-700);">
-                                ₫ <?= number_format($total) ?>
-                            </h3>
+                        <div class="col-md-5 text-end">
+                            <div class="text-primary display-5 fw-bold">
+                                <?= number_format($total) ?> <span class="fs-4">đ</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- =======================================================
-                     LƯU Ý CHUNG
-                ======================================================== -->
-                <div class="alert alert-info border-0" role="alert">
-                    <strong>Lưu ý:</strong> Vui lòng kiểm tra lại thông tin đơn hàng trước khi xác nhận thanh toán.
+                <!-- IMPORTANT NOTES -->
+                <div class="alert alert-primary bg-glass border-primary-20 text-primary-20 p-3 rounded-4 mb-5 border-white-10" role="alert">
+                    <div class="d-flex">
+                        <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong class="text-white d-block mb-1">Kiểm tra thông tin</strong>
+                            <p class="mb-0 small text-muted">Bằng việc nhấn "Xác nhận", bạn đồng ý với các điều khoản mua hàng và chính sách bảo mật của Pikay Shop. Vui lòng đảm bảo các thông tin sản phẩm và số lượng là chính xác.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- =======================================================
-                     HÀNH ĐỘNG: XÁC NHẬN HOẶC QUAY LẠI GIỎ HÀNG
-                ======================================================== -->
-                <form
-                    method="post"
-                    action="index.php?controller=cart&action=checkout"
-                    class="d-grid gap-2 d-md-flex">
-                    <button type="submit" class="btn btn-success btn-lg">
-                        Xác nhận thanh toán
-                    </button>
-
-                    <a href="index.php?controller=cart&action=index"
-                        class="btn btn-outline-secondary btn-lg">
-                        Quay lại giỏ hàng
-                    </a>
+                <!-- ACTIONS -->
+                <form method="post" action="index.php?controller=cart&action=checkout">
+                    <div class="d-grid gap-3 d-md-flex justify-content-md-between">
+                        <a href="index.php?controller=cart&action=index" class="btn btn-outline-light btn-lg px-4 rounded-pill border-white-10">
+                            <i class="bi bi-arrow-left me-2"></i> Quay lại giỏ hàng
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow-lg py-3">
+                            <i class="bi bi-shield-lock-fill me-2"></i> Xác nhận thanh toán
+                        </button>
+                    </div>
                 </form>
 
             <?php endif; ?>

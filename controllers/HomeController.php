@@ -10,8 +10,8 @@ require_once ROOT . '/models/PhanLoai.php';
 class HomeController
 {
     private $db;
-    private $productModel;     // Model sản phẩm
-    private $phanLoaiModel;    // Model phân loại
+    private $productModel; // Model sản phẩm
+    private $phanLoaiModel; // Model phân loại
 
     /**
      * Khởi tạo HomeController và nạp các model cần thiết.
@@ -20,9 +20,9 @@ class HomeController
      */
     public function __construct($db)
     {
-        $this->db             = $db;
-        $this->productModel   = new HangHoa($db);
-        $this->phanLoaiModel  = new PhanLoai($db);
+        $this->db = $db;
+        $this->productModel = new HangHoa($db);
+        $this->phanLoaiModel = new PhanLoai($db);
     }
 
     /**
@@ -34,8 +34,8 @@ class HomeController
     {
 
         // Lấy các danh sách sản phẩm hiển thị trên trang chủ
-        $hotProducts  = $this->productModel->getHotProducts(8);
-        $newProducts  = $this->productModel->getNewProducts(8);
+        $hotProducts = $this->productModel->getHotProducts(8);
+        $newProducts = $this->productModel->getNewProducts(8);
         $saleProducts = $this->productModel->getSaleProducts(8);
 
         // Lấy toàn bộ danh sách danh mục để hiển thị trên menu hoặc sidebar

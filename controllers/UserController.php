@@ -276,10 +276,7 @@ class UserController
         $pages = $page['pages'];
 
         $title = "Thông báo của tôi";
-        include ROOT . '/views/client/layouts/header.php';
-        include ROOT . '/views/client/layouts/navbar.php';
         include ROOT . '/views/client/user/notifications.php';
-        include ROOT . '/views/client/layouts/footer.php';
     }
 
     /**
@@ -384,6 +381,24 @@ class UserController
             }
         }
         return $currentImage;
+    }
+
+    /**
+     * Đánh dấu thông báo là đã đọc và chuyển hướng người dùng.
+     */
+    public function mark_read()
+    {
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            require_once ROOT . '/models/ThongBao.php';
+            $tbModel = new ThongBao($this->db);
+            $tbModel->markAsRead($id);
+        }
+
+        // Sau khi đánh dấu xong, chuyển về trang phù hợp (nếu là admin thì dashboard, user thì notifications)
+        $isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] === 'admin');
+        header('Location: ' . ($isAdmin ? 'index.php?controller=dashboard&action=notifications' : 'index.php?controller=user&action=notifications'));
+        exit;
     }
 
     /**

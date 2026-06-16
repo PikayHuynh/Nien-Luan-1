@@ -8,6 +8,7 @@ require_once 'models/ChungTuMua.php';
 require_once 'models/ChungTuMuaCT.php';
 require_once 'models/ChungTuBan.php';
 require_once 'models/ChungTuBanCT.php';
+require_once 'models/Kho.php';
 
 /**
  * Controller quản lý trang Dashboard trong admin
@@ -44,6 +45,7 @@ class DashboardController
         $ctmctModel = new ChungTuMuaCT($this->conn);
         $ctbModel = new ChungTuBan($this->conn);
         $ctbctModel = new ChungTuBanCT($this->conn);
+        $khoModel = new Kho($this->conn);
 
         /**
          * Lấy tổng số lượng bản ghi từ từng bảng
@@ -59,6 +61,7 @@ class DashboardController
             'chungtumua_ct' => count($ctmctModel->getAll()),
             'chungtuban' => count($ctbModel->getAll()),
             'chungtuban_ct' => count($ctbctModel->getAll()),
+            'kho' => $khoModel->countAll(),
 
             // Dữ liệu biểu đồ doanh thu
             'revenueData' => $ctbModel->getRevenueByDay(date('m'), date('Y'))
