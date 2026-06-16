@@ -20,7 +20,7 @@ class ThongBao
     {
         $sql = "INSERT INTO $this->table (NOIDUNG, ID_NGUOINHAN, LOAI, NGAYTAO, IS_READ) 
                 VALUES (:noidung, :id_nguoinhan, :loai, :ngaytao, 0)";
-        
+
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
             ':noidung' => $data['NOIDUNG'],

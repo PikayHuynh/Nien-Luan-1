@@ -129,15 +129,19 @@ class CartController
 
             $masoct = 'CTB-' . time();
 
-            // Kiểm tra VIP để giảm giá
+            // === XỬ LÝ ƯU ĐÃI VIP ===
+            // 1. Gọi model KhachHang để kiểm tra xem user hiện tại có đạt chuẩn VIP không.
             $isVip = $khModel->checkVip($id_khachhang);
             $finalTotal = $tongtien;
             $note = '';
 
+            // 2. Nếu là khách VIP, tiến hành áp dụng chiết khấu đặc biệt.
             if ($isVip) {
-                $finalTotal = $tongtien * 0.8; // Giảm 20%
-                $note = "Khách hàng VIP: Đã giảm 20% trên tổng hóa đơn.";
+                // Áp dụng giảm giá 20% trên tổng giá trị tiền hàng (chưa bao gồm thuế VAT).
+                $finalTotal = $tongtien * 0.8; 
+                $note = "Khách hàng VIP: Hệ thống đã tự động áp dụng ưu đãi giảm giá 20% trên hóa đơn.";
             }
+            // ========================
 
             // Tạo chứng từ bán
             $orderId = $orderModel->create([
@@ -186,9 +190,9 @@ class CartController
         // Tạo thông báo cho Admin
         require_once ROOT . '/models/ThongBao.php';
         $tb = new ThongBao($this->db);
-        
-        $msg = $isAdmin 
-            ? "📦 Nhập hàng thành công! Chứng từ nhập **$masoct** đã được tạo." 
+
+        $msg = $isAdmin
+            ? "📦 Nhập hàng thành công! Chứng từ nhập **$masoct** đã được tạo."
             : "🛒 Đơn hàng mới: **$masoct** vừa được khách hàng đặt thành công.";
 
         $tb->create([
@@ -235,7 +239,7 @@ class CartController
             $_SESSION['cart'][$id] = [
                 'id' => $product['ID_HANGHOA'],
                 'name' => $product['TENHANGHOA'],
-                'price' => $product['DONGIA'] ?? 0,
+                'price' => $product['DONGIA'] ?? $product['DONGIA_BAN'] ?? 0,
                 'image' => $product['HINHANH'] ?? '',
                 'quantity' => 1
             ];

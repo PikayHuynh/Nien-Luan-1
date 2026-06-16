@@ -9,7 +9,7 @@ $dateField = $isPurchase ? 'NGAYPHATSINH' : 'NGAYDATHANG';
 <div class="container mt-5 mb-5 pt-4">
     <div class="row">
         <div class="col-lg-10 mx-auto">
-            
+
             <div class="d-flex align-items-center mb-5">
                 <a href="index.php?controller=user&action=orders" class="btn btn-outline-light rounded-circle me-3 border-white-10 p-2">
                     <i class="bi bi-arrow-left"></i>
@@ -28,12 +28,12 @@ $dateField = $isPurchase ? 'NGAYPHATSINH' : 'NGAYDATHANG';
                     <div class="col-md-6">
                         <div class="card bg-glass border-white-10 rounded-4 p-4 h-100 shadow-lg">
                             <h5 class="fw-bold text-white mb-4"><i class="bi bi-info-circle me-2 text-primary"></i>Thông tin chung</h5>
-                            
+
                             <div class="mb-3 d-flex justify-content-between">
                                 <span class="text-muted">Mã chứng từ:</span>
                                 <span class="text-white fw-bold"><?= htmlspecialchars((string)($order['MASOCT'] ?? 'N/A')) ?></span>
                             </div>
-                            
+
                             <div class="mb-3 d-flex justify-content-between">
                                 <span class="text-muted">Ngày <?= $isPurchase ? 'phát sinh' : 'đặt' ?>:</span>
                                 <span class="text-white"><?= htmlspecialchars((string)($order[$dateField] ?? '')) ?></span>
@@ -61,7 +61,7 @@ $dateField = $isPurchase ? 'NGAYPHATSINH' : 'NGAYDATHANG';
                     <div class="col-md-6">
                         <div class="card bg-glass border-white-10 rounded-4 p-4 h-100 shadow-lg">
                             <h5 class="fw-bold text-white mb-4"><i class="bi bi-truck me-2 text-primary"></i>Trạng thái & Vận chuyển</h5>
-                            
+
                             <?php if (!$isPurchase): ?>
                                 <div class="mb-4">
                                     <label class="text-muted small text-uppercase fw-bold d-block mb-2">Trạng thái hiện tại</label>
@@ -101,14 +101,26 @@ $dateField = $isPurchase ? 'NGAYPHATSINH' : 'NGAYDATHANG';
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($items as $it): 
+                                <?php foreach ($items as $it):
                                     $priceField = $isPurchase ? 'GIAMUA' : 'GIABAN';
                                     $unitPrice = (float)($it[$priceField] ?? 0);
-                                    $thanhtien = (float)($it['THANHTIEN'] ?? ($unitPrice * (float)($it['SOLUONG'] ?? 0)));
+                                    
+                                    // Fallback: Nếu giá lưu trong đơn hàng bằng 0, lấy giá hiện tại của sản phẩm
+                                    if ($unitPrice <= 0 && isset($it['CURRENT_PRICE'])) {
+                                        $unitPrice = (float)$it['CURRENT_PRICE'];
+                                    }
+
+                                    $thanhtien = (float)($it['THANHTIEN'] ?? 0);
+                                    if ($thanhtien <= 0) {
+                                        $thanhtien = $unitPrice * (float)($it['SOLUONG'] ?? 0);
+                                    }
                                 ?>
                                     <tr class="border-bottom border-white-5 align-middle">
                                         <td class="ps-4 py-3">
-                                            <span class="text-white fw-bold">#<?= htmlspecialchars((string)($it['ID_HANGHOA'] ?? 'N/A')) ?></span>
+                                            <div class="d-flex flex-column">
+                                                <span class="text-white fw-bold fs-6"><?= htmlspecialchars((string)($it['TENHANGHOA'] ?? 'Sản phẩm không tên')) ?></span>
+                                                <small class="text-muted">ID: #<?= htmlspecialchars((string)($it['ID_HANGHOA'] ?? 'N/A')) ?></small>
+                                            </div>
                                         </td>
                                         <td class="text-end py-3"><?= number_format($unitPrice) ?> đ</td>
                                         <td class="text-center py-3">

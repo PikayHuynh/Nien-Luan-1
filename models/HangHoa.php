@@ -17,10 +17,6 @@ class HangHoa
         $this->conn = $db;
     }
 
-    // =====================================================
-    // =============== 1. PHẦN ADMIN – GET ALL ==============
-    // =====================================================
-
     /**
      * Lấy toàn bộ sản phẩm (admin)
      */
@@ -103,10 +99,10 @@ class HangHoa
                 p.TENPHANLOAI,
                 COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) 
-                 FROM CHUNG_TU_BAN_CT ct 
-                 JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN 
-                 WHERE ct.ID_HANGHOA = h.ID_HANGHOA 
-                 AND b.NGAYDATHANG >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                    FROM CHUNG_TU_BAN_CT ct 
+                    JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN 
+                    WHERE ct.ID_HANGHOA = h.ID_HANGHOA 
+                    AND b.NGAYDATHANG >= DATE_SUB(NOW(), INTERVAL 30 DAY)
                 ) as SOLD_COUNT
             FROM HANG_HOA h
             LEFT JOIN PHAN_LOAI p 
@@ -229,10 +225,10 @@ class HangHoa
                 h.ID_PHANLOAI, p.TENPHANLOAI,
                 COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) 
-                 FROM CHUNG_TU_BAN_CT ct 
-                 JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN 
-                 WHERE ct.ID_HANGHOA = h.ID_HANGHOA 
-                 AND b.NGAYDATHANG >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                    FROM CHUNG_TU_BAN_CT ct 
+                    JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN 
+                    WHERE ct.ID_HANGHOA = h.ID_HANGHOA 
+                    AND b.NGAYDATHANG >= DATE_SUB(NOW(), INTERVAL 30 DAY)
                 ) as SOLD_COUNT
             FROM $this->table h
             LEFT JOIN PHAN_LOAI p ON h.ID_PHANLOAI = p.ID_PHANLOAI
@@ -247,13 +243,24 @@ class HangHoa
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updateQuantity($id_hanghoa, $qty_change) {
+    public function updateQuantity($id_hanghoa, $qty_change)
+    {
         $sql = "UPDATE $this->table SET SOLUONG = SOLUONG + :qty WHERE ID_HANGHOA = :id";
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([':qty' => $qty_change, ':id' => $id_hanghoa]);
     }
 
-    public function getHotProducts($limit = 8) {
+    /**
+     * Lấy danh sách sản phẩm HOT (Bán chạy)
+     * Tiêu chí: Có tổng số lượng bán ra >= 5 trong vòng 30 ngày qua.
+     * 
+     * @param int $limit Số lượng sản phẩm tối đa
+     * @return array Danh sách sản phẩm kèm số lượng đã bán (SOLD_COUNT)
+     */
+    public function getHotProducts($limit = 8)
+    {
+        // Sử dụng Subquery để tính tổng SOLD_COUNT từ chi tiết hóa đơn bán hàng.
+        // COALESCE được dùng để lấy giá trị DON_GIA_BAN áp dụng hiện tại.
         $sql = "SELECT h.*, p.TENPHANLOAI, COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) FROM CHUNG_TU_BAN_CT ct JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN WHERE ct.ID_HANGHOA = h.ID_HANGHOA AND b.NGAYDATHANG >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as SOLD_COUNT
                 FROM $this->table h
@@ -267,7 +274,16 @@ class HangHoa
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getNewProducts($limit = 8) {
+    /**
+     * Lấy danh sách sản phẩm MỚI (New Arrivals)
+     * Tiêu chí: Sản phẩm có ngày tạo (NGAYTAO) trong vòng 14 ngày trở lại đây.
+     * 
+     * @param int $limit Số lượng sản phẩm tối đa
+     * @return array Danh sách sản phẩm mới
+     */
+    public function getNewProducts($limit = 8)
+    {
+        // Lọc theo NGAYTAO so với thời điểm hiện tại trừ đi 14 ngày.
         $sql = "SELECT h.*, p.TENPHANLOAI, COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) FROM CHUNG_TU_BAN_CT ct JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN WHERE ct.ID_HANGHOA = h.ID_HANGHOA) as SOLD_COUNT
                 FROM $this->table h
@@ -281,7 +297,16 @@ class HangHoa
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getSaleProducts($limit = 8) {
+    /**
+     * Lấy danh sách sản phẩm ĐANG GIẢM GIÁ (Sale)
+     * Tiêu chí: Giá gốc (GIAGOC) > Đơn giá bán hiện tại (DONGIA).
+     * 
+     * @param int $limit Số lượng sản phẩm tối đa
+     * @return array Danh sách sản phẩm khuyến mãi
+     */
+    public function getSaleProducts($limit = 8)
+    {
+        // Điều kiện Sale là GIAGOC (giá niêm yết) lớn hơn giá bán thực tế đang áp dụng.
         $sql = "SELECT h.*, p.TENPHANLOAI, COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA,
                 (SELECT SUM(ct.SOLUONG) FROM CHUNG_TU_BAN_CT ct JOIN CHUNG_TU_BAN b ON ct.ID_CTBAN = b.ID_CTBAN WHERE ct.ID_HANGHOA = h.ID_HANGHOA) as SOLD_COUNT
                 FROM $this->table h
@@ -295,13 +320,16 @@ class HangHoa
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // =====================================================
-    // =============== 4. CRUD CHO ADMIN ====================
-    // =====================================================
-
     public function getById($id)
     {
-        $stmt = $this->conn->prepare("SELECT * FROM $this->table WHERE ID_HANGHOA = :id");
+        $sql = "
+            SELECT h.*, 
+                   COALESCE(d.GIATRI, h.DONGIA_BAN) AS DONGIA
+            FROM $this->table h
+            LEFT JOIN DON_GIA_BAN d ON h.ID_HANGHOA = d.ID_HANGHOA AND d.APDUNG = 1
+            WHERE h.ID_HANGHOA = :id
+        ";
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute([':id' => $id]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);

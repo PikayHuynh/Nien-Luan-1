@@ -6,7 +6,7 @@ include ROOT . '/views/client/layouts/navbar.php';
 <div class="container mt-5 mb-5 pt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
-            
+
             <div class="text-center mb-4">
                 <div class="d-inline-block p-3 rounded-circle bg-glass border border-white-10 mb-3 shadow-lg">
                     <i class="bi bi-person-plus text-primary display-4"></i>
@@ -25,14 +25,14 @@ include ROOT . '/views/client/layouts/navbar.php';
             <!-- FORM ĐĂNG KÝ -->
             <div class="card bg-glass border-white-10 p-4 rounded-4 shadow-2xl">
                 <form method="POST" action="index.php?controller=user&action=register">
-                    
+
                     <div class="mb-4">
                         <label class="form-label text-white small fw-bold text-uppercase opacity-75">Tên đăng nhập</label>
                         <div class="input-group bg-dark rounded-3 border border-white-10 overflow-hidden">
                             <span class="input-group-text bg-transparent border-0 text-muted"><i class="bi bi-person"></i></span>
-                            <input type="text" class="form-control bg-transparent border-0 text-white py-2" 
-                                   name="name" placeholder="Chọn một username duy nhất" 
-                                   value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
+                            <input type="text" class="form-control bg-transparent border-0 text-white py-2"
+                                name="name" placeholder="Chọn một username duy nhất"
+                                value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
                         </div>
                     </div>
 
@@ -41,16 +41,16 @@ include ROOT . '/views/client/layouts/navbar.php';
                             <label class="form-label text-white small fw-bold text-uppercase opacity-75">Mật khẩu</label>
                             <div class="input-group bg-dark rounded-3 border border-white-10 overflow-hidden">
                                 <span class="input-group-text bg-transparent border-0 text-muted"><i class="bi bi-key"></i></span>
-                                <input type="password" class="form-control bg-transparent border-0 text-white py-2" 
-                                       name="password" placeholder="••••••••" required>
+                                <input type="password" class="form-control bg-transparent border-0 text-white py-2"
+                                    name="password" placeholder="••••••••" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label text-white small fw-bold text-uppercase opacity-75">Xác nhận</label>
                             <div class="input-group bg-dark rounded-3 border border-white-10 overflow-hidden">
                                 <span class="input-group-text bg-transparent border-0 text-muted"><i class="bi bi-shield-check"></i></span>
-                                <input type="password" class="form-control bg-transparent border-0 text-white py-2" 
-                                       name="confirm_password" placeholder="••••••••" required>
+                                <input type="password" class="form-control bg-transparent border-0 text-white py-2"
+                                    name="confirm_password" placeholder="••••••••" required>
                             </div>
                         </div>
                     </div>

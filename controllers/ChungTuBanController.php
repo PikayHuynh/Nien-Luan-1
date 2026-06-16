@@ -98,17 +98,11 @@ class ChungTuBanController
         // Lấy thông tin chứng từ
         $ct = $this->model->getById($id);
 
-        // Lấy chi tiết chứng từ (sử dụng model đã được inject)
-        $ctChiTiet   = $this->ctctModel->getByChungTu($id);
+        // Lấy chi tiết chứng từ (đã JOIN với HANG_HOA trong model)
+        $ctChiTiet = $this->ctctModel->getByChungTu($id);
 
         // Lấy thông tin khách hàng
-        $khachHang   = $this->khModel->getById($ct['ID_KHACHHANG']);
-
-        // Lấy thông tin hàng hóa cho từng dòng chi tiết
-        $hangHoaData = [];
-        foreach ($ctChiTiet as $ctItem) {
-            $hangHoaData[$ctItem['ID_HANGHOA']] = $this->hangHoaModel->getById($ctItem['ID_HANGHOA']);
-        }
+        $khachHang = $this->khModel->getById($ct['ID_KHACHHANG']);
 
         include ROOT . '/views/admin/chungtuban/detail.php';
     }
@@ -132,7 +126,7 @@ class ChungTuBanController
                         'ID_CTBAN'   => $id,
                         'ID_HANGHOA' => $idHH,
                         'SOLUONG'    => $_POST['SOLUONG'][$i],
-                        'DONGIA'     => $_POST['DONGIA'][$i]
+                        'GIABAN'     => $_POST['DONGIA'][$i]
                     ]);
                     $this->hangHoaModel->updateQuantity($idHH, -$_POST['SOLUONG'][$i]);
                     $this->khoModel->create($idHH, null, $id, $_POST['SOLUONG'][$i], 'BAN');
@@ -185,7 +179,7 @@ class ChungTuBanController
                 require_once ROOT . '/models/ThongBao.php';
                 $tbModel = new ThongBao($this->db);
                 $maSo = $ct['MASOCT'] ?? $id;
-                
+
                 $msg = "Đơn hàng $maSo của bạn đã chuyển sang trạng thái: $newStatus";
                 if ($newStatus === 'Đã giao hàng') {
                     $msg = "🎉 Tuyệt vời! Đơn hàng **$maSo** đã giao thành công. Hy vọng bạn thích sản phẩm của chúng tôi! ❤️";
@@ -221,7 +215,7 @@ class ChungTuBanController
                         'ID_CTBAN'   => $id,
                         'ID_HANGHOA' => $idHH,
                         'SOLUONG'    => $_POST['SOLUONG'][$i],
-                        'DONGIA'     => $_POST['DONGIA'][$i]
+                        'GIABAN'     => $_POST['DONGIA'][$i]
                     ]);
                     $this->hangHoaModel->updateQuantity($idHH, -$_POST['SOLUONG'][$i]);
                     $this->khoModel->create($idHH, null, $id, $_POST['SOLUONG'][$i], 'BAN');

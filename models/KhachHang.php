@@ -18,10 +18,6 @@ class KhachHang
         $this->conn = $db;
     }
 
-    // ============================================================
-    // ========================= GET DATA ==========================
-    // ============================================================
-
     /**
      * Lấy toàn bộ khách hàng
      */
@@ -157,10 +153,6 @@ class KhachHang
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // ============================================================
-    // ========================= CREATE ============================
-    // ============================================================
-
     /**
      * Tạo khách hàng mới
      */
@@ -182,10 +174,6 @@ class KhachHang
             'SOB' => $data['SOB']
         ]);
     }
-
-    // ============================================================
-    // ========================= UPDATE ============================
-    // ============================================================
 
     /**
      * Cập nhật khách hàng (admin dùng)
@@ -234,10 +222,6 @@ class KhachHang
             'id' => $id
         ]);
     }
-
-    // ============================================================
-    // ========================== DELETE ===========================
-    // ============================================================
 
     /**
      * Xoá khách hàng + toàn bộ chứng từ liên quan
@@ -296,10 +280,6 @@ class KhachHang
         }
     }
 
-    // ============================================================
-    // ======================== CHECK ADMIN ========================
-    // ============================================================
-
     /**
      * Kiểm tra khách hàng có phải admin không
      */
@@ -327,11 +307,18 @@ class KhachHang
     }
 
     /**
-     * Kiểm tra khách hàng có đạt chuẩn VIP không
-     * Điều kiện: Tổng tiền mua hàng > 30 triệu trong 30 ngày gần nhất
+     * Kiểm tra khách hàng có đạt chuẩn VIP không.
+     * Khách hàng VIP sẽ nhận được các ưu đãi đặc quyền (ví dụ: giảm giá 20% khi thanh toán).
+     * 
+     * @param int $idKH ID của khách hàng cần kiểm tra.
+     * @param int $limit Ngưỡng chi tiêu tối thiểu để đạt VIP (mặc định 30,000,000 đ).
+     * @param int $days Khoảng thời gian xét duyệt chi tiêu (mặc định 30 ngày gần nhất).
+     * @return bool Trả về true nếu khách hàng đạt chuẩn VIP, ngược lại là false.
      */
     public function checkVip($idKH, $limit = 30000000, $days = 30)
     {
+        // Tính tổng tiền từ bảng CHUNG_TU_BAN (hóa đơn bán hàng).
+        // Chỉ tính những đơn hàng đã hoàn tất (Đã Giao Hàng) và trong khoảng thời gian quy định.
         $sql = "SELECT SUM(TONGCONG) as total_spent 
                 FROM CHUNG_TU_BAN 
                 WHERE ID_KHACHHANG = :id 
@@ -346,6 +333,7 @@ class KhachHang
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $totalSpent = $row['total_spent'] ?? 0;
 
+        // Nếu tổng chi tiêu vượt quá ngưỡng limit thì được xác nhận là VIP.
         return $totalSpent > $limit;
     }
 }

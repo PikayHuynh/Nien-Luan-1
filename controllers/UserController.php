@@ -44,13 +44,11 @@ class UserController
                 // Chuyển hướng dựa trên vai trò: admin về dashboard, user về trang chủ
                 if ($this->khModel->isAdmin($user['ID_KHACH_HANG'])) {
                     header("Location: index.php?controller=dashboard&action=index");
-                }
-                else {
+                } else {
                     header("Location: index.php?controller=home&action=index");
                 }
                 exit;
-            }
-            else {
+            } else {
                 $error = $user ? "Sai mật khẩu!" : "User không tồn tại!";
             }
         }
@@ -75,11 +73,9 @@ class UserController
 
             if ($password !== $confirm_password) {
                 $error = "Mật khẩu không khớp!";
-            }
-            elseif ($this->khModel->getByName($username)) {
+            } elseif ($this->khModel->getByName($username)) {
                 $error = "Username đã tồn tại!";
-            }
-            else {
+            } else {
                 // Tạo tài khoản mới với vai trò mặc định là 'user'
                 $this->khModel->create([
                     'TEN_KH' => $username,
@@ -177,8 +173,7 @@ class UserController
 
                 // Tải lại thông tin người dùng để hiển thị trên form
                 $user = $this->khModel->getById($userId);
-            }
-            else {
+            } else {
                 $error = "Cập nhật thất bại!";
             }
         }
@@ -220,8 +215,7 @@ class UserController
 
             $orders = $pageData['items'];
             $isPurchase = true;
-        }
-        else {
+        } else {
             // Nếu là người dùng thường, hiển thị danh sách "Chứng từ Bán" (đơn hàng đã mua).
             require_once ROOT . '/models/ChungTuBan.php';
             $orderModel = new ChungTuBan($this->db);
@@ -314,8 +308,7 @@ class UserController
             require_once ROOT . '/models/ChungTuMuaCT.php';
             $orderModel = new ChungTuMua($this->db);
             $detailModel = new ChungTuMuaCT($this->db);
-        }
-        else {
+        } else {
             // CHỨNG TỪ BÁN (Đơn hàng của User)
             require_once ROOT . '/models/ChungTuBan.php';
             require_once ROOT . '/models/ChungTuBanCT.php';
@@ -341,8 +334,7 @@ class UserController
                 header("Location: index.php?controller=user&action=orders");
                 exit;
             }
-        }
-        else {
+        } else {
             // Nếu là Chứng từ Bán (đơn hàng của người dùng),
             // bắt buộc ID_KHACHHANG phải khớp với người dùng đang đăng nhập.
             // Đây là bước bảo mật quan trọng để người dùng không xem được đơn hàng của nhau.

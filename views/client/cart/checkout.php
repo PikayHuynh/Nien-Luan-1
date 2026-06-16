@@ -65,7 +65,7 @@ $total = $_SESSION['cart_total'] ?? 0;
                                 </thead>
 
                                 <tbody class="border-top-0">
-                                    <?php foreach ($cart as $it): 
+                                    <?php foreach ($cart as $it):
                                         $itSubtotal = $it['subtotal'] ?? ($it['price'] * $it['quantity']);
                                     ?>
                                         <tr>

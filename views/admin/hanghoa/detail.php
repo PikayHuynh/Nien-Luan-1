@@ -73,12 +73,9 @@ include ROOT . '/views/admin/layouts/sidebar.php';
         <tr>
             <th>Hình ảnh</th>
             <td>
-                <?php if (!empty($hanghoa['HINHANH'])): ?>
-                    <img src="upload/<?= htmlspecialchars($hanghoa['HINHANH']) ?>"
-                        style="max-width:200px; border-radius:6px; border:1px solid #ddd;">
-                <?php else: ?>
-                    <span class="text-muted">Không có ảnh</span>
-                <?php endif; ?>
+                <img src="upload/<?= (!empty($hanghoa['HINHANH']) ? htmlspecialchars($hanghoa['HINHANH']) : 'item-default.png') ?>"
+                    style="max-width:200px; border-radius:6px; border:1px solid #ddd;"
+                    onerror="this.src='upload/item-default.png'; this.onerror=null;">
             </td>
         </tr>
 

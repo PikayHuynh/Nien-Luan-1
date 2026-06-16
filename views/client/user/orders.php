@@ -6,7 +6,7 @@ include ROOT . '/views/client/layouts/navbar.php';
 <div class="container mt-5 mb-5 pt-4">
     <div class="row">
         <div class="col-lg-10 mx-auto">
-            
+
             <div class="d-flex align-items-center mb-5">
                 <a href="index.php?controller=user&action=profile" class="btn btn-outline-light rounded-circle me-3 border-white-10 p-2">
                     <i class="bi bi-person"></i>
@@ -46,17 +46,17 @@ include ROOT . '/views/client/layouts/navbar.php';
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($orders as $order): 
+                                <?php foreach ($orders as $order):
                                     $idKey = $isPurchase ? 'ID_CTMUA' : 'ID_CTBAN';
                                     $typeParam = $isPurchase ? 'mua' : 'ban';
                                     $idParam = urlencode((string)($order[$idKey] ?? ''));
-                                    
+
                                     // Status styling
                                     $status = (string)($order['TRANGTHAI'] ?? '');
                                     $statusClass = 'bg-secondary';
-                                    if(mb_stripos($status, 'Hoàn thành') !== false) $statusClass = 'bg-success';
-                                    if(mb_stripos($status, 'Đã hủy') !== false) $statusClass = 'bg-danger';
-                                    if(mb_stripos($status, 'Đang') !== false) $statusClass = 'bg-primary';
+                                    if (mb_stripos($status, 'Hoàn thành') !== false) $statusClass = 'bg-success';
+                                    if (mb_stripos($status, 'Đã hủy') !== false) $statusClass = 'bg-danger';
+                                    if (mb_stripos($status, 'Đang') !== false) $statusClass = 'bg-primary';
                                 ?>
                                     <tr class="border-bottom border-white-5 align-middle">
                                         <td class="ps-4 py-3">
@@ -77,8 +77,8 @@ include ROOT . '/views/client/layouts/navbar.php';
                                             </td>
                                         <?php endif; ?>
                                         <td class="text-center pe-4">
-                                            <a href="index.php?controller=user&action=orderDetail&id=<?= $idParam ?>&type=<?= $typeParam ?>" 
-                                               class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                            <a href="index.php?controller=user&action=orderDetail&id=<?= $idParam ?>&type=<?= $typeParam ?>"
+                                                class="btn btn-sm btn-outline-primary rounded-pill px-3">
                                                 <i class="bi bi-eye me-1"></i> Chi tiết
                                             </a>
                                         </td>

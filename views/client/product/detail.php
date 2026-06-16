@@ -41,10 +41,11 @@ $salePercent = $isSale ? round((($giaGoc - $donGia) / $giaGoc) * 100) : 0;
                         <?php if ($isNew): ?><span class="badge bg-success mb-1 d-block shadow-sm">NEW</span><?php endif; ?>
                         <?php if ($isSale): ?><span class="badge bg-warning text-dark d-block shadow-sm">-<?= $salePercent ?>%</span><?php endif; ?>
                     </div>
-                    <img src="upload/<?= htmlspecialchars($product['HINHANH'] ?? 'item-default.png') ?>" 
-                         class="img-fluid w-100 rounded-4 shadow-lg" 
-                         style="max-height: 500px; object-fit: cover;"
-                         alt="<?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>">
+                    <img src="upload/<?= (!empty($product['HINHANH']) ? htmlspecialchars($product['HINHANH']) : 'item-default.png') ?>"
+                        class="img-fluid w-100 rounded-4 shadow-lg"
+                        style="max-height: 500px; object-fit: cover;"
+                        alt="<?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>"
+                        onerror="this.src='upload/item-default.png'; this.onerror=null;">
                 </div>
             </div>
 
@@ -54,7 +55,7 @@ $salePercent = $isSale ? round((($giaGoc - $donGia) / $giaGoc) * 100) : 0;
                     <div class="badge bg-primary-soft text-primary mb-2 py-2 px-3 rounded-pill bg-glass border border-primary-20">
                         <?= htmlspecialchars($product['TENPHANLOAI'] ?? 'Sản phẩm') ?>
                     </div>
-                    
+
                     <h1 class="display-5 fw-bold text-white mb-3">
                         <?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>
                     </h1>
@@ -91,8 +92,8 @@ $salePercent = $isSale ? round((($giaGoc - $donGia) / $giaGoc) * 100) : 0;
                     </div>
 
                     <div class="action-buttons d-flex gap-3">
-                        <a href="index.php?controller=cart&action=add&id=<?= (int)$product['ID_HANGHOA'] ?>" 
-                           class="btn btn-premium-glow btn-lg px-5 py-3 rounded-pill flex-grow-1 shadow-lg">
+                        <a href="index.php?controller=cart&action=add&id=<?= (int)$product['ID_HANGHOA'] ?>"
+                            class="btn btn-premium-glow btn-lg px-5 py-3 rounded-pill flex-grow-1 shadow-lg">
                             <i class="bi bi-cart-plus me-2 fs-5"></i>Thêm vào giỏ hàng
                         </a>
                         <button class="btn glass-button btn-lg rounded-circle p-3 shadow-sm border-white-10">

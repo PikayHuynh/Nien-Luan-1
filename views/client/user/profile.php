@@ -10,7 +10,7 @@ $avatar = !empty($user['HINHANH'])
 <div class="container mt-5 mb-5 pt-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            
+
             <div class="profile-header text-center mb-5">
                 <div class="position-relative d-inline-block">
                     <div class="avatar-wrapper p-1 rounded-circle bg-glass border border-white-10 shadow-lg mb-3">

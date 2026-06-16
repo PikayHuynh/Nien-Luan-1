@@ -165,8 +165,9 @@ function build_filter_url(array $new_params = []): string
                                     <?php if ($isSale): ?><span class="badge bg-warning text-dark d-block shadow-sm">-<?= $salePercent ?>%</span><?php endif; ?>
                                 </div>
                                 <a href="index.php?controller=product&action=detail&id=<?= $product['ID_HANGHOA'] ?>" class="product-img-link overflow-hidden rounded-top-4">
-                                     <img src="upload/<?= htmlspecialchars($product['HINHANH'] ?? 'item-default.png') ?>"
-                                    class="card-img-top" alt="<?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>">
+                                    <img src="upload/<?= (!empty($product['HINHANH']) ? htmlspecialchars($product['HINHANH']) : 'item-default.png') ?>"
+                                        class="card-img-top" alt="<?= htmlspecialchars($product['TENHANGHOA'] ?? '') ?>"
+                                        onerror="this.src='upload/item-default.png'; this.onerror=null;">
                                 </a>
                                 <div class="card-body d-flex flex-column p-3">
                                     <div class="text-muted small mb-1"><?= htmlspecialchars($product['TENPHANLOAI'] ?? '') ?></div>
@@ -181,10 +182,10 @@ function build_filter_url(array $new_params = []): string
                                                 <span class="old-price"><?= number_format($giaGoc) ?> đ</span>
                                             <?php endif; ?>
                                         </div>
-                                         <a href="index.php?controller=cart&action=add&id=<?= $product['ID_HANGHOA'] ?>" 
+                                        <a href="index.php?controller=cart&action=add&id=<?= $product['ID_HANGHOA'] ?>"
                                             class="btn btn-premium-glow w-100 rounded-pill py-2 fw-bold">
                                             <i class="bi bi-cart-plus me-2"></i> Thêm giỏ hàng
-                                         </a>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
